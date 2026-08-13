@@ -165,6 +165,14 @@
         return tabs.find((tab) => tab.id === activeTabId);
       }
 
+      function getTabName(title) {
+        return String(title || "Lesson")
+          .replace(/^Assignment\s*[—-]\s*/i, "")
+          .replace(/^Unit\s*\d+\s*[—:-]\s*/i, "")
+          .replace(/\s*[—-]\s*Unit\s*\d+/i, "")
+          .trim() || "Lesson";
+      }
+
       function copyIntoPageData(source) {
         pageData.title = source.title || "";
         pageData.theme = getThemeId(source.theme);
@@ -220,6 +228,34 @@
         renderEditor();
         renderPreview();
         saveDocState();
+      }
+
+      function openPageInTab(source) {
+        const currentTab = getActiveTab();
+        const canReuseBlankTab = tabs.length === 1
+          && currentTab?.name === "الورقة 1"
+          && !pageData.title
+          && pageData.questions.length === 0;
+
+        if (canReuseBlankTab) {
+          currentTab.name = getTabName(source.title);
+          copyIntoPageData(source);
+          currentTab.data = pageData;
+          return;
+        }
+
+        if (currentTab) currentTab.data = clonePageData(pageData);
+        const tabId = `tab-${Date.now()}-${tabs.length}`;
+        const nextTab = {
+          id: tabId,
+          name: getTabName(source.title),
+          data: clonePageData(source)
+        };
+        tabs.push(nextTab);
+        copyIntoPageData(nextTab.data);
+        nextTab.data = pageData;
+        activeTabId = tabId;
+        selectedMcq = null;
       }
 
       function closeTab(tabId) {
@@ -1500,21 +1536,14 @@
           .then(response => response.ok ? response.json() : Promise.reject(new Error("Unable to load file")))
           .then(data => {
             const imported = normalizePageData(data);
-            copyIntoPageData(imported);
-            if (uiSettings.theme) pageData.theme = getThemeId(uiSettings.theme);
-            const currentTab = getActiveTab();
-            if (currentTab) {
-              currentTab.data = pageData;
-              currentTab.name = (pageData.title || "Lesson")
-                .replace(/^Assignment\s*[—-]\s*/i, "")
-                .replace(/^Unit\s*\d+\s*[—:-]\s*/i, "")
-                .replace(/\s*[—-]\s*Unit\s*\d+/i, "")
-                .trim() || "Lesson";
-            }
+            if (uiSettings.theme) imported.theme = getThemeId(uiSettings.theme);
+            openPageInTab(imported);
             paperTitleInput.value = pageData.title;
             renderTabs();
             renderEditor();
             renderPreview();
+            saveDocState();
+            window.history.replaceState({}, "", window.location.pathname);
             requestAnimationFrame(() => requestAnimationFrame(reapplyPreviewZoom));
           })
           .catch(error => console.error("Question file could not be loaded:", error));
