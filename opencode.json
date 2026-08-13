@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "exam-paper-designer": {
+      "type": "local",
+      "command": [
+        "node",
+        "C:/Users/moham/OneDrive/Documents/ChatGPT/qestion create/mcp-server.js"
+      ],
+      "enabled": true
+    }
+  }
+}

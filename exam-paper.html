@@ -1,0 +1,4223 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>مصمم ورقة امتحان</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
+    />
+
+    <style>
+      :root {
+        --ink: #111;
+        --muted: #666;
+        --line: #a0a0a0;
+        --soft-line: #d8d8d8;
+        --answer-line: #4b4b4b;
+        --panel: #fff;
+        --canvas: #ededed;
+        --canvas-rgb: 237, 237, 237;
+      }
+
+      * {
+        box-sizing: border-box;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      *::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+        min-height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        background: var(--canvas);
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      input,
+      textarea,
+      select,
+      [contenteditable="true"] {
+        user-select: text;
+        -webkit-user-select: text;
+      }
+
+      .tab-bar {
+        display: flex;
+        position: fixed;
+        z-index: 50;
+        top: 16px;
+        left: 50%;
+        flex: 0 0 auto;
+        align-items: stretch;
+        justify-content: space-between;
+        gap: 8px;
+        max-width: 1800px;
+        width: calc(100% - 32px);
+        margin: 0 auto 12px;
+        direction: ltr;
+        transform: translateX(-50%);
+      }
+
+      .tab-list {
+        display: flex;
+        order: 2;
+        flex: 0 1 auto;
+        max-width: calc(100% - 108px);
+        min-width: 0;
+        gap: 4px;
+        overflow-x: auto;
+        padding-bottom: 1px;
+        direction: rtl;
+        justify-content: flex-start;
+      }
+
+      .tab-actions {
+        display: flex;
+        position: relative;
+        order: 1;
+        flex: 0 0 auto;
+        align-items: stretch;
+        gap: 8px;
+        direction: ltr;
+      }
+
+      .tab-item {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: stretch;
+        border: 1px solid var(--soft-line);
+        background: #f8f8f8;
+      }
+
+      .tab-item.active {
+        border-color: var(--ink);
+        background: #fff;
+      }
+
+      .tab-select,
+      .tab-close,
+      .add-tab {
+        min-height: 36px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+      }
+
+      .tab-select {
+        max-width: none;
+        padding: 7px 12px;
+        overflow: visible;
+        color: var(--ink);
+        direction: rtl;
+        font-size: 13px;
+        text-overflow: clip;
+        white-space: nowrap;
+      }
+
+      .tab-rename-input {
+        width: 150px;
+        min-height: 36px;
+        padding: 7px 10px;
+        border: 0;
+        outline: 2px solid #c58a35;
+        background: transparent;
+        color: var(--ink);
+        direction: rtl;
+        font-size: 13px;
+        text-align: right;
+      }
+
+      .tab-close {
+        width: 30px;
+        padding: 4px;
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .tab-close:hover,
+      .tab-select:hover,
+      .add-tab:hover {
+        background: #ececec;
+      }
+
+      .add-tab {
+        flex: 0 0 auto;
+        width: 42px;
+        border: 1px solid var(--ink);
+        background: #fff;
+        font-size: 20px;
+      }
+
+      .tools-toggle,
+      .menu-button {
+        flex: 0 0 auto;
+        width: 42px;
+        min-height: 36px;
+        padding: 7px 8px;
+        border: 1px solid var(--ink);
+        background: #fff;
+        font-size: 19px;
+        white-space: nowrap;
+      }
+
+      .menu-panel {
+        position: absolute;
+        z-index: 30;
+        top: calc(100% + 6px);
+        left: 0;
+        display: grid;
+        width: 290px;
+        gap: 9px;
+        padding: 12px;
+        border: 1px solid var(--ink);
+        background: var(--panel);
+        color: var(--ink);
+        direction: rtl;
+        text-align: right;
+      }
+
+      .menu-panel[hidden] {
+        display: none;
+      }
+
+      .menu-action,
+      .fit-preview {
+        width: 100%;
+        min-height: 34px;
+        padding: 6px 8px;
+        font-size: 12px;
+        text-align: right;
+      }
+
+      .menu-label,
+      .menu-switch {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .menu-switch {
+        justify-content: flex-start;
+        cursor: pointer;
+      }
+
+      .menu-switch input {
+        width: 18px;
+        height: 16px;
+        accent-color: #315c96;
+      }
+
+      .zoom-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 82px;
+        align-items: center;
+        gap: 8px;
+        direction: ltr;
+      }
+
+      #preview-zoom {
+        width: 100%;
+        accent-color: #315c96;
+      }
+
+      #zoom-value {
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 400;
+        white-space: nowrap;
+      }
+
+      .menu-divider {
+        height: 1px;
+        background: var(--soft-line);
+      }
+
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+
+      button {
+        border: 1px solid var(--ink);
+        border-radius: 2px;
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #f0f0f0;
+      }
+
+      .app-shell {
+        display: grid;
+        flex: 1 1 auto;
+        grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr);
+        gap: 18px;
+        align-items: start;
+        min-height: 0;
+        padding-top: 52px;
+        max-width: 1800px;
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+      }
+
+      body.tools-hidden .app-shell {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      body.tools-hidden .designer-panel {
+        display: none;
+      }
+
+      body.tools-hidden .tab-bar {
+        border-color: transparent;
+        background: rgba(var(--canvas-rgb), 0.68);
+        -webkit-backdrop-filter: blur(14px) saturate(135%);
+        backdrop-filter: blur(14px) saturate(135%);
+      }
+
+      .designer-panel {
+        position: relative;
+        min-height: 0;
+        height: 100%;
+        overflow: auto;
+        padding: 16px;
+        border: 1px solid var(--ink);
+        background: var(--panel);
+      }
+
+      .preview-editable {
+        cursor: text;
+      }
+
+      .preview-editable:hover {
+        outline: 1px dashed #b7b7b7;
+        outline-offset: 2px;
+      }
+
+      .inline-preview-editor {
+        display: block;
+        width: 100%;
+        min-height: 1.5em;
+        padding: 0;
+        overflow: auto;
+        border: 0;
+        border-bottom: 1px dashed #777;
+        border-radius: 0;
+        outline: none;
+        background: transparent;
+        color: inherit;
+        direction: ltr;
+        font: inherit;
+        line-height: inherit;
+        resize: none;
+        text-align: left;
+      }
+
+      .inline-preview-editor:focus {
+        border-bottom-color: #111;
+      }
+
+      .designer-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+        margin-bottom: 14px;
+      }
+
+      .designer-actions button {
+        min-height: 36px;
+        padding: 7px 8px;
+        font-size: 13px;
+      }
+
+      .designer-actions .primary {
+        background: var(--ink);
+        color: #fff;
+      }
+
+      .designer-actions .primary:hover {
+        background: #333;
+      }
+
+      .field {
+        display: block;
+        margin: 0 0 10px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .field input,
+      .field textarea,
+      .field select {
+        display: block;
+        width: 100%;
+        margin-top: 5px;
+        padding: 8px;
+        border: 1px solid #999;
+        border-radius: 0;
+        background: #fff;
+        color: var(--ink);
+        direction: ltr;
+        text-align: left;
+      }
+
+      .field textarea {
+        min-height: 58px;
+        resize: vertical;
+        line-height: 1.4;
+      }
+
+      .is-hidden {
+        display: none;
+      }
+
+      .editor-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .editor-toolbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 110px;
+        gap: 6px;
+        margin-top: 12px;
+      }
+
+      .editor-toolbar input,
+      .editor-toolbar select {
+        width: 100%;
+        min-height: 34px;
+        padding: 7px;
+        border: 1px solid #999;
+        border-radius: 0;
+        background: #fff;
+        direction: ltr;
+        text-align: left;
+      }
+
+      .editor-toolbar .part-filter {
+        grid-column: 1 / -1;
+      }
+
+      .editor-list-status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .editor-list-status button {
+        padding: 3px 7px;
+        border-color: var(--soft-line);
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .editor-card {
+        padding: 0;
+        border: 1px solid var(--soft-line);
+        background: #fafafa;
+      }
+
+      .editor-card[open] {
+        border-color: #999;
+      }
+
+      .editor-card.link-hovered {
+        box-shadow: inset 0 0 0 2px #c58a35;
+        background: #fff8ea;
+      }
+
+      .editor-card.link-hovered .editor-summary {
+        background: #fff1d5;
+      }
+
+      .editor-summary {
+        display: grid;
+        grid-template-columns: auto auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 7px;
+        min-height: 43px;
+        padding: 8px 10px;
+        cursor: pointer;
+        direction: ltr;
+        list-style: none;
+        text-align: left;
+      }
+
+      .editor-summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .editor-summary:hover {
+        background: #f1f1f1;
+      }
+
+      .editor-number {
+        display: inline-flex;
+        width: 25px;
+        height: 25px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--ink);
+        border-radius: 50%;
+        font-size: 12px;
+      }
+
+      .editor-type {
+        padding: 3px 5px;
+        border: 1px solid var(--soft-line);
+        color: var(--muted);
+        font-size: 10px;
+        white-space: nowrap;
+      }
+
+      .editor-summary-text {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .editor-summary-part {
+        display: block;
+        overflow: hidden;
+        color: var(--muted);
+        font-size: 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .editor-summary-preview {
+        display: block;
+        overflow: hidden;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .editor-chevron {
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .editor-card[open] .editor-chevron {
+        transform: rotate(90deg);
+      }
+
+      .editor-card-body {
+        padding: 10px;
+        border-top: 1px solid var(--soft-line);
+      }
+
+      .editor-form-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 0 10px;
+      }
+
+      .editor-form-grid .field-wide {
+        grid-column: 1 / -1;
+      }
+
+      .editor-form-grid .field {
+        min-width: 0;
+      }
+
+      .editor-form-grid .field input,
+      .editor-form-grid .field textarea,
+      .editor-form-grid .field select {
+        min-height: 36px;
+      }
+
+      .editor-card-header strong {
+        color: var(--ink);
+        font-size: 13px;
+      }
+
+      .editor-card-header .card-tools button {
+        min-width: 31px;
+        min-height: 30px;
+        padding: 4px 7px;
+      }
+
+      .duplicate-question {
+        color: #315d91;
+      }
+
+      .editor-empty {
+        padding: 18px 10px;
+        border: 1px dashed var(--soft-line);
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+      }
+
+      @media screen and (max-width: 600px) {
+        .editor-form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .editor-form-grid .field-wide {
+          grid-column: auto;
+        }
+      }
+
+      .editor-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 9px;
+      }
+
+      .editor-card-header strong {
+        font-size: 13px;
+      }
+
+      .card-tools {
+        display: inline-flex;
+        align-items: center;
+        overflow: hidden;
+        border: 1px solid var(--ink);
+        border-radius: 999px;
+        background: #fff;
+        direction: ltr;
+      }
+
+      .card-tools button {
+        min-width: 31px;
+        min-height: 30px;
+        padding: 4px 9px;
+        border: 0;
+        border-left: 1px solid var(--soft-line);
+        border-radius: 0;
+        background: transparent;
+        font-size: 12px;
+      }
+
+      .card-tools button:first-child {
+        border-left: 0;
+      }
+
+      .card-tools button:hover {
+        background: #f0f0f0;
+      }
+
+      .remove-question {
+        color: #9b0000;
+      }
+
+      .help-text {
+        display: block;
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.5;
+      }
+
+      .preview-stage {
+        min-width: 0;
+        direction: ltr;
+        min-height: 0;
+        height: 100%;
+        overflow: auto;
+      }
+
+      .section-nav {
+        position: fixed;
+        z-index: 15;
+        top: 50%;
+        left: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        align-items: flex-start;
+        direction: ltr;
+        transform: translateY(-50%);
+      }
+
+      .section-nav-item {
+        position: relative;
+        width: 30px;
+        height: 13px;
+        padding: 0;
+        border: 0;
+        border-radius: 999px;
+        background: transparent !important;
+        cursor: pointer;
+      }
+
+      .section-nav-item::before {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 16px;
+        height: 2px;
+        border-radius: 999px;
+        background: #c7c7c7;
+        content: "";
+        transform: translateY(-50%);
+        transition: width 140ms ease, background 140ms ease;
+      }
+
+      .section-nav-item.active::before {
+        width: 16px;
+        background: #555;
+      }
+
+      .section-nav-item:hover::before,
+      .section-nav-item:focus-visible::before {
+        width: 24px;
+        background: #555;
+      }
+
+      body.dark-mode .section-nav-item::before {
+        background: #4b4b4b;
+      }
+
+      body.dark-mode .section-nav-item.active::before {
+        background: #bdbdbd;
+      }
+
+      body.dark-mode .section-nav-item:hover::before,
+      body.dark-mode .section-nav-item:focus-visible::before {
+        background: #ededed;
+      }
+
+      .section-nav-label {
+        position: absolute;
+        top: 50%;
+        left: calc(100% + 10px);
+        min-width: 190px;
+        max-width: min(240px, 42vw);
+        padding: 9px 11px;
+        border-radius: 12px;
+        background: #2f2f2f;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.35;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-50%) translateX(-4px);
+        transition: opacity 140ms ease, transform 140ms ease;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        white-space: normal;
+      }
+
+      .section-nav-label-title {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .section-nav-item:hover .section-nav-label,
+      .section-nav-item:focus-visible .section-nav-label {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+      }
+
+      @media (max-width: 640px) {
+        .section-nav {
+          left: 7px;
+        }
+
+        .section-nav-label {
+          max-width: 220px;
+        }
+      }
+
+      @media print {
+        .section-nav {
+          display: none !important;
+        }
+      }
+
+      .theme-carousel {
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+        gap: 6px;
+        margin: 0 0 14px;
+        direction: ltr;
+      }
+
+      .theme-carousel-arrow {
+        flex: 0 0 32px;
+        border: 1px solid var(--soft-line);
+        background: #fff;
+        color: var(--ink);
+        font-size: 18px;
+      }
+
+      .theme-carousel-arrow:hover {
+        background: #f0f0f0;
+      }
+
+      .theme-viewport {
+        min-width: 0;
+        flex: 1;
+        overflow-x: auto;
+      }
+
+      .theme-list {
+        display: flex;
+        min-width: max-content;
+        gap: 7px;
+      }
+
+      .theme-card {
+        display: grid;
+        grid-template-columns: 40px minmax(100px, 1fr);
+        min-width: 155px;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 8px;
+        border: 1px solid var(--soft-line);
+        border-radius: 3px;
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .theme-card:hover {
+        border-color: #888;
+      }
+
+      .theme-card.active {
+        border-color: var(--ink);
+        outline: 2px solid #d9b36c;
+        outline-offset: -2px;
+      }
+
+      .theme-swatch {
+        display: block;
+        width: 40px;
+        height: 30px;
+        border: 1px solid #777;
+        background: #fff;
+      }
+
+      .theme-swatch::before,
+      .theme-swatch::after {
+        display: block;
+        width: 70%;
+        height: 4px;
+        margin: 6px auto 0;
+        background: currentColor;
+        content: "";
+      }
+
+      .theme-swatch::after {
+        width: 55%;
+        margin-top: 4px;
+        opacity: 0.35;
+      }
+
+      .theme-swatch-classic { color: #111; }
+      .theme-swatch-professional { color: #1e56b3; background: #f3f6fb; }
+      .theme-swatch-modern-professional { color: #2563eb; background: #eff6ff; border-radius: 6px; }
+      .theme-swatch-school-blue { color: #315c96; background: #eef4ff; }
+      .theme-swatch-soft-study { color: #2f766d; background: #edf8f4; }
+      .theme-swatch-kids { color: #d66b4a; background: #fff1c9; border-radius: 8px; }
+      .theme-swatch-playful-kids {
+        color: #ff6688;
+        background: linear-gradient(135deg, #fff1a8 0 34%, #b9f3d1 34% 67%, #bfe4ff 67%);
+        border-radius: 10px;
+      }
+
+      .theme-card-copy {
+        min-width: 0;
+      }
+
+      .theme-card-name,
+      .theme-card-description {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .theme-card-name {
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .theme-card-description {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .paper {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto;
+        padding: 9mm 9mm 10mm;
+        overflow: hidden;
+        border: 1px solid var(--ink);
+        background: #fff;
+        direction: ltr;
+      }
+
+      .paper.theme-classic {
+        --theme-accent: #111;
+        --theme-soft: #f7f7f7;
+        --theme-selection: #f6d69f;
+        --theme-radius: 0px;
+      }
+
+      .paper.theme-professional {
+        --ink: #1c2531;
+        --line: #d8dee8;
+        --answer-line: #8d99ac;
+        --theme-accent: #1e56b3;
+        --theme-soft: #f4f7fb;
+        --theme-selection: #dbe7fa;
+        --theme-radius: 0px;
+        --theme-muted: #5b6b7f;
+        background: #ffffff;
+      }
+
+      .paper.theme-modern-professional {
+        --ink: #16233b;
+        --line: #dbe3ef;
+        --answer-line: #7d8ea8;
+        --theme-accent: #2563eb;
+        --theme-soft: #eef4ff;
+        --theme-selection: #cfe0ff;
+        --theme-radius: 8px;
+        --theme-muted: #5b6b83;
+        background: #ffffff;
+      }
+
+      .paper.theme-school-blue {
+        --ink: #1e3554;
+        --line: #8ea4c0;
+        --answer-line: #526d90;
+        --theme-accent: #315c96;
+        --theme-soft: #eef4ff;
+        --theme-selection: #dbe8fb;
+        --theme-radius: 3px;
+      }
+
+      .paper.theme-soft-study {
+        --ink: #214b48;
+        --line: #8bb8ad;
+        --answer-line: #4d8177;
+        --theme-accent: #2f766d;
+        --theme-soft: #edf8f4;
+        --theme-selection: #d7efe8;
+        --theme-radius: 8px;
+      }
+
+      .paper.theme-kids {
+        --ink: #5b3a35;
+        --line: #e5a27e;
+        --answer-line: #b86d52;
+        --theme-accent: #d66b4a;
+        --theme-soft: #fff1c9;
+        --theme-selection: #ffe2a6;
+        --theme-radius: 12px;
+        font-family: "Comic Sans MS", "Trebuchet MS", Arial, sans-serif;
+      }
+
+      .paper.theme-playful-kids {
+        --ink: #55365e;
+        --line: #f2a7c4;
+        --answer-line: #ca6c96;
+        --theme-accent: #ff6688;
+        --theme-soft: #fff0f6;
+        --theme-selection: #ffe071;
+        --theme-radius: 16px;
+        font-family: "Comic Sans MS", "Trebuchet MS", Arial, sans-serif;
+        background:
+          radial-gradient(circle at 94% 12%, #b9f3d1 0 2.5mm, transparent 2.7mm),
+          #fffdf8;
+      }
+
+
+      body.dark-mode {
+        --ink: #edf2f7;
+        --muted: #b4bec9;
+        --line: #5f6b77;
+        --soft-line: #3b4651;
+        --panel: #1d2329;
+        --canvas: #111418;
+        --canvas-rgb: 17, 20, 24;
+      }
+
+      body.dark-mode button,
+      body.dark-mode input,
+      body.dark-mode textarea,
+      body.dark-mode select {
+        border-color: #596572;
+        background: #242b32;
+        color: #edf2f7;
+      }
+
+      body.dark-mode button:hover {
+        background: #303942;
+      }
+
+      body.dark-mode .designer-actions .primary {
+        border-color: #718396;
+        background: #344454;
+        color: #f7fbff;
+      }
+
+      body.dark-mode .designer-actions .primary:hover {
+        background: #43586b;
+        color: #fff;
+      }
+
+      body.dark-mode .tab-item {
+        border-color: #3b4651;
+        background: #1b2127;
+      }
+
+      body.dark-mode .tab-item.active,
+      body.dark-mode .menu-panel,
+      body.dark-mode .designer-panel,
+      body.dark-mode .json-modal-card {
+        background: #1d2329;
+      }
+
+      body.dark-mode .tab-item.active {
+        border-color: #8fb9df;
+        background: #31465a;
+      }
+
+      body.dark-mode .tab-item.active .tab-select {
+        color: #fff;
+        font-weight: 700;
+      }
+
+      body.dark-mode .tab-item:not(.active) .tab-select {
+        color: #aeb9c5;
+      }
+
+      body.dark-mode .tab-rename-input {
+        outline-color: #f0bd62;
+        background: #31465a;
+        color: #fff;
+      }
+
+      body.dark-mode .editor-card {
+        border-color: #3b4651;
+        background: #20272e;
+      }
+
+      body.dark-mode .editor-summary:hover,
+      body.dark-mode .card-tools button:hover {
+        background: #303942;
+      }
+
+      body.dark-mode .theme-card {
+        border-color: #4b5865;
+        background: #242b32;
+      }
+
+      body.dark-mode .theme-carousel-arrow,
+      body.dark-mode .menu-button {
+        background: #242b32;
+      }
+
+      body.dark-mode .paper {
+        --ink: #edf2f7;
+        --line: #65727f;
+        --answer-line: #aab5c0;
+        --theme-soft: #252d35;
+        --theme-selection: #695936;
+        background: #151a1f;
+        color: #edf2f7;
+      }
+
+      body.dark-mode .paper.theme-school-blue {
+        --ink: #e3edff;
+        --line: #6682a8;
+        --answer-line: #a9c3e6;
+        --theme-soft: #24344b;
+        --theme-selection: #304c70;
+      }
+
+      body.dark-mode .paper.theme-soft-study {
+        --ink: #e1f4f0;
+        --line: #5b958b;
+        --answer-line: #a0d1c7;
+        --theme-soft: #203b38;
+        --theme-selection: #28574e;
+      }
+
+      body.dark-mode .paper.theme-professional {
+        --ink: #e7edf5;
+        --line: #2e3a49;
+        --answer-line: #93a3b8;
+        --theme-accent: #82acf0;
+        --theme-soft: #1b2530;
+        --theme-selection: #2a3f5e;
+        --theme-muted: #9aa8bb;
+        background: #141a21;
+        color: #e7edf5;
+      }
+
+      body.dark-mode .paper.theme-professional .part-intro {
+        color: #9aa8bb;
+      }
+
+      body.dark-mode .paper.theme-professional .part-heading::after {
+        background: #2e3a49;
+      }
+
+      body.dark-mode .paper.theme-modern-professional {
+        --ink: #e8effb;
+        --line: #2c3b57;
+        --answer-line: #8ea5c9;
+        --theme-accent: #7db1ff;
+        --theme-soft: #1a2740;
+        --theme-selection: #2c4a7d;
+        --theme-muted: #9db0cd;
+        background: #0e1728;
+        color: #e8effb;
+      }
+
+      body.dark-mode .paper.theme-modern-professional .question-number,
+      body.dark-mode .paper.theme-modern-professional .mcq-number {
+        color: #0e1728;
+      }
+
+      body.dark-mode .paper.theme-modern-professional .question-table {
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+      }
+
+      body.dark-mode .paper.theme-kids {
+        --ink: #f5ded4;
+        --line: #b87560;
+        --answer-line: #d09b84;
+        --theme-soft: #3a2b27;
+        --theme-selection: #76552d;
+      }
+
+      body.dark-mode .paper.theme-kids .question-row,
+      body.dark-mode .paper.theme-kids .mcq-question {
+        background: #282326;
+      }
+
+      body.dark-mode .paper.theme-kids .question-number,
+      body.dark-mode .paper.theme-kids .mcq-number {
+        background: #9a6725;
+        color: #fff4dc;
+      }
+
+      body.dark-mode .paper.theme-playful-kids {
+        --ink: #ffeef4;
+        --line: #a96b85;
+        --answer-line: #e5a6be;
+        --theme-accent: #ff9ab2;
+        --theme-soft: #3a2a34;
+        --theme-selection: #6e4d30;
+        background:
+          radial-gradient(circle at 7% 4%, #7c6530 0 2mm, transparent 2.2mm),
+          radial-gradient(circle at 94% 12%, #315b4a 0 2.5mm, transparent 2.7mm),
+          #1b171c;
+        color: #ffeef4;
+      }
+
+      body.dark-mode .paper.theme-playful-kids .part-heading {
+        background: linear-gradient(90deg, #3a2a34, #3a3623);
+        color: #ffd8e2;
+      }
+
+      body.dark-mode .paper.theme-playful-kids .question-row,
+      body.dark-mode .paper.theme-playful-kids .mcq-question {
+        background: #211c22;
+      }
+
+      body.dark-mode .paper.theme-playful-kids .question-number,
+      body.dark-mode .paper.theme-playful-kids .mcq-number {
+        border-color: #ff9ab2;
+        background: #56432b;
+        color: #ffeaf0;
+      }
+
+      .paper.theme-school-blue .paper-title,
+      .paper.theme-soft-study .paper-title,
+      .paper.theme-kids .paper-title {
+        padding-bottom: 4mm;
+        border-bottom: 2px solid var(--theme-accent);
+      }
+
+      .paper.theme-school-blue .part-heading,
+      .paper.theme-soft-study .part-heading,
+      .paper.theme-kids .part-heading {
+        padding: 2.5mm 3mm;
+        border-left: 4px solid var(--theme-accent);
+        background: var(--theme-soft);
+        color: var(--theme-accent);
+      }
+
+      .paper.theme-soft-study .part-heading {
+        border-left-width: 0;
+        border-bottom: 0;
+      }
+
+      .paper.theme-kids .part-heading {
+        border: 2px solid var(--theme-accent);
+        border-radius: var(--theme-radius);
+      }
+
+      .paper.theme-playful-kids .paper-title {
+        position: relative;
+        padding-bottom: 4mm;
+        border-bottom: 0;
+      }
+
+      .paper.theme-playful-kids .paper-title::after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        border-radius: 999px;
+        background: repeating-linear-gradient(90deg, #ff6688 0 18px, #ffe071 18px 36px, #b9f3d1 36px 54px, #bfe4ff 54px 72px);
+        content: "";
+      }
+
+      .paper.theme-playful-kids .part-heading {
+        position: relative;
+        padding: 2.5mm 4mm;
+        border: 0;
+        color: var(--theme-accent);
+      }
+
+      .paper.theme-playful-kids .part-heading {
+        border-radius: var(--theme-radius);
+        background: linear-gradient(90deg, #fff0f6, #fff8cf);
+      }
+
+      .paper.theme-school-blue .question-table,
+      .paper.theme-soft-study .question-table,
+      .paper.theme-kids .question-table {
+        border-color: var(--theme-accent);
+        border-radius: var(--theme-radius);
+      }
+
+      .paper.theme-school-blue .question-number,
+      .paper.theme-soft-study .question-number,
+      .paper.theme-kids .question-number {
+        border-color: var(--theme-accent);
+        color: var(--theme-accent);
+      }
+
+      .paper.theme-soft-study .question-number {
+        background: var(--theme-soft);
+      }
+
+      .paper.theme-kids .question-number {
+        background: #ffd66b;
+        border-width: 2px;
+      }
+
+      .paper.theme-kids .mcq-number {
+        background: #ffd66b;
+        border-width: 2px;
+      }
+
+      .paper.theme-kids .question-row,
+      .paper.theme-kids .mcq-question {
+        background: #fffdf5;
+      }
+
+      .paper.theme-playful-kids .question-table {
+        border-color: var(--theme-accent);
+        border-radius: var(--theme-radius);
+      }
+
+      .paper.theme-playful-kids .question-number,
+      .paper.theme-playful-kids .mcq-number {
+        border: 2px solid var(--theme-accent);
+        background: #fff1a8;
+        color: #b34d76;
+      }
+
+      .paper.theme-playful-kids .question-row,
+      .paper.theme-playful-kids .mcq-question {
+        background: #fffdf8;
+      }
+
+      .paper.theme-professional .paper-title {
+        position: relative;
+        margin: 0 0 7mm;
+        padding: 0 0 3.2mm;
+        border-bottom: 0;
+        color: var(--ink);
+        font-size: 21px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+      }
+
+      .paper.theme-professional .paper-title::after {
+        position: absolute;
+        right: 50%;
+        bottom: -1px;
+        width: 46px;
+        height: 2px;
+        background: var(--theme-accent);
+        content: "";
+        transform: translateX(50%);
+      }
+
+      .paper.theme-professional .part-heading {
+        position: relative;
+        margin: 0 0 4mm;
+        padding: 0 0 2.4mm;
+        border: 0;
+        background: transparent;
+        color: var(--theme-accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+      }
+
+      .paper.theme-professional .part-heading::after {
+        position: absolute;
+        right: 0;
+        bottom: -1px;
+        width: 100%;
+        height: 1px;
+        background: var(--line);
+        content: "";
+      }
+
+      .paper.theme-professional .part-heading::before {
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        bottom: -1px;
+        width: 34px;
+        height: 2px;
+        background: var(--theme-accent);
+        content: "";
+      }
+
+      .paper.theme-professional .part-intro {
+        color: var(--theme-muted);
+        font-size: 13.5px;
+      }
+
+      .paper.theme-professional .question-table {
+        border: 0;
+        border-radius: 0;
+      }
+
+      .paper.theme-professional .question-table > .question-row:first-child,
+      .paper.theme-professional .question-table > .mcq-question:first-child,
+      .paper.theme-professional .question-table > .question-row:last-child,
+      .paper.theme-professional .question-table > .mcq-question:last-child {
+        border-radius: 0;
+      }
+
+      .paper.theme-professional .question-row + .question-row,
+      .paper.theme-professional .mcq-question:nth-child(n + 3) {
+        border-top: 1px solid var(--line);
+      }
+
+      .paper.theme-professional .mcq-question:nth-child(odd) {
+        border-right: 1px solid var(--line);
+      }
+
+      .paper.theme-professional .question-cell {
+        border-right: 1px solid var(--line);
+      }
+
+      .paper.theme-professional .question-number,
+      .paper.theme-professional .mcq-number {
+        border: 0;
+        border-radius: 0;
+        color: var(--theme-accent);
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .paper.theme-professional .question-text,
+      .paper.theme-professional .mcq-question-text {
+        font-size: 14.5px;
+      }
+
+      .paper.theme-professional .mcq-option {
+        font-size: 13.5px;
+      }
+
+      .paper.theme-professional .answer-line {
+        border-bottom-color: var(--answer-line);
+      }
+
+      .paper.theme-professional .part-intro .katex,
+      .paper.theme-professional .question-text .katex {
+        font-size: 1.05em;
+      }
+
+      .paper.theme-modern-professional .paper-title {
+        position: relative;
+        margin: 0 0 7mm;
+        padding: 0 0 3.6mm;
+        border-bottom: 0;
+        color: var(--ink);
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+      }
+
+      .paper.theme-modern-professional .paper-title::after {
+        position: absolute;
+        right: 50%;
+        bottom: -1px;
+        width: 76px;
+        height: 3px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--theme-accent), #93c5fd);
+        content: "";
+        transform: translateX(50%);
+      }
+
+      .paper.theme-modern-professional .part-heading {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 2.5mm;
+        margin: 0 0 4mm;
+        padding: 2.4mm 3mm;
+        border: 0;
+        border-radius: var(--theme-radius);
+        background: var(--theme-soft);
+        color: var(--theme-accent);
+        font-size: 13.5px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+      }
+
+      .paper.theme-modern-professional .part-heading::before {
+        display: inline-block;
+        flex: 0 0 auto;
+        width: 3mm;
+        height: 3mm;
+        border-radius: 2px;
+        background: var(--theme-accent);
+        content: "";
+      }
+
+      .paper.theme-modern-professional .part-intro {
+        color: var(--theme-muted);
+        font-size: 13.5px;
+      }
+
+      .paper.theme-modern-professional .question-table {
+        border: 1px solid var(--line);
+        border-radius: var(--theme-radius);
+        box-shadow: 0 1px 3px rgba(20, 30, 55, 0.06);
+      }
+
+      .paper.theme-modern-professional .question-number,
+      .paper.theme-modern-professional .mcq-number {
+        border: 0;
+        border-radius: 50%;
+        background: var(--theme-accent);
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .paper.theme-modern-professional .question-text,
+      .paper.theme-modern-professional .mcq-question-text {
+        font-size: 14.5px;
+      }
+
+      .paper.theme-modern-professional .mcq-option {
+        font-size: 13.5px;
+      }
+
+      .paper.theme-modern-professional .answer-line {
+        border-bottom-color: var(--answer-line);
+      }
+
+      .paper.theme-modern-professional .part-intro .katex,
+      .paper.theme-modern-professional .question-text .katex {
+        font-size: 1.05em;
+      }
+
+      .paper-title {
+        margin: 0 0 7mm;
+        font-size: 20px;
+        line-height: 1.2;
+        text-align: center;
+      }
+
+      .part {
+        margin: 0 0 7mm;
+        break-inside: avoid;
+      }
+
+      .part + .part {
+        margin-top: 6mm;
+      }
+
+      .part-heading {
+        margin: 0 0 3.5mm;
+        font-size: 16px;
+        background: transparent;
+        color: var(--theme-accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.7px;
+        text-transform: uppercase;
+      }
+
+      .paper.theme-professional .part-heading::after {
+        position: absolute;
+        right: 0;
+        bottom: -1px;
+        width: 100%;
+        height: 1px;
+        background: var(--line);
+        content: "";
+      }
+
+      .paper.theme-professional .part-heading::before {
+        position: absolute;
+        z-index: 1;
+        right: 0;
+        bottom: -1px;
+        width: 34px;
+        height: 2px;
+        background: var(--theme-accent);
+        content: "";
+      }
+
+      .paper.theme-professional .part-intro {
+        color: var(--theme-muted);
+        font-size: 13.5px;
+      }
+
+      .paper.theme-professional .question-table {
+        border: 0;
+        border-radius: 0;
+      }
+
+      .paper.theme-professional .question-table > .question-row:first-child,
+      .paper.theme-professional .question-table > .mcq-question:first-child,
+      .paper.theme-professional .question-table > .question-row:last-child,
+      .paper.theme-professional .question-table > .mcq-question:last-child {
+        border-radius: 0;
+      }
+
+      .paper.theme-professional .question-row + .question-row,
+      .paper.theme-professional .mcq-question:nth-child(n + 3) {
+        border-top: 1px solid var(--line);
+      }
+
+      .paper.theme-professional .mcq-question:nth-child(odd) {
+        border-right: 1px solid var(--line);
+      }
+
+      .paper.theme-professional .question-cell {
+        border-right: 1px solid var(--line);
+      }
+
+      .paper.theme-professional .question-number,
+      .paper.theme-professional .mcq-number {
+        border: 0;
+        border-radius: 0;
+        color: var(--theme-accent);
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .paper.theme-professional .question-text,
+      .paper.theme-professional .mcq-question-text {
+        font-size: 14.5px;
+      }
+
+      .paper.theme-professional .mcq-option {
+        font-size: 13.5px;
+      }
+
+      .paper.theme-professional .answer-line {
+        border-bottom-color: var(--answer-line);
+      }
+
+      .paper.theme-professional .part-intro .katex,
+      .paper.theme-professional .question-text .katex {
+        font-size: 1.05em;
+      }
+
+      .paper.theme-modern-professional .paper-title {
+        position: relative;
+        margin: 0 0 7mm;
+        padding: 0 0 3.6mm;
+        border-bottom: 0;
+        color: var(--ink);
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+      }
+
+      .paper.theme-modern-professional .paper-title::after {
+        position: absolute;
+        right: 50%;
+        bottom: -1px;
+        width: 76px;
+        height: 3px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--theme-accent), #93c5fd);
+        content: "";
+        transform: translateX(50%);
+      }
+
+      .paper.theme-modern-professional .part-heading {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 2.5mm;
+        margin: 0 0 4mm;
+        padding: 2.4mm 3mm;
+        border: 0;
+        border-radius: var(--theme-radius);
+        background: var(--theme-soft);
+        color: var(--theme-accent);
+        font-size: 13.5px;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+      }
+
+      .paper.theme-modern-professional .part-heading::before {
+        display: inline-block;
+        flex: 0 0 auto;
+        width: 3mm;
+        height: 3mm;
+        border-radius: 2px;
+        background: var(--theme-accent);
+        content: "";
+      }
+
+      .paper.theme-modern-professional .part-intro {
+        color: var(--theme-muted);
+        font-size: 13.5px;
+      }
+
+      .paper.theme-modern-professional .question-table {
+        border: 1px solid var(--line);
+        border-radius: var(--theme-radius);
+        box-shadow: 0 1px 3px rgba(20, 30, 55, 0.06);
+      }
+
+      .paper.theme-modern-professional .question-number,
+      .paper.theme-modern-professional .mcq-number {
+        border: 0;
+        border-radius: 50%;
+        background: var(--theme-accent);
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .paper.theme-modern-professional .question-text,
+      .paper.theme-modern-professional .mcq-question-text {
+        font-size: 14.5px;
+      }
+
+      .paper.theme-modern-professional .mcq-option {
+        font-size: 13.5px;
+      }
+
+      .paper.theme-modern-professional .answer-line {
+        border-bottom-color: var(--answer-line);
+      }
+
+      .paper.theme-modern-professional .part-intro .katex,
+      .paper.theme-modern-professional .question-text .katex {
+        font-size: 1.05em;
+      }
+
+      .paper-title {
+        margin: 0 0 7mm;
+        font-size: 20px;
+        line-height: 1.2;
+        text-align: center;
+      }
+
+      .part {
+        margin: 0 0 7mm;
+        break-inside: auto;
+      }
+
+      .part + .part {
+        margin-top: 6mm;
+      }
+
+      .part-heading {
+        margin: 0 0 3.5mm;
+        font-size: 16px;
+        line-height: 1.25;
+        font-weight: 700;
+        break-after: avoid;
+        page-break-after: avoid;
+      }
+
+      .part-intro {
+        margin: 0 0 3.5mm;
+        font-size: 14px;
+        line-height: 1.35;
+        break-after: avoid;
+        page-break-after: avoid;
+      }
+
+      .question-table {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+      }
+
+      .question-table > .question-row:first-child {
+        border-top-left-radius: var(--theme-radius, 0px);
+        border-top-right-radius: var(--theme-radius, 0px);
+      }
+
+      .question-table > .question-row:last-child {
+        border-bottom-right-radius: var(--theme-radius, 0px);
+        border-bottom-left-radius: var(--theme-radius, 0px);
+      }
+
+      .mcq-table {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .mcq-question {
+        min-width: 0;
+        min-height: 34mm;
+        padding: 4mm 3mm;
+        break-inside: avoid;
+      }
+
+      .mcq-question:nth-child(odd) {
+        border-right: 1px solid var(--line);
+      }
+
+      .mcq-question:nth-child(n + 3) {
+        border-top: 1px solid var(--line);
+      }
+
+      .mcq-question-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 3mm;
+      }
+
+      .mcq-number {
+        display: inline-flex;
+        flex: 0 0 8mm;
+        width: 8mm;
+        height: 8mm;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e00000;
+        border-radius: 50%;
+        color: #e00000;
+        font-size: 15px;
+        line-height: 1;
+      }
+
+      .mcq-question-text {
+        flex: 1;
+        min-width: 0;
+        font-size: 15px;
+        line-height: 1.45;
+        white-space: pre-wrap;
+      }
+
+      .mcq-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2mm 5mm;
+        margin-top: 3mm;
+        padding-left: 11mm;
+      }
+
+      .mcq-option {
+        position: relative;
+        min-width: 0;
+        overflow: hidden;
+        padding: 2px 4px;
+        font-size: 14px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        cursor: pointer;
+        isolation: isolate;
+      }
+
+      .mcq-option::before {
+        position: absolute;
+        z-index: 0;
+        inset: 0;
+        background: var(--theme-selection, #f6d69f);
+        content: "";
+        transform: scaleX(0);
+        transform-origin: left center;
+        transition: transform 220ms ease-out;
+      }
+
+      .mcq-option.selected::before {
+        transform: scaleX(1);
+      }
+
+      .mcq-option-label {
+        position: relative;
+        z-index: 1;
+        margin-right: 1mm;
+        font-weight: 400;
+        cursor: pointer;
+      }
+
+      .json-actions {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+        margin: -4px 0 12px;
+      }
+
+      .json-actions button {
+        min-height: 34px;
+        padding: 6px 5px;
+        font-size: 12px;
+      }
+
+      .json-modal[hidden] {
+        display: none;
+      }
+
+      .json-modal {
+        position: fixed;
+        z-index: 20;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 18px;
+        background: rgba(0, 0, 0, 0.35);
+      }
+
+      .json-modal-card {
+        display: flex;
+        width: min(760px, 100%);
+        max-height: min(760px, 90vh);
+        flex-direction: column;
+        padding: 16px;
+        border: 1px solid var(--ink);
+        background: #fff;
+      }
+
+      .json-modal-card h2 {
+        margin: 0 0 6px;
+        font-size: 18px;
+      }
+
+      .json-modal-card p {
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      #json-editor {
+        min-height: 360px;
+        flex: 1;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #999;
+        border-radius: 0;
+        direction: ltr;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 12px;
+        line-height: 1.5;
+        resize: vertical;
+      }
+
+      .json-modal-actions {
+        display: flex;
+        justify-content: flex-start;
+        gap: 7px;
+        margin-top: 10px;
+      }
+
+      .json-modal-actions button {
+        min-height: 34px;
+        padding: 6px 12px;
+      }
+
+      .mcq-option > span {
+        position: relative;
+        z-index: 1;
+      }
+
+      .question-row {
+        display: grid;
+        grid-template-columns: 35% 65%;
+        min-height: 22mm;
+      }
+
+      .question-row + .question-row {
+        border-top: 1px solid var(--line);
+      }
+
+      .question-row.link-hovered,
+      .mcq-question.link-hovered {
+        box-shadow: inset 0 0 0 2px #c58a35;
+        background: #fff8ea;
+      }
+
+      .part.link-hovered > .part-heading,
+      .part.link-hovered > .part-intro {
+        background: #fff1d5;
+      }
+
+      .part.link-hovered {
+        box-shadow: none;
+      }
+
+      body.tools-hidden .question-row.link-hovered,
+      body.tools-hidden .mcq-question.link-hovered {
+        box-shadow: inset 0 0 0 2px #b87319;
+        background: #fff1d5;
+      }
+
+      body.tools-hidden .part.link-hovered {
+        box-shadow: none;
+      }
+
+      body.dark-mode .paper .question-row.link-hovered,
+      body.dark-mode .paper .mcq-question.link-hovered {
+        box-shadow: inset 0 0 0 2px #f0bd62;
+        background: #2d3944;
+        color: #f7fbff;
+      }
+
+      body.dark-mode .part.link-hovered > .part-heading,
+      body.dark-mode .part.link-hovered > .part-intro {
+        background: #2d3944;
+        color: #f7fbff;
+      }
+
+      body.dark-mode .part.link-hovered {
+        box-shadow: none;
+      }
+
+      body.dark-mode .editor-card.link-hovered {
+        box-shadow: inset 0 0 0 2px #f0bd62;
+        background: #2d3944;
+        color: #f7fbff;
+      }
+
+      body.dark-mode .editor-card.link-hovered .editor-summary {
+        background: #354352;
+        color: #f7fbff;
+      }
+
+      body.dark-mode .editor-card.link-hovered .editor-summary-part {
+        color: #cbd6e0;
+      }
+
+      .question-cell,
+      .answer-cell {
+        min-width: 0;
+        padding: 4mm 3mm;
+      }
+
+      .question-cell {
+        display: flex;
+        align-items: flex-start;
+        gap: 4mm;
+        border-right: 1px solid var(--line);
+      }
+
+      .question-number {
+        display: inline-flex;
+        flex: 0 0 8.5mm;
+        width: 8.5mm;
+        height: 8.5mm;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--ink);
+        border-radius: 50%;
+        font-size: 15px;
+        line-height: 1;
+      }
+
+      .question-text {
+        flex: 1;
+        min-width: 0;
+        padding-top: 0.8mm;
+        font-size: 15px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+
+      .question-text .katex {
+        font-size: 1.05em;
+      }
+
+      /* Keep fractions readable inside the generous question row height. */
+      .question-text .katex .frac,
+      .question-text .katex .mfrac {
+        font-size: 1.16em;
+      }
+
+      .question-text .katex-display {
+        margin: 0.35em 0;
+      }
+
+      .answer-cell {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4mm;
+      }
+
+      .answer-line {
+        width: 100%;
+        height: 1px;
+        border-bottom: 1px dotted var(--answer-line);
+      }
+
+      @media screen and (max-width: 1000px) {
+        body {
+          padding: 8px;
+        }
+
+        .tab-bar {
+          margin-bottom: 8px;
+        }
+
+        .app-shell {
+          grid-template-columns: 1fr;
+          grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+        }
+
+        .designer-panel {
+          position: static;
+        }
+
+        .preview-stage {
+          padding-bottom: 16px;
+        }
+      }
+
+      @media screen and (max-width: 640px) {
+        .paper {
+          margin-left: 0;
+        }
+      }
+
+      @media print {
+        @page {
+          size: A4;
+          margin: 0;
+        }
+
+        html,
+        body {
+          height: auto;
+          background: #fff;
+          overflow: visible;
+        }
+
+        body {
+          display: block;
+          padding: 0;
+        }
+
+        .app-shell {
+          display: block;
+          height: auto;
+          padding-top: 0;
+        }
+
+        .designer-panel,
+        .tab-bar,
+        .json-modal {
+          display: none;
+        }
+
+        .preview-stage {
+          height: auto;
+          overflow: visible;
+        }
+
+        .paper {
+          width: 210mm;
+          min-height: 297mm;
+          margin: 0;
+          border: 1px solid var(--ink);
+          zoom: 1 !important;
+        }
+
+        body.dark-mode .paper {
+          --ink: #111;
+          --line: #a0a0a0;
+          --answer-line: #4b4b4b;
+          --theme-soft: #f7f7f7;
+          --theme-selection: #f6d69f;
+          background: #fff;
+          color: #111;
+        }
+
+        body.dark-mode .paper.theme-school-blue {
+          --ink: #1e3554;
+          --line: #8ea4c0;
+          --answer-line: #526d90;
+          --theme-soft: #eef4ff;
+          --theme-selection: #dbe8fb;
+        }
+
+        body.dark-mode .paper.theme-soft-study {
+          --ink: #214b48;
+          --line: #8bb8ad;
+          --answer-line: #4d8177;
+          --theme-soft: #edf8f4;
+          --theme-selection: #d7efe8;
+        }
+
+        body.dark-mode .paper.theme-kids {
+          --ink: #5b3a35;
+          --line: #e5a27e;
+          --answer-line: #b86d52;
+          --theme-soft: #fff1c9;
+          --theme-selection: #ffe2a6;
+        }
+
+        body.dark-mode .paper.theme-professional {
+          --ink: #1c2531;
+          --line: #d8dee8;
+          --answer-line: #8d99ac;
+          --theme-accent: #1e56b3;
+          --theme-soft: #f4f7fb;
+          --theme-selection: #dbe7fa;
+          --theme-muted: #5b6b7f;
+          background: #fff;
+          color: #1c2531;
+        }
+
+        body.dark-mode .paper.theme-professional .part-intro {
+          color: #5b6b7f;
+        }
+
+        body.dark-mode .paper.theme-professional .part-heading::after {
+          background: #d8dee8;
+        }
+
+        body.dark-mode .paper.theme-modern-professional {
+          --ink: #16233b;
+          --line: #dbe3ef;
+          --answer-line: #7d8ea8;
+          --theme-accent: #2563eb;
+          --theme-soft: #eef4ff;
+          --theme-selection: #cfe0ff;
+          --theme-muted: #5b6b83;
+          background: #fff;
+          color: #16233b;
+        }
+
+        body.dark-mode .paper.theme-modern-professional .question-number,
+        body.dark-mode .paper.theme-modern-professional .mcq-number {
+          color: #fff;
+        }
+
+        body.dark-mode .paper.theme-modern-professional .question-table {
+          box-shadow: 0 1px 3px rgba(20, 30, 55, 0.06);
+        }
+
+        body.dark-mode .paper.theme-kids .question-row,
+        body.dark-mode .paper.theme-kids .mcq-question {
+          background: #fffdf5;
+        }
+
+        body.dark-mode .paper.theme-playful-kids {
+          --ink: #55365e;
+          --line: #f2a7c4;
+          --answer-line: #ca6c96;
+          --theme-accent: #ff6688;
+          --theme-soft: #fff0f6;
+          --theme-selection: #ffe071;
+          background: #fffdf8;
+          color: #55365e;
+        }
+
+        body.dark-mode .paper.theme-playful-kids .question-row,
+        body.dark-mode .paper.theme-playful-kids .mcq-question {
+          background: #fffdf8;
+        }
+
+        /* ─── Print border strategy ───
+           Browsers do NOT re-draw a container's border at the point
+           where it splits across pages. So we remove the table's
+           outer border and give every row its own full 4-sided border.
+           Adjacent rows use margin-top:-1px to merge into a single line
+           on the same page; if a page break falls between them, each
+           row still has its own complete border. */
+
+        .question-table {
+          overflow: visible;
+          border: 0 !important;
+          box-shadow: none !important;
+          border-radius: 0 !important;
+        }
+
+        .question-row {
+          border: 1px solid var(--line) !important;
+          border-radius: 0 !important;
+        }
+
+        .question-row + .question-row {
+          margin-top: -1px;
+          border-top: 1px solid var(--line) !important;
+        }
+
+        .mcq-table {
+          overflow: visible;
+          border: 0 !important;
+          box-shadow: none !important;
+          border-radius: 0 !important;
+        }
+
+        .mcq-question {
+          border: 1px solid var(--line) !important;
+        }
+
+        .mcq-question:nth-child(n + 3) {
+          margin-top: -1px;
+        }
+
+        .mcq-question:nth-child(odd) {
+          border-right: 1px solid var(--line) !important;
+        }
+
+        .part {
+          break-inside: auto;
+        }
+
+        .part-heading,
+        .part-intro {
+          break-after: avoid;
+          page-break-after: avoid;
+        }
+
+        .question-row,
+        .mcq-question {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="tab-bar" aria-label="تبويبات الصفحات">
+      <div class="tab-actions">
+        <button class="menu-button" id="toggle-tools" type="button" title="فتح القائمة" aria-label="فتح القائمة" aria-expanded="false">☰</button>
+        <button class="add-tab" id="add-tab" type="button" title="إضافة صفحة جديدة">+</button>
+      </div>
+      <div class="tab-list" id="tab-list"></div>
+    </nav>
+
+    <div class="app-shell">
+      <aside class="designer-panel" aria-label="لوحة تصميم الصفحة">
+        <header class="designer-header">
+          <p class="eyebrow">A4 PAGE DESIGNER</p>
+          <h1>مصمم ورقة الامتحان</h1>
+          <p>عدّل الأسئلة وشاهد النتيجة مباشرة في معاينة A4.</p>
+        </header>
+
+        <div class="designer-actions">
+          <button class="primary" id="add-question" type="button">+ سؤال</button>
+          <button class="primary" id="add-part" type="button">+ قسم جديد</button>
+          <button id="print-paper" type="button">طباعة</button>
+          <button id="download-paper" type="button">تحميل HTML</button>
+          <button id="reset-paper" type="button">إرجاع الافتراضي</button>
+          <button id="clear-paper" type="button">مسح الأسئلة</button>
+        </div>
+
+        <input id="import-json-input" type="file" accept=".json,application/json" hidden />
+
+        <div class="json-actions" aria-label="خيارات JSON">
+          <button id="save-questions" type="button">حفظ الأسئلة</button>
+          <button id="download-json" type="button">تحميل JSON</button>
+          <button id="edit-json" type="button">تعديل JSON</button>
+          <button id="import-json" type="button">رفع JSON</button>
+          <button id="copy-ai-template" type="button" title="Copy an AI-ready JSON template">نسخ قالب AI</button>
+        </div>
+
+        <label class="field">
+          عنوان اختياري للورقة
+          <input id="paper-title" type="text" placeholder="مثال: Mathematics Exam" />
+        </label>
+
+        <div class="editor-toolbar" aria-label="أدوات البحث داخل الأسئلة">
+          <input id="question-search" type="search" placeholder="ابحث برقم السؤال أو النص أو القسم" />
+          <select id="question-type-filter">
+            <option value="all">كل الأنواع</option>
+            <option value="open">إجابة مفتوحة</option>
+            <option value="mcq">MCQ</option>
+          </select>
+          <select class="part-filter" id="question-part-filter">
+            <option value="all">كل الأقسام</option>
+          </select>
+        </div>
+
+        <div class="editor-list-status">
+          <span id="editor-count"></span>
+          <span>
+            <button id="expand-all" type="button">فتح الكل</button>
+            <button id="collapse-all" type="button">إغلاق الكل</button>
+          </span>
+        </div>
+
+        <div class="editor-list" id="editor-list"></div>
+
+        <small class="help-text">
+          اكتب المعادلات بين <b>\(...\)</b> أو <b>$$...$$</b>، وسيتم تحويلها تلقائياً بواسطة KaTeX.
+        </small>
+      </aside>
+
+      <section class="preview-stage" aria-label="المعاينة">
+        <div class="preview-label">Live A4 preview — اضغط مرتين على أي نص لتعديله مباشرة</div>
+        <div class="theme-carousel" aria-label="اختيار Theme للورقة">
+          <button class="theme-carousel-arrow" id="theme-prev" type="button" title="الثيم السابق">‹</button>
+          <div class="theme-viewport" id="theme-viewport">
+            <div class="theme-list" id="theme-list"></div>
+          </div>
+          <button class="theme-carousel-arrow" id="theme-next" type="button" title="الثيم التالي">›</button>
+        </div>
+        <nav class="section-nav" id="section-nav" aria-label="التنقل بين الأقسام"></nav>
+        <main class="paper" id="paper" aria-label="Mathematics exam paper"></main>
+      </section>
+    </div>
+
+    <div class="json-modal" id="json-modal" hidden>
+      <section class="json-modal-card" role="dialog" aria-modal="true" aria-labelledby="json-modal-title">
+        <h2 id="json-modal-title">تعديل JSON للتاب الحالي</h2>
+        <p>عدّل البيانات ثم اضغط تطبيق. يجب أن يحتوي الملف على <code>questions</code> أو يكون Array من الأسئلة.</p>
+        <textarea id="json-editor" spellcheck="false"></textarea>
+        <div class="json-modal-actions">
+          <button class="primary" id="apply-json" type="button">تطبيق التعديلات</button>
+          <button id="close-json" type="button">إلغاء</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- مصدر التصميم كله هنا: عدّل pageData أو استخدم لوحة التصميم. -->
+    <script>
+      const pageData = {
+        "title": "Unit 1 - Lesson 1: Real Numbers",
+        "theme": "professional",
+        "questions": [
+          {
+            "id": 1,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "Answer the following questions:",
+            "type": "open",
+            "question_latex": "You have a set of numbers: \\sqrt{40}, 6, 4, \\sqrt{12}.\nExplain how you can arrange them from smallest to largest. Discuss with your classmates.",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 2,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Which of the following numbers are rationals, and which are irrationals?\n-\\sqrt{4}, 17, \\sqrt{8}, 0.2, 0.\\bar{3}, 1\\frac{1}{2}, 0, 25\\%, \\sqrt[3]{25}, \\sqrt{5}+1, \\sqrt[3]{|-64|}",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 3,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Can a number be both rational and irrational at the same time?",
+            "options": [],
+            "answer_lines": 2
+          },
+          {
+            "id": 4,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Which of the following numbers are rational numbers, and which are irrational? Give reasons:\n1) -12\n2) \\sqrt{25}\n3) \\sqrt{13}\n4) \\sqrt[3]{-27}\n5) 2\\frac{2}{5}\n6) -\\sqrt[3]{10}\n7) 0.125\n8) 3.\\bar{6}",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 5,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Find two consecutive integers between which each of the following numbers lies, and determine its approximate location on the number line:\n1) \\sqrt{11}\n2) \\sqrt[3]{20}",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 6,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Find the value of the integer n that satisfies:\nn < \\sqrt{17} < n + 1. Then find the approximate value of \\sqrt{17} to the nearest tenth and mark its approximate location on the number line.",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 7,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Nature: The golden rectangle is noticed in the shell of a marine organism, and the ratio of its length to its width is equal to \\dfrac{1 + \\sqrt{5}}{2}. Estimate this value.",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 8,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "A room has a square floor of area 15\\text{ m}^2. Ahmed wants to surround the floor with a decorative strip. Estimate the length of this strip.",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 9,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Write all possible sets of the number sets (\\mathbb{N}, \\mathbb{Z}, \\mathbb{Q}, \\mathbb{Q}', \\mathbb{R}) to which each of the following numbers belongs:\n1) \\sqrt{10}\n2) \\sqrt{100}\n3) 0.25\n4) -\\sqrt[3]{8}\n5) \\sqrt[3]{9}",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 10,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Put the appropriate symbol \\in or \\notin in the empty box:\n1) 0.63 \\quad \\square \\quad \\mathbb{Q}'\n2) \\sqrt{5} \\quad \\square \\quad \\mathbb{R}\n3) |-4| \\quad \\square \\quad \\mathbb{N}\n4) \\sqrt[3]{\\frac{3}{8}} \\quad \\square \\quad \\mathbb{Z}\n5) \\sqrt[3]{3} \\quad \\square \\quad \\mathbb{Q}\n6) \\sqrt{-1} \\quad \\square \\quad \\mathbb{R}",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 11,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Find the solution set for each of the following equations:\n1) x^2 - 3 = 2 where x \\in \\mathbb{Q}'\n2) 4x^3 = -32 where x \\in \\mathbb{Q}'\n3) \\frac{1}{2}x^2 + 1 = -4 where x \\in \\mathbb{R}\n4) 5x^3 - 1 = 4x^3 + 8 where x \\in \\mathbb{R}",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 12,
+            "part": "Part 1: Think & Discuss & Self-Evaluations",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Find the solution set for each of the following equations:\n1) \\frac{1}{3}x^3 + 9 = 0\n2) \\frac{3}{4}x^2 = \\frac{9}{2}\n3) 2(x^2 - 1) = -10\nIf the substitution set is: First: \\mathbb{Q}', Second: \\mathbb{R}",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 13,
+            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+            "part_intro": "Choose the correct answer from the given ones:",
+            "type": "mcq",
+            "question_latex": "Which of the following numbers is an irrational number?",
+            "options": [
+              "0.\\bar{3}",
+              "\\sqrt{\\frac{9}{25}}",
+              "\\sqrt{5}",
+              "\\sqrt[3]{-125}"
+            ],
+            "answer_lines": 4
+          },
+          {
+            "id": 14,
+            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+            "part_intro": "",
+            "type": "mcq",
+            "question_latex": "If x \\in \\mathbb{Z}, x < \\sqrt{29} < x + 1, what is the value of x?",
+            "options": [
+              "4",
+              "5",
+              "6",
+              "7"
+            ],
+            "answer_lines": 4
+          },
+          {
+            "id": 15,
+            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+            "part_intro": "",
+            "type": "mcq",
+            "question_latex": "Estimating \\sqrt{41} to the closest integer is ........",
+            "options": [
+              "6",
+              "7",
+              "36",
+              "49"
+            ],
+            "answer_lines": 4
+          },
+          {
+            "id": 16,
+            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+            "part_intro": "",
+            "type": "mcq",
+            "question_latex": "Estimating \\sqrt[3]{25} to the closest integer is ........",
+            "options": [
+              "2",
+              "3",
+              "5",
+              "12.5"
+            ],
+            "answer_lines": 4
+          },
+          {
+            "id": 17,
+            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+            "part_intro": "",
+            "type": "mcq",
+            "question_latex": "Which of the following numbers is an irrational number that lies between 2 and 3?",
+            "options": [
+              "2.\\bar{5}",
+              "\\sqrt{10}",
+              "\\sqrt{6.25}",
+              "\\sqrt[3]{9}"
+            ],
+            "answer_lines": 4
+          },
+          {
+            "id": 18,
+            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+            "part_intro": "",
+            "type": "mcq",
+            "question_latex": "If 1 < \\sqrt{n} < 2, which of the following is a possible value for the number n?",
+            "options": [
+              "1",
+              "2",
+              "4",
+              "8"
+            ],
+            "answer_lines": 4
+          },
+          {
+            "id": 19,
+            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+            "part_intro": "",
+            "type": "mcq",
+            "question_latex": "Which of the following numbers is represented by k on the number line below?\n(A point k lies between 9 and 10 on the number line)",
+            "options": [
+              "\\sqrt{86}",
+              "\\sqrt{96}",
+              "\\sqrt{81}",
+              "\\sqrt{78}"
+            ],
+            "answer_lines": 4
+          },
+          {
+            "id": 20,
+            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+            "part_intro": "",
+            "type": "mcq",
+            "question_latex": "If x and y are two consecutive integers, what is the value of x + y?\n(Given x < \\sqrt{57} < y on the number line)",
+            "options": [
+              "11",
+              "13",
+              "15",
+              "17"
+            ],
+            "answer_lines": 4
+          },
+          {
+            "id": 21,
+            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Hamza and Aser answered the following question:\nFind two consecutive integers between which the irrational number -\\sqrt{5} lies.\nHamza's answer:\n4 < 5 < 9 \\implies \\sqrt{4} < \\sqrt{5} < \\sqrt{9} \\implies 2 < \\sqrt{5} < 3 \\implies -3 < -\\sqrt{5} < -2\nAser's answer:\n-9 < -5 < -4 \\implies -\\sqrt{9} < -\\sqrt{5} < -\\sqrt{4} \\implies -3 < -\\sqrt{5} < -2\nWhich of them followed the correct method to solve the problem?",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 22,
+            "part": "Part 3: Lesson Assessment - Applying Concepts",
+            "part_intro": "Answer the following questions:",
+            "type": "open",
+            "question_latex": "Classify each number in the opposite table as rational or irrational and explain why:\nNumbers: 0.323232..., -\\sqrt[3]{64}, 1.\\bar{6}, \\sqrt{\\frac{4}{9}}, \\frac{12}{31}, \\sqrt{6}, \\sqrt[3]{16}, 17\\%, 2\\frac{2}{3}, \\sqrt[3]{-27}, -\\sqrt{121}, 0",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 23,
+            "part": "Part 3: Lesson Assessment - Applying Concepts",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Find two consecutive integers between which each of the following numbers lies, and determine its approximate location on the number line:\n11) \\sqrt{5}\n12) \\sqrt{13}\n13) -\\sqrt{11}\n14) \\sqrt[3]{14}",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 24,
+            "part": "Part 3: Lesson Assessment - Applying Concepts",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Put one of the symbols <, >, or = in each box to get a true statement:\n15) \\sqrt{96} \\quad \\square \\quad 14\n16) -\\sqrt{7} \\quad \\square \\quad -2.6\n17) \\sqrt[3]{25} \\quad \\square \\quad \\sqrt{9}",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 25,
+            "part": "Part 3: Lesson Assessment - Applying Concepts",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Arrange the numbers: 6.36, 6\\frac{4}{5}, 7, \\sqrt{40} from the smallest to the largest.",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 26,
+            "part": "Part 3: Lesson Assessment - Applying Concepts",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Find the solution set for each of the following equations in \\mathbb{R}:\n19) x^3 - 11 = 5\n20) 2x^3 + 13 = 67\n21) 3x^2 - 1 = -13",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 27,
+            "part": "Part 3: Lesson Assessment - Applying Concepts",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Find the solution set for each of the following equations in \\mathbb{Q}':\n22) 2x^2 - 3 = 9\n23) 6x^2 - 3 = 4x^2 + 7\n24) 2(x^3 + 1) = 18",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 28,
+            "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
+            "part_intro": "Answer the following real-life application questions:",
+            "type": "open",
+            "question_latex": "Geometry: A square with an area of 29\\text{ cm}^2, to which of the following sets of numbers does its side length belong? Select all possible sets.\n\\mathbb{R}, \\mathbb{Q}, \\mathbb{Q}', \\mathbb{Z}, \\mathbb{N}",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 29,
+            "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Arts: Samar formed a cube using clay with a total area of 300\\text{ cm}^2. Find the length of its edge. Is the length of the edge a rational number?",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 30,
+            "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Geometry: Which is greater: the length of the side of a square with an area of 16\\text{ cm}^2 or the length of the diagonal of a square with an area of 9\\text{ cm}^2?",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 31,
+            "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "Agriculture: A rectangular garden with an area of 80\\text{ m}^2, its length is twice its width. Find the length and width to the nearest meter.",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 32,
+            "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "What is the smallest valid integer of variable n that makes both numbers \\sqrt{41 + n} and \\sqrt{2n + 20} be rational numbers?",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 33,
+            "part": "Part 5: Creative Thinking",
+            "part_intro": "Solve the following creative thinking problems:",
+            "type": "open",
+            "question_latex": "Find an irrational number lying between 0.\\bar{3} and 0.\\bar{6}",
+            "options": [],
+            "answer_lines": 4
+          },
+          {
+            "id": 34,
+            "part": "Part 5: Creative Thinking",
+            "part_intro": "",
+            "type": "open",
+            "question_latex": "If 10 < \\sqrt{x} < 11, 12 < \\sqrt{y} < 13 where x and y are positive integers, find the largest value of y - x.",
+            "options": [],
+            "answer_lines": 4
+          }
+        ]
+      };
+
+      // ابدأ بورقة فارغة؛ سيتم تحميل الأسئلة من ملفات JSON عند الحاجة.
+      pageData.title = "";
+      pageData.questions = [];
+      localStorage.removeItem("exam-paper-document-v1");
+      const defaultPageData = JSON.parse(JSON.stringify(pageData));
+      const paper = document.getElementById("paper");
+      const sectionNav = document.getElementById("section-nav");
+      const previewStage = document.querySelector(".preview-stage");
+      const designerPanel = document.querySelector(".designer-panel");
+      const editorList = document.getElementById("editor-list");
+      const paperTitleInput = document.getElementById("paper-title");
+      const tabList = document.getElementById("tab-list");
+      const editorCount = document.getElementById("editor-count");
+      const questionSearch = document.getElementById("question-search");
+      const questionTypeFilter = document.getElementById("question-type-filter");
+      const questionPartFilter = document.getElementById("question-part-filter");
+      const jsonModal = document.getElementById("json-modal");
+      const jsonEditor = document.getElementById("json-editor");
+      const themeList = document.getElementById("theme-list");
+      const themeViewport = document.getElementById("theme-viewport");
+      const themeCatalog = [
+        { id: "professional", name: "Professional", description: "احترافي نظيف بدون حدود", swatch: "professional" },
+        { id: "modern-professional", name: "Modern Professional", description: "عصري أنيق بحواف ناعمة", swatch: "modern-professional" },
+        { id: "playful-kids", name: "Playful Kids", description: "Pastel colors and cute details", swatch: "playful-kids" },
+        { id: "classic", name: "Classic", description: "أكاديمي بسيط", swatch: "classic" },
+        { id: "school-blue", name: "School Blue", description: "مدرسي ومنظم", swatch: "school-blue" },
+        { id: "soft-study", name: "Soft Study", description: "هادئ ومريح", swatch: "soft-study" },
+        { id: "kids", name: "Kids", description: "مرح للحضانة", swatch: "kids" }
+      ];
+      const uiStorageKey = "exam-paper-ui-settings-v1";
+
+      function readUiSettings() {
+        try {
+          const stored = JSON.parse(localStorage.getItem(uiStorageKey) || "{}");
+          return stored && typeof stored === "object" && !Array.isArray(stored) ? stored : {};
+        } catch {
+          return {};
+        }
+      }
+
+      const uiSettings = readUiSettings();
+
+      function saveUiSettings() {
+        try {
+          localStorage.setItem(uiStorageKey, JSON.stringify(uiSettings));
+        } catch {}
+      }
+
+      document.querySelector(".designer-header")?.remove();
+      document.querySelector(".preview-label")?.remove();
+      document.querySelector(".designer-panel")?.prepend(document.querySelector(".theme-carousel"));
+      const editorState = {
+        query: typeof uiSettings.editorQuery === "string" ? uiSettings.editorQuery : "",
+        type: ["all", "open", "mcq"].includes(uiSettings.editorType) ? uiSettings.editorType : "all",
+        part: typeof uiSettings.editorPart === "string" ? uiSettings.editorPart : "all",
+        expandedIds: new Set(Array.isArray(uiSettings.editorExpandedIds) ? uiSettings.editorExpandedIds : [])
+      };
+      let selectedMcq = null;
+      let linkedHoverKey = "";
+      let activeTabId = "tab-1";
+      const tabs = [{ id: activeTabId, name: "الورقة 1", data: pageData }];
+
+      const docStorageKey = "exam-paper-document-v1";
+
+      function saveDocState() {
+        try {
+          const currentTab = getActiveTab();
+          if (currentTab) currentTab.data = clonePageData(pageData);
+          localStorage.setItem(docStorageKey, JSON.stringify({
+            activeTabId,
+            tabs: tabs.map((tab) => ({ id: tab.id, name: tab.name, data: tab.data }))
+          }));
+        } catch {}
+      }
+
+      function restoreDocState() {
+        try {
+          const stored = JSON.parse(localStorage.getItem(docStorageKey) || "null");
+          if (!stored || !Array.isArray(stored.tabs) || stored.tabs.length === 0) return false;
+          const savedTabs = stored.tabs
+            .map((tab) => ({
+              id: String(tab?.id || ""),
+              name: String(tab?.name || "الورقة"),
+              data: clonePageData(normalizePageData(tab?.data))
+            }))
+            .filter((tab) => tab.id);
+          if (savedTabs.length === 0) return false;
+          tabs.splice(0, tabs.length, ...savedTabs);
+          const savedActive = stored.tabs.find((tab) => String(tab?.id) === String(stored.activeTabId));
+          const activeId = savedActive ? String(savedActive.id) : savedTabs[0].id;
+          const activeData = tabs.find((tab) => tab.id === activeId)?.data;
+          if (activeData) {
+            copyIntoPageData(activeData);
+            const currentTab = getActiveTab();
+            if (currentTab) currentTab.data = pageData;
+          }
+          activeTabId = activeId;
+          return true;
+        } catch {
+          return false;
+        }
+      }
+
+      function saveEditorState() {
+        uiSettings.editorQuery = editorState.query;
+        uiSettings.editorType = editorState.type;
+        uiSettings.editorPart = editorState.part;
+        uiSettings.editorExpandedIds = Array.from(editorState.expandedIds);
+        saveUiSettings();
+      }
+
+      restoreDocState();
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function getThemeId(themeId) {
+        return themeCatalog.some((theme) => theme.id === themeId) ? themeId : "classic";
+      }
+
+      function renderThemes() {
+        const activeTheme = getThemeId(pageData.theme);
+        themeList.innerHTML = themeCatalog.map((theme) => `
+          <button class="theme-card ${theme.id === activeTheme ? "active" : ""}" type="button" data-theme-id="${theme.id}">
+            <span class="theme-swatch theme-swatch-${theme.swatch}"></span>
+            <span class="theme-card-copy">
+              <span class="theme-card-name">${escapeHtml(theme.name)}</span>
+              <span class="theme-card-description">${escapeHtml(theme.description)}</span>
+            </span>
+          </button>
+        `).join("");
+      }
+
+      function setTheme(themeId) {
+        pageData.theme = getThemeId(themeId);
+        uiSettings.theme = pageData.theme;
+        saveUiSettings();
+        renderThemes();
+        renderPreview();
+        saveDocState();
+      }
+
+      function clonePageData(data) {
+        return JSON.parse(JSON.stringify(data));
+      }
+
+      function createBlankPage() {
+        return {
+          title: "",
+          theme: "classic",
+          questions: [{
+            id: 1,
+            part: "Part 1: New Section",
+            part_intro: "",
+            type: "open",
+            question_latex: String.raw`Write your question here \(x^2\).`,
+            options: [],
+            answer_lines: 4
+          }]
+        };
+      }
+
+      function getActiveTab() {
+        return tabs.find((tab) => tab.id === activeTabId);
+      }
+
+      function copyIntoPageData(source) {
+        pageData.title = source.title || "";
+        pageData.theme = getThemeId(source.theme);
+        pageData.questions.splice(0, pageData.questions.length, ...clonePageData(source.questions || []));
+      }
+
+      function renderTabs() {
+        tabList.innerHTML = tabs.map((tab) => `
+          <div class="tab-item ${tab.id === activeTabId ? "active" : ""}" data-tab-id="${escapeHtml(tab.id)}">
+            <button class="tab-select" type="button" title="اضغط مرتين لإعادة التسمية">${escapeHtml(tab.name)}</button>
+            <button class="tab-close" type="button" data-tab-action="close" title="إغلاق التاب">×</button>
+          </div>
+        `).join("");
+      }
+
+      function switchTab(tabId) {
+        if (tabId === activeTabId) return;
+        const currentTab = getActiveTab();
+        const nextTab = tabs.find((tab) => tab.id === tabId);
+        if (!currentTab || !nextTab) return;
+
+        currentTab.data = clonePageData(pageData);
+        copyIntoPageData(nextTab.data);
+        nextTab.data = pageData;
+        activeTabId = tabId;
+        selectedMcq = null;
+        paperTitleInput.value = pageData.title;
+        renderThemes();
+        renderTabs();
+        renderEditor();
+        renderPreview();
+        saveDocState();
+      }
+
+      function addTab() {
+        const currentTab = getActiveTab();
+        if (currentTab) currentTab.data = clonePageData(pageData);
+
+        const tabId = `tab-${Date.now()}`;
+        const nextTab = {
+          id: tabId,
+          name: `الورقة ${tabs.length + 1}`,
+          data: createBlankPage()
+        };
+        tabs.push(nextTab);
+        copyIntoPageData(nextTab.data);
+        nextTab.data = pageData;
+        activeTabId = tabId;
+        selectedMcq = null;
+        paperTitleInput.value = pageData.title;
+        renderThemes();
+        renderTabs();
+        renderEditor();
+        renderPreview();
+        saveDocState();
+      }
+
+      function closeTab(tabId) {
+        if (tabs.length === 1) {
+          window.alert("يجب ترك تاب واحد على الأقل مفتوحًا.");
+          return;
+        }
+
+        const index = tabs.findIndex((tab) => tab.id === tabId);
+        if (index < 0) return;
+        if (tabId === activeTabId) {
+          const currentTab = getActiveTab();
+          if (currentTab) currentTab.data = clonePageData(pageData);
+        }
+
+        tabs.splice(index, 1);
+        if (tabId === activeTabId) {
+          const nextTab = tabs[Math.min(index, tabs.length - 1)];
+          activeTabId = nextTab.id;
+          copyIntoPageData(nextTab.data);
+          nextTab.data = pageData;
+          selectedMcq = null;
+          paperTitleInput.value = pageData.title;
+          renderThemes();
+          renderEditor();
+          renderPreview();
+        }
+        renderTabs();
+        saveDocState();
+      }
+
+      function renameTab(tabId) {
+        const tab = tabs.find((item) => item.id === tabId);
+        const tabItem = tabList.querySelector(`[data-tab-id="${CSS.escape(tabId)}"]`);
+        const tabButton = tabItem?.querySelector(".tab-select");
+        if (!tab || !tabButton || tabItem.querySelector(".tab-rename-input")) return;
+
+        const input = document.createElement("input");
+        input.className = "tab-rename-input";
+        input.type = "text";
+        input.value = tab.name;
+        input.setAttribute("aria-label", "اسم التاب");
+        tabButton.replaceWith(input);
+        input.focus();
+        input.select();
+
+        let finished = false;
+        const finish = (save) => {
+          if (finished) return;
+          finished = true;
+          const nextName = input.value.trim();
+          if (save && nextName) tab.name = nextName;
+          renderTabs();
+          if (save) saveDocState();
+        };
+
+        input.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") finish(true);
+          if (event.key === "Escape") finish(false);
+        });
+        input.addEventListener("blur", () => finish(true), { once: true });
+      }
+
+      function groupByPart(questions) {
+        return questions.reduce((groups, question) => {
+          const existingPart = groups.find((group) => group.title === question.part);
+
+          if (existingPart) {
+            existingPart.questions.push(question);
+          } else {
+            groups.push({
+              title: question.part,
+              intro: question.part_intro || "",
+              type: question.type || "open",
+              questions: [question]
+            });
+          }
+
+          return groups;
+        }, []);
+      }
+
+      function renderEditor() {
+        const parts = [...new Set(pageData.questions.map((question) => question.part))];
+        if (editorState.part !== "all" && !parts.includes(editorState.part)) editorState.part = "all";
+        questionPartFilter.innerHTML = [
+          '<option value="all">كل الأقسام</option>',
+          ...parts.map((part) => `<option value="${escapeHtml(part)}">${escapeHtml(part)}</option>`)
+        ].join("");
+        questionPartFilter.value = editorState.part;
+        questionTypeFilter.value = editorState.type;
+        questionSearch.value = editorState.query;
+
+        const query = editorState.query.trim().toLowerCase();
+        const visibleQuestions = pageData.questions
+          .map((question, index) => ({ question, index }))
+          .filter(({ question }) => {
+            const searchable = `${question.id} ${question.part} ${question.question_latex}`.toLowerCase();
+            const matchesQuery = !query || searchable.includes(query);
+            const matchesType = editorState.type === "all" || (question.type || "open") === editorState.type;
+            const matchesPart = editorState.part === "all" || question.part === editorState.part;
+            return matchesQuery && matchesType && matchesPart;
+          });
+
+        editorCount.textContent = `${visibleQuestions.length} من ${pageData.questions.length} سؤال`;
+
+        if (!visibleQuestions.length) {
+          editorList.innerHTML = '<div class="editor-empty">لا توجد أسئلة مطابقة للبحث أو الفلاتر الحالية.</div>';
+          return;
+        }
+
+        editorList.innerHTML = visibleQuestions.map(({ question, index }) => {
+          const questionType = question.type === "mcq" ? "MCQ" : "مفتوح";
+          const previewText = question.question_latex.replace(/\s+/g, " ").trim();
+          const isExpanded = editorState.expandedIds.has(question.id);
+
+          return `
+            <details class="editor-card" data-index="${index}" data-question-id="${question.id}" data-part-name="${escapeHtml(question.part)}" ${isExpanded ? "open" : ""}>
+              <summary class="editor-summary">
+                <span class="editor-number">${escapeHtml(question.id)}</span>
+                <span class="editor-type">${questionType}</span>
+                <span class="editor-summary-text">
+                  <span class="editor-summary-part">${escapeHtml(question.part)}</span>
+                  <span class="editor-summary-preview">${escapeHtml(previewText)}</span>
+                </span>
+                <span class="editor-chevron">›</span>
+              </summary>
+
+              <div class="editor-card-body">
+                <div class="editor-card-header">
+                  <strong>تعديل سؤال #${escapeHtml(question.id)}</strong>
+                  <div class="card-tools">
+                    <button class="remove-question" type="button" data-action="remove">حذف</button>
+                    <button class="duplicate-question" type="button" data-action="duplicate" title="نسخ السؤال">نسخ</button>
+                    <button type="button" data-action="down" title="تحريك لأسفل">↓</button>
+                    <button type="button" data-action="up" title="تحريك لأعلى">↑</button>
+                  </div>
+                </div>
+
+                <div class="editor-form-grid">
+                  <label class="field">
+                    القسم
+                    <input data-field="part" type="text" value="${escapeHtml(question.part)}" />
+                  </label>
+
+                  <label class="field">
+                    مقدمة القسم
+                    <input data-field="part_intro" type="text" value="${escapeHtml(question.part_intro || "")}" placeholder="اختياري" />
+                  </label>
+
+                  <label class="field">
+                    نوع السؤال
+                    <select data-field="type">
+                      <option value="open" ${question.type !== "mcq" ? "selected" : ""}>سؤال بإجابة مفتوحة</option>
+                      <option value="mcq" ${question.type === "mcq" ? "selected" : ""}>اختيار من متعدد (MCQ)</option>
+                    </select>
+                  </label>
+
+                  <label class="field">
+                    عدد سطور الإجابة
+                    <select data-field="answer_lines">
+                      ${[{ value: 0, label: "بدون سطور" }, { value: 1, label: "1" }, { value: 2, label: "2" }, { value: 3, label: "3" }, { value: 4, label: "4" }].map(({ value, label }) => `<option value="${value}" ${Number(question.answer_lines) === value ? "selected" : ""}>${label}</option>`).join("")}
+                    </select>
+                  </label>
+
+                  <label class="field field-wide">
+                    نص السؤال / LaTeX
+                    <textarea data-field="question_latex" spellcheck="false">${escapeHtml(question.question_latex)}</textarea>
+                  </label>
+
+                  <label class="field field-wide ${question.type === "mcq" ? "" : "is-hidden"}">
+                    الاختيارات — اختيار واحد في كل سطر
+                    <textarea data-field="options" spellcheck="false" placeholder="مثال: (a) x + 1&#10;(b) x - 1">${escapeHtml((question.options || []).join("\n"))}</textarea>
+                  </label>
+                </div>
+              </div>
+            </details>
+          `;
+        }).join("");
+      }
+
+      function renderMath() {
+        if (typeof window.renderMathInElement !== "function") return;
+
+        window.requestAnimationFrame(() => {
+          window.renderMathInElement(paper, {
+            delimiters: [
+              { left: "\\(", right: "\\)", display: false },
+              { left: "$$", right: "$$", display: true }
+            ],
+            ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+          });
+        });
+      }
+
+      function renderPreview() {
+        paper.className = `paper theme-${getThemeId(pageData.theme)}`;
+        paper.innerHTML = "";
+
+        if (pageData.title.trim()) {
+          const title = document.createElement("h1");
+          title.className = "paper-title";
+          title.textContent = pageData.title;
+          paper.appendChild(title);
+        }
+
+        groupByPart(pageData.questions).forEach((part) => {
+          const section = document.createElement("section");
+          section.className = "part";
+          section.dataset.partName = part.title;
+          const sourceIndex = pageData.questions.indexOf(part.questions[0]);
+
+          const heading = document.createElement("h2");
+          heading.className = "part-heading";
+          heading.classList.add("preview-editable");
+          heading.dataset.editIndex = sourceIndex;
+          heading.dataset.editField = "part";
+          heading.textContent = part.title;
+          section.appendChild(heading);
+
+          if (part.intro) {
+            const intro = document.createElement("p");
+            intro.className = "part-intro";
+            intro.classList.add("preview-editable");
+            intro.dataset.editIndex = sourceIndex;
+            intro.dataset.editField = "part_intro";
+            intro.textContent = part.intro;
+            section.appendChild(intro);
+          }
+
+          const table = document.createElement("div");
+          table.className = `question-table ${part.type === "mcq" ? "mcq-table" : ""}`;
+
+          if (part.type === "mcq") {
+            part.questions.forEach((question) => {
+              const card = document.createElement("article");
+              card.className = "mcq-question";
+              card.dataset.previewQuestionId = question.id;
+
+              const header = document.createElement("div");
+              header.className = "mcq-question-header";
+
+              const number = document.createElement("span");
+              number.className = "mcq-number";
+              number.textContent = question.id;
+
+              const questionText = document.createElement("div");
+              questionText.className = "mcq-question-text";
+              questionText.classList.add("preview-editable");
+              questionText.dataset.editIndex = pageData.questions.indexOf(question);
+              questionText.dataset.editField = "question_latex";
+              questionText.title = "اضغط مرتين لتعديل السؤال والمعادلة";
+              questionText.textContent = question.question_latex;
+              header.append(number, questionText);
+
+              const options = document.createElement("div");
+              options.className = "mcq-options";
+              (question.options || []).forEach((option, optionIndex) => {
+                const optionElement = document.createElement("div");
+                optionElement.className = "mcq-option";
+                optionElement.dataset.questionId = question.id;
+                optionElement.dataset.optionIndex = optionIndex;
+                optionElement.classList.toggle(
+                  "selected",
+                  selectedMcq?.questionId === question.id && selectedMcq?.optionIndex === optionIndex
+                );
+                optionElement.title = "اضغط لاختيار الإجابة أو إلغاء الاختيار";
+                const label = document.createElement("span");
+                label.className = "mcq-option-label";
+                label.textContent = `(${String.fromCharCode(97 + optionIndex)})`;
+                const optionText = document.createElement("span");
+                optionText.classList.add("preview-editable");
+                optionText.dataset.editIndex = pageData.questions.indexOf(question);
+                optionText.dataset.editField = "options";
+                optionText.dataset.optionIndex = optionIndex;
+                optionText.title = "اضغط مرتين لتعديل الاختيار";
+                optionText.textContent = option;
+                optionElement.append(label, optionText);
+                options.appendChild(optionElement);
+              });
+
+              card.append(header, options);
+              table.appendChild(card);
+            });
+          } else {
+            part.questions.forEach((question) => {
+              const row = document.createElement("div");
+              row.className = "question-row";
+              row.dataset.previewQuestionId = question.id;
+
+              const questionCell = document.createElement("div");
+              questionCell.className = "question-cell";
+
+              const number = document.createElement("span");
+              number.className = "question-number";
+              number.textContent = question.id;
+
+              const questionText = document.createElement("div");
+              questionText.className = "question-text";
+              questionText.classList.add("preview-editable");
+              questionText.dataset.editIndex = pageData.questions.indexOf(question);
+              questionText.dataset.editField = "question_latex";
+              questionText.title = "اضغط مرتين لتعديل السؤال والمعادلة";
+              questionText.textContent = question.question_latex;
+
+              questionCell.append(number, questionText);
+
+              const answerCell = document.createElement("div");
+              answerCell.className = "answer-cell";
+
+              const answerLineCount = Number.isFinite(Number(question.answer_lines))
+                ? Math.min(4, Math.max(0, Number(question.answer_lines)))
+                : 4;
+              for (let line = 0; line < answerLineCount; line += 1) {
+                const answerLine = document.createElement("div");
+                answerLine.className = "answer-line";
+                answerCell.appendChild(answerLine);
+              }
+
+              row.append(questionCell, answerCell);
+              table.appendChild(row);
+            });
+          }
+
+          section.appendChild(table);
+          paper.appendChild(section);
+        });
+
+        renderSectionNav();
+        renderMath();
+      }
+
+      function renderSectionNav() {
+        const parts = groupByPart(pageData.questions);
+        sectionNav.innerHTML = "";
+        sectionNav.hidden = parts.length === 0;
+
+        parts.forEach((part, index) => {
+          const button = document.createElement("button");
+          button.className = "section-nav-item";
+          button.type = "button";
+          button.dataset.partName = part.title;
+          button.dataset.navIndex = index;
+          button.setAttribute("aria-label", `الانتقال إلى ${part.title}`);
+          const label = document.createElement("span");
+          label.className = "section-nav-label";
+          const labelTitle = document.createElement("span");
+          labelTitle.className = "section-nav-label-title";
+          labelTitle.textContent = part.title;
+          label.appendChild(labelTitle);
+          button.appendChild(label);
+
+          button.addEventListener("click", () => scrollPreviewToPart(part.title));
+          sectionNav.appendChild(button);
+        });
+
+        updateSectionNavActive();
+      }
+
+      function scrollPreviewToPart(partName) {
+        const target = [...paper.querySelectorAll(".part[data-part-name]")]
+          .find((section) => section.dataset.partName === partName);
+        if (!target) return;
+
+        const stageRect = previewStage.getBoundingClientRect();
+        const targetTop = target.getBoundingClientRect().top - stageRect.top + previewStage.scrollTop;
+        previewStage.scrollTo({ top: Math.max(0, targetTop - 18), behavior: "smooth" });
+      }
+
+      function updateSectionNavActive() {
+        if (sectionNav.hidden) return;
+
+        const sections = [...paper.querySelectorAll(".part[data-part-name]")];
+        const stageTop = previewStage.getBoundingClientRect().top;
+        const threshold = Math.max(80, previewStage.clientHeight * 0.32);
+        let activeName = sections[0]?.dataset.partName || "";
+
+        sections.forEach((section) => {
+          if (section.getBoundingClientRect().top - stageTop <= threshold) {
+            activeName = section.dataset.partName;
+          }
+        });
+
+        sectionNav.querySelectorAll(".section-nav-item").forEach((button) => {
+          button.classList.toggle("active", button.dataset.partName === activeName);
+        });
+      }
+
+      function clearLinkedHover() {
+        linkedHoverKey = "";
+        document.querySelectorAll(".link-hovered").forEach((element) => element.classList.remove("link-hovered"));
+      }
+
+      function scrollPreviewToQuestion(questionId) {
+        const target = [...paper.querySelectorAll("[data-preview-question-id]")]
+          .find((element) => element.dataset.previewQuestionId === String(questionId));
+        if (!target) return;
+
+        const stageRect = previewStage.getBoundingClientRect();
+        const targetTop = target.getBoundingClientRect().top - stageRect.top + previewStage.scrollTop;
+        previewStage.scrollTo({ top: Math.max(0, targetTop - 10), behavior: "smooth" });
+      }
+
+      function hoverQuestion(questionId) {
+        if (document.body.classList.contains("tools-hidden")) {
+          clearLinkedHover();
+          return;
+        }
+        clearLinkedHover();
+        linkedHoverKey = `question:${questionId}`;
+        document.querySelectorAll(".editor-card[data-question-id]").forEach((card) => {
+          if (card.dataset.questionId === String(questionId)) card.classList.add("link-hovered");
+        });
+        paper.querySelectorAll("[data-preview-question-id]").forEach((question) => {
+          if (question.dataset.previewQuestionId === String(questionId)) question.classList.add("link-hovered");
+        });
+      }
+
+      function hoverPart(partName) {
+        if (document.body.classList.contains("tools-hidden")) {
+          clearLinkedHover();
+          return;
+        }
+        clearLinkedHover();
+        linkedHoverKey = `part:${partName}`;
+        document.querySelectorAll(".editor-card[data-part-name]").forEach((card) => {
+          if (card.dataset.partName === partName) card.classList.add("link-hovered");
+        });
+        paper.querySelectorAll(".part[data-part-name]").forEach((part) => {
+          if (part.dataset.partName === partName) part.classList.add("link-hovered");
+        });
+      }
+
+      function isEntering(element, relatedTarget) {
+        return !relatedTarget || !element.contains(relatedTarget);
+      }
+
+      function isLeaving(element, relatedTarget) {
+        return !relatedTarget || !element.contains(relatedTarget);
+      }
+
+      function repairLatexEscapes(raw) {
+        let out = "";
+        let inString = false;
+        for (let i = 0; i < raw.length; i++) {
+          const ch = raw[i];
+          if (inString) {
+            if (ch === "\\") {
+              const next = raw[i + 1];
+              if (next === "\\" || next === '"') {
+                out += ch + next;
+                i += 1;
+              } else {
+                out += "\\\\";
+              }
+            } else {
+              out += ch;
+              if (ch === '"') inString = false;
+            }
+          } else {
+            out += ch;
+            if (ch === '"') inString = true;
+          }
+        }
+        return out;
+      }
+
+      function parseJsonTolerant(raw) {
+        // Canonical JSON only uses \n (newlines), \" and \\ as single-backslash
+        // sequences. Any other single backslash means the LaTeX was not
+        // JSON-escaped (e.g. \(x\) or \frac pasted from a chat/README), which
+        // would fail to parse or silently corrupt the math. Repair it first.
+        const needsRepair = /(^|[^\\])\\(?![\\"\/n])/.test(raw);
+        const source = needsRepair ? repairLatexEscapes(raw) : raw;
+        return JSON.parse(source);
+      }
+
+      function normalizePageData(input) {
+        const source = Array.isArray(input) ? { title: "", questions: input } : input;
+        if (!source || !Array.isArray(source.questions)) {
+          throw new Error("JSON must contain a questions array.");
+        }
+
+        const usedIds = new Set();
+        let fallbackId = 1;
+        const questions = source.questions.map((rawQuestion, index) => {
+          if (!rawQuestion || typeof rawQuestion !== "object") {
+            throw new Error(`Question ${index + 1} is not an object.`);
+          }
+
+          let id = Number(rawQuestion.id);
+          while (!Number.isInteger(id) || id < 1 || usedIds.has(id)) {
+            id = fallbackId;
+            fallbackId += 1;
+          }
+          usedIds.add(id);
+          fallbackId = Math.max(fallbackId, id + 1);
+
+          const questionLatex = String(rawQuestion.question_latex ?? "").trim();
+          if (!questionLatex) throw new Error(`Question ${index + 1} has no question_latex.`);
+
+          const parsedAnswerLines = Number(rawQuestion.answer_lines);
+          const answerLines = Number.isFinite(parsedAnswerLines)
+            ? Math.min(4, Math.max(0, Math.trunc(parsedAnswerLines)))
+            : 4;
+          const type = rawQuestion.type === "mcq" ? "mcq" : "open";
+          const options = Array.isArray(rawQuestion.options)
+            ? rawQuestion.options.map((option) => String(option)).filter(Boolean)
+            : [];
+
+          return {
+            id,
+            part: String(rawQuestion.part ?? `Part ${index + 1}: New Section`),
+            part_intro: String(rawQuestion.part_intro ?? ""),
+            type,
+            question_latex: questionLatex,
+            options,
+            answer_lines: answerLines
+          };
+        });
+
+        return {
+          title: String(source.title ?? ""),
+          theme: getThemeId(source.theme),
+          questions
+        };
+      }
+
+      function finishInlineEdit(index, field, value, optionIndex) {
+        const question = pageData.questions[index];
+        if (!question) return;
+
+        if (field === "part" || field === "part_intro") {
+          const oldPart = question.part;
+          const nextValue = value.trim();
+          pageData.questions.forEach((item) => {
+            if (item.part === oldPart) item[field] = nextValue;
+          });
+        } else if (field === "options") {
+          question.options = question.options || [];
+          question.options[Number(optionIndex)] = value.trim();
+        } else {
+          question[field] = value;
+        }
+
+        renderEditor();
+        renderPreview();
+        saveDocState();
+      }
+
+      function startInlineEdit(element) {
+        if (element.dataset.editing === "true") return;
+
+        const index = Number(element.dataset.editIndex);
+        const field = element.dataset.editField;
+        const optionIndex = element.dataset.optionIndex;
+        const question = pageData.questions[index];
+        if (!question) return;
+
+        const value = field === "options"
+          ? (question.options || [])[Number(optionIndex)] || ""
+          : question[field] || "";
+        const editor = document.createElement(field === "part" ? "input" : "textarea");
+        const computed = window.getComputedStyle(element);
+        editor.className = "inline-preview-editor";
+        editor.value = value;
+        editor.spellcheck = false;
+        editor.dataset.editing = "true";
+        editor.style.width = `${Math.max(element.offsetWidth, 80)}px`;
+        editor.style.height = `${Math.max(element.offsetHeight, 28)}px`;
+        editor.style.margin = computed.margin;
+        editor.style.fontFamily = computed.fontFamily;
+        editor.style.fontSize = computed.fontSize;
+        editor.style.fontWeight = computed.fontWeight;
+        editor.style.lineHeight = computed.lineHeight;
+
+        element.replaceWith(editor);
+        editor.focus();
+        editor.select();
+
+        let finished = false;
+        const finish = (save) => {
+          if (finished) return;
+          finished = true;
+          if (save) finishInlineEdit(index, field, editor.value, optionIndex);
+          else renderPreview();
+        };
+
+        editor.addEventListener("blur", () => finish(true), { once: true });
+        editor.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            finish(false);
+          }
+
+          if (event.key === "Enter" && (field === "part" || event.ctrlKey || event.metaKey)) {
+            event.preventDefault();
+            editor.blur();
+          }
+        });
+      }
+
+      const aiJsonTemplate = [
+        "Create an exam-paper JSON object and return ONLY valid JSON, with no Markdown fences or explanation.",
+        "Follow this exact schema and keep every field name unchanged:",
+        "{",
+        '  "title": "Exam title",',
+        '  "theme": "classic",',
+        '  "questions": [',
+        "    {",
+        '      "id": 1,',
+        '      "part": "Part 1: New Section",',
+        '      "part_intro": "",',
+        '      "type": "open",',
+        '      "question_latex": "Write your question here",',
+        '      "options": [],',
+        '      "answer_lines": 4',
+        "    }",
+        "  ]",
+        "}",
+        "Rules:",
+        "- theme must be one of: professional, modern-professional, playful-kids, classic, school-blue, soft-study, kids.",
+        "- type must be either open or mcq.",
+        "- Use an empty options array for open questions; use an array of answer choices for mcq questions.",
+        "- answer_lines must be an integer from 1 to 4.",
+        "- Every question must have a unique positive integer id.",
+        "- Keep questions in the questions array and use part to group them into sections.",
+        "- Put mathematical notation in question_latex using the page's KaTeX delimiters."
+      ].join("\n");
+
+      async function copyAiTemplate() {
+        const button = document.getElementById("copy-ai-template");
+        const originalLabel = button.textContent;
+
+        try {
+          if (navigator.clipboard?.writeText) {
+            await navigator.clipboard.writeText(aiJsonTemplate);
+          } else {
+            const textarea = document.createElement("textarea");
+            textarea.value = aiJsonTemplate;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            textarea.remove();
+          }
+
+          button.textContent = "تم النسخ ✓";
+          window.setTimeout(() => { button.textContent = originalLabel; }, 1400);
+        } catch (error) {
+          window.alert("تعذر نسخ قالب AI. يمكنك فتحه أو نسخه يدويًا من محرر JSON.");
+        }
+      }
+
+      function downloadJson() {
+        const blob = new Blob([JSON.stringify(pageData, null, 2)], { type: "application/json;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        const safeTitle = String(pageData.title || "exam-paper-questions")
+          .replace(/[\\/:*?"<>|]+/g, "-")
+          .replace(/\s+/g, " ")
+          .trim();
+        link.download = `${safeTitle || "exam-paper-questions"}.json`;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function openJsonEditor() {
+        jsonEditor.value = JSON.stringify(pageData, null, 2);
+        jsonModal.hidden = false;
+        jsonEditor.focus();
+      }
+
+      function closeJsonEditor() {
+        jsonModal.hidden = true;
+      }
+
+      function applyJsonEditor() {
+        try {
+          const imported = normalizePageData(parseJsonTolerant(jsonEditor.value));
+          pageData.title = imported.title;
+          pageData.theme = imported.theme;
+          pageData.questions.splice(0, pageData.questions.length, ...imported.questions);
+          paperTitleInput.value = pageData.title;
+          renderThemes();
+          editorState.query = "";
+          editorState.type = "all";
+          editorState.part = "all";
+          editorState.expandedIds.clear();
+          selectedMcq = null;
+          closeJsonEditor();
+          renderEditor();
+          renderPreview();
+          saveDocState();
+          saveEditorState();
+        } catch (error) {
+          window.alert(`تعذر تطبيق JSON: ${error.message}`);
+        }
+      }
+
+      async function importJson(file) {
+        if (!file) return;
+
+        try {
+          const imported = normalizePageData(parseJsonTolerant(await file.text()));
+          pageData.title = imported.title;
+          pageData.theme = imported.theme;
+          pageData.questions.splice(0, pageData.questions.length, ...imported.questions);
+          paperTitleInput.value = pageData.title;
+          renderThemes();
+          editorState.query = "";
+          editorState.type = "all";
+          editorState.part = "all";
+          editorState.expandedIds.clear();
+          renderEditor();
+          renderPreview();
+          saveDocState();
+          saveEditorState();
+        } catch (error) {
+          window.alert(`تعذر رفع JSON: ${error.message}`);
+        }
+      }
+
+      function syncMatchingInputs(field, indices, value, exceptTarget) {
+        editorList.querySelectorAll(`[data-field="${field}"]`).forEach((input) => {
+          const card = input.closest("[data-index]");
+          const index = Number(card.dataset.index);
+          if (input !== exceptTarget && indices.includes(index)) {
+            input.value = value;
+          }
+        });
+      }
+
+      function updateQuestion(index, field, value, target) {
+        const question = pageData.questions[index];
+
+        if (field === "part" || field === "part_intro") {
+          const oldPart = question.part;
+          const affectedIndices = pageData.questions
+            .map((item, itemIndex) => item.part === oldPart ? itemIndex : -1)
+            .filter((itemIndex) => itemIndex >= 0);
+          pageData.questions.forEach((item) => {
+            if (item.part === oldPart) item[field] = value;
+          });
+          syncMatchingInputs(field, affectedIndices, value, target);
+        } else if (field === "answer_lines") {
+          question[field] = Number(value);
+        } else if (field === "options") {
+          question.options = value
+            .split(/\r?\n/)
+            .map((option) => option.trim())
+            .filter(Boolean);
+        } else if (field === "type") {
+          question.type = value;
+          renderEditor();
+        } else {
+          question[field] = value;
+        }
+
+        renderPreview();
+        saveDocState();
+      }
+
+      function nextQuestionId() {
+        return pageData.questions.reduce((max, question) => Math.max(max, Number(question.id) || 0), 0) + 1;
+      }
+
+      function addQuestion(newPart = false) {
+        const lastQuestion = pageData.questions.at(-1);
+        const partNumber = groupByPart(pageData.questions).length + 1;
+        const newId = nextQuestionId();
+
+        pageData.questions.push({
+          id: newId,
+          part: newPart ? `Part ${partNumber}: New Section` : (lastQuestion?.part || "Part 1: New Section"),
+          part_intro: newPart ? "" : (lastQuestion?.part_intro || ""),
+          type: "open",
+          options: [],
+          question_latex: String.raw`Write your question here \(x^2\).`,
+          answer_lines: 4
+        });
+
+        editorState.query = "";
+        editorState.type = "all";
+        editorState.part = "all";
+        editorState.expandedIds.add(newId);
+        renderEditor();
+        renderPreview();
+        saveDocState();
+        saveEditorState();
+      }
+
+      function removeQuestion(index) {
+        if (pageData.questions.length === 1) {
+          pageData.questions[0].question_latex = "Write your question here.";
+          pageData.questions[0].part = "Part 1: New Section";
+          pageData.questions[0].part_intro = "";
+          pageData.questions[0].type = "open";
+          pageData.questions[0].options = [];
+        } else {
+          pageData.questions.splice(index, 1);
+        }
+
+        renderEditor();
+        renderPreview();
+        saveDocState();
+      }
+
+      function duplicateQuestion(index) {
+        const source = pageData.questions[index];
+        if (!source) return;
+
+        const duplicate = clonePageData(source);
+        duplicate.id = nextQuestionId();
+        pageData.questions.splice(index + 1, 0, duplicate);
+        editorState.expandedIds.add(duplicate.id);
+        renderEditor();
+        renderPreview();
+        saveDocState();
+        saveEditorState();
+      }
+
+      function moveQuestion(index, direction) {
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= pageData.questions.length) return;
+
+        const [question] = pageData.questions.splice(index, 1);
+        pageData.questions.splice(newIndex, 0, question);
+        renderEditor();
+        renderPreview();
+        saveDocState();
+      }
+
+      function resetPaper() {
+        if (!window.confirm("إرجاع التصميم إلى النسخة الافتراضية؟")) return;
+
+        pageData.title = defaultPageData.title;
+        pageData.theme = getThemeId(defaultPageData.theme);
+        pageData.questions.splice(0, pageData.questions.length, ...JSON.parse(JSON.stringify(defaultPageData.questions)));
+        paperTitleInput.value = pageData.title;
+        renderThemes();
+        editorState.query = "";
+        editorState.type = "all";
+        editorState.part = "all";
+        editorState.expandedIds.clear();
+        renderEditor();
+        renderPreview();
+        saveDocState();
+        saveEditorState();
+      }
+
+      function clearPaper() {
+        if (!window.confirm("مسح كل الأسئلة؟")) return;
+
+        pageData.questions.splice(0, pageData.questions.length, {
+          id: 1,
+          part: "Part 1: New Section",
+          part_intro: "",
+          type: "open",
+          question_latex: "Write your question here.",
+          options: [],
+          answer_lines: 4
+        });
+        editorState.query = "";
+        editorState.type = "all";
+        editorState.part = "all";
+        editorState.expandedIds.clear();
+        renderEditor();
+        renderPreview();
+        saveDocState();
+        saveEditorState();
+      }
+
+      function downloadPaper() {
+        const source = "<!doctype html>\n" + document.documentElement.outerHTML;
+        const dataStart = source.indexOf("const pageData = ");
+        const dataEnd = source.indexOf(";\n\n      const defaultPageData", dataStart);
+        const serializedData = `const pageData = ${JSON.stringify(pageData, null, 2)}`;
+        const exported = dataStart >= 0 && dataEnd >= 0
+          ? source.slice(0, dataStart) + serializedData + source.slice(dataEnd)
+          : source;
+        const blob = new Blob([exported], { type: "text/html;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "exam-paper-designed.html";
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      editorList.addEventListener("input", (event) => {
+        const target = event.target;
+        const card = target.closest("[data-index]");
+        if (!card || !target.dataset.field) return;
+        updateQuestion(Number(card.dataset.index), target.dataset.field, target.value, target);
+      });
+
+      editorList.addEventListener("change", (event) => {
+        const target = event.target;
+        const card = target.closest("[data-index]");
+        if (!card || !target.dataset.field) return;
+        updateQuestion(Number(card.dataset.index), target.dataset.field, target.value, target);
+        if (["part", "part_intro", "question_latex"].includes(target.dataset.field)) renderEditor();
+      });
+
+      editorList.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+
+        const card = button.closest("[data-index]");
+        const index = Number(card.dataset.index);
+        const action = button.dataset.action;
+
+        if (action === "remove") removeQuestion(index);
+        if (action === "duplicate") duplicateQuestion(index);
+        if (action === "up") moveQuestion(index, -1);
+        if (action === "down") moveQuestion(index, 1);
+      });
+
+      editorList.addEventListener("click", (event) => {
+        const summary = event.target.closest(".editor-summary[data-question-id], .editor-card[data-question-id] > summary");
+        if (!summary) return;
+        const card = summary.closest(".editor-card[data-question-id]");
+        if (card) window.requestAnimationFrame(() => scrollPreviewToQuestion(card.dataset.questionId));
+      });
+
+      editorList.addEventListener("toggle", (event) => {
+        const card = event.target.closest("details[data-question-id]");
+        if (!card) return;
+        const questionId = Number(card.dataset.questionId);
+        if (card.open) editorState.expandedIds.add(questionId);
+        else editorState.expandedIds.delete(questionId);
+        saveEditorState();
+      }, true);
+
+      editorList.addEventListener("mouseover", (event) => {
+        const card = event.target.closest(".editor-card[data-question-id]");
+        if (card && isEntering(card, event.relatedTarget)) hoverQuestion(card.dataset.questionId);
+      });
+
+      editorList.addEventListener("mouseout", (event) => {
+        const card = event.target.closest(".editor-card[data-question-id]");
+        if (card && isLeaving(card, event.relatedTarget)) clearLinkedHover();
+      });
+
+      questionSearch.addEventListener("input", () => {
+        editorState.query = questionSearch.value;
+        renderEditor();
+        saveEditorState();
+      });
+
+      questionTypeFilter.addEventListener("change", () => {
+        editorState.type = questionTypeFilter.value;
+        renderEditor();
+        saveEditorState();
+      });
+
+      questionPartFilter.addEventListener("change", () => {
+        editorState.part = questionPartFilter.value;
+        renderEditor();
+        saveEditorState();
+      });
+
+      document.getElementById("collapse-all").addEventListener("click", () => {
+        editorState.expandedIds.clear();
+        renderEditor();
+        saveEditorState();
+      });
+
+      document.getElementById("expand-all").addEventListener("click", () => {
+        editorState.expandedIds = new Set(pageData.questions.map((question) => question.id));
+        renderEditor();
+        saveEditorState();
+      });
+
+      paperTitleInput.addEventListener("input", () => {
+        pageData.title = paperTitleInput.value;
+        renderPreview();
+        saveDocState();
+      });
+
+      tabList.addEventListener("click", (event) => {
+        const tabItem = event.target.closest("[data-tab-id]");
+        if (!tabItem) return;
+
+        if (event.target.closest("[data-tab-action=close]")) {
+          closeTab(tabItem.dataset.tabId);
+          return;
+        }
+
+        if (event.target.closest(".tab-select")) switchTab(tabItem.dataset.tabId);
+      });
+
+      tabList.addEventListener("dblclick", (event) => {
+        const tabItem = event.target.closest("[data-tab-id]");
+        if (tabItem && event.target.closest(".tab-select")) renameTab(tabItem.dataset.tabId);
+      });
+
+      document.getElementById("add-tab").addEventListener("click", addTab);
+
+      themeList.addEventListener("click", (event) => {
+        const themeCard = event.target.closest("[data-theme-id]");
+        if (themeCard) setTheme(themeCard.dataset.themeId);
+      });
+
+      document.getElementById("theme-prev").addEventListener("click", () => {
+        themeViewport.scrollBy({ left: -220, behavior: "smooth" });
+      });
+
+      document.getElementById("theme-next").addEventListener("click", () => {
+        themeViewport.scrollBy({ left: 220, behavior: "smooth" });
+      });
+
+      const toggleToolsButton = document.getElementById("toggle-tools");
+      toggleToolsButton.insertAdjacentHTML("afterend", `
+        <div class="menu-panel" id="app-menu" role="menu" hidden>
+          <button class="menu-action" id="menu-home" type="button">الرئيسية</button>
+          <div class="menu-divider"></div>
+          <button class="menu-action" id="menu-tools-toggle" type="button">إخفاء الأدوات</button>
+          <div class="menu-divider"></div>
+          <label class="menu-label" for="preview-zoom">
+            <span>زوم المعاينة</span>
+            <output id="zoom-value" for="preview-zoom">100%</output>
+          </label>
+          <div class="zoom-row">
+            <input id="preview-zoom" type="range" min="60" max="250" step="5" value="100" />
+            <button class="fit-preview" id="fit-preview" type="button">ملاءمة العرض</button>
+          </div>
+          <div class="menu-divider"></div>
+          <label class="menu-switch" for="dark-mode-toggle">
+            <input id="dark-mode-toggle" type="checkbox" />
+            <span>الوضع الداكن</span>
+          </label>
+        </div>
+      `);
+
+      const appMenu = document.getElementById("app-menu");
+      const menuHome = document.getElementById("menu-home");
+      const menuToolsToggle = document.getElementById("menu-tools-toggle");
+      const previewZoom = document.getElementById("preview-zoom");
+      const zoomValue = document.getElementById("zoom-value");
+      const fitPreview = document.getElementById("fit-preview");
+      const darkModeToggle = document.getElementById("dark-mode-toggle");
+
+      function setMenuOpen(open) {
+        appMenu.hidden = !open;
+        toggleToolsButton.setAttribute("aria-expanded", String(open));
+      }
+
+      function getMaxPreviewZoom() {
+        const availableWidth = Math.max(120, previewStage.clientWidth - 18);
+        const paperWidth = paper.offsetWidth || 793;
+        const fitZoom = Math.floor((availableWidth / paperWidth) * 100 / 5) * 5;
+        return Math.max(5, Math.min(250, fitZoom));
+      }
+
+      function syncPreviewZoomLimit() {
+        const maxZoom = getMaxPreviewZoom();
+        previewZoom.min = String(Math.min(60, maxZoom));
+        previewZoom.max = String(maxZoom);
+        return maxZoom;
+      }
+
+      function setPreviewZoom(value) {
+        const maxZoom = syncPreviewZoomLimit();
+        const minZoom = Number(previewZoom.min);
+        const requestedZoom = Math.max(60, Math.min(250, Number(value) || 100));
+        const nextZoom = Math.max(minZoom, Math.min(maxZoom, requestedZoom));
+        previewZoom.value = String(nextZoom);
+        zoomValue.textContent = `${nextZoom}%`;
+        paper.style.zoom = String(nextZoom / 100);
+        uiSettings.previewZoom = nextZoom;
+        uiSettings.previewZoomRequested = requestedZoom;
+        saveUiSettings();
+      }
+
+      function reapplyPreviewZoom() {
+        setPreviewZoom(uiSettings.previewZoomRequested || uiSettings.previewZoom || 100);
+      }
+
+      function fitPreviewToWidth() {
+        setPreviewZoom(getMaxPreviewZoom());
+      }
+
+      function setDarkMode(enabled) {
+        document.body.classList.toggle("dark-mode", enabled);
+        darkModeToggle.checked = enabled;
+        uiSettings.darkMode = enabled;
+        saveUiSettings();
+      }
+
+      let storedZoom = Number(uiSettings.previewZoomRequested || uiSettings.previewZoom) || 0;
+      let storedDarkMode = typeof uiSettings.darkMode === "boolean" ? uiSettings.darkMode : null;
+      try {
+        if (!storedZoom) storedZoom = Number(localStorage.getItem("exam-paper-preview-zoom")) || 100;
+        if (storedDarkMode === null) storedDarkMode = localStorage.getItem("exam-paper-dark-mode") === "1";
+      } catch {}
+
+      setPreviewZoom(storedZoom || 100);
+      setDarkMode(storedDarkMode === true);
+
+      const storedToolsHidden = uiSettings.toolsHidden === true;
+      document.body.classList.toggle("tools-hidden", storedToolsHidden);
+      menuToolsToggle.textContent = storedToolsHidden ? "إظهار الأدوات" : "إخفاء الأدوات";
+
+      toggleToolsButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        setMenuOpen(appMenu.hidden);
+      });
+
+      menuHome.addEventListener("click", () => {
+        window.location.href = "home.html";
+      });
+
+      menuToolsToggle.addEventListener("click", () => {
+        const hidden = document.body.classList.toggle("tools-hidden");
+        if (hidden) clearLinkedHover();
+        menuToolsToggle.textContent = hidden ? "إظهار الأدوات" : "إخفاء الأدوات";
+        uiSettings.toolsHidden = hidden;
+        saveUiSettings();
+        if (!hidden) restoreUiScrollPositions();
+        reapplyPreviewZoom();
+        setMenuOpen(false);
+      });
+
+      previewZoom.addEventListener("input", () => setPreviewZoom(previewZoom.value));
+      fitPreview.addEventListener("click", fitPreviewToWidth);
+      darkModeToggle.addEventListener("change", () => setDarkMode(darkModeToggle.checked));
+      window.addEventListener("resize", reapplyPreviewZoom);
+
+      let uiScrollSaveTimer = 0;
+
+      function saveUiScrollPositions() {
+        window.clearTimeout(uiScrollSaveTimer);
+        uiScrollSaveTimer = window.setTimeout(() => {
+          uiSettings.previewScrollTop = Math.round(previewStage.scrollTop);
+          uiSettings.toolsScrollTop = Math.round(designerPanel?.scrollTop || 0);
+          saveUiSettings();
+        }, 120);
+      }
+
+      function restoreUiScrollPositions() {
+        previewStage.scrollTop = Number(uiSettings.previewScrollTop) || 0;
+        if (!document.body.classList.contains("tools-hidden") && designerPanel) {
+          designerPanel.scrollTop = Number(uiSettings.toolsScrollTop) || 0;
+        }
+      }
+
+      previewStage.addEventListener("scroll", saveUiScrollPositions, { passive: true });
+      designerPanel?.addEventListener("scroll", saveUiScrollPositions, { passive: true });
+
+      document.addEventListener("click", (event) => {
+        if (!event.target.closest(".tab-actions")) setMenuOpen(false);
+      });
+
+      paper.addEventListener("click", (event) => {
+        const label = event.target.closest(".mcq-option-label");
+        if (!label) return;
+
+        const option = label.closest(".mcq-option");
+        const questionId = Number(option.dataset.questionId);
+        const optionIndex = Number(option.dataset.optionIndex);
+        const isSame = selectedMcq?.questionId === questionId && selectedMcq?.optionIndex === optionIndex;
+
+        paper.querySelectorAll(".mcq-option.selected").forEach((item) => item.classList.remove("selected"));
+        selectedMcq = isSame ? null : { questionId, optionIndex };
+        if (!isSame) option.classList.add("selected");
+      });
+
+      paper.addEventListener("mouseover", (event) => {
+        const question = event.target.closest("[data-preview-question-id]");
+        if (question && isEntering(question, event.relatedTarget)) {
+          hoverQuestion(question.dataset.previewQuestionId);
+          return;
+        }
+
+        const part = event.target.closest(".part[data-part-name]");
+        if (part && isEntering(part, event.relatedTarget)) hoverPart(part.dataset.partName);
+      });
+
+      paper.addEventListener("mouseout", (event) => {
+        const question = event.target.closest("[data-preview-question-id]");
+        if (question && isLeaving(question, event.relatedTarget)) {
+          clearLinkedHover();
+          return;
+        }
+
+        const part = event.target.closest(".part[data-part-name]");
+        if (part && isLeaving(part, event.relatedTarget)) clearLinkedHover();
+      });
+
+      paper.addEventListener("mousemove", (event) => {
+        const element = document.elementFromPoint(event.clientX, event.clientY);
+        const question = element?.closest?.("[data-preview-question-id]");
+        if (question) {
+          const key = `question:${question.dataset.previewQuestionId}`;
+          if (linkedHoverKey !== key) hoverQuestion(question.dataset.previewQuestionId);
+          return;
+        }
+
+        const part = element?.closest?.(".part[data-part-name]");
+        if (part) {
+          const key = `part:${part.dataset.partName}`;
+          if (linkedHoverKey !== key) hoverPart(part.dataset.partName);
+        }
+      });
+
+      paper.addEventListener("mouseleave", clearLinkedHover);
+      previewStage.addEventListener("scroll", updateSectionNavActive, { passive: true });
+
+      paper.addEventListener("dblclick", (event) => {
+        const target = event.target.closest("[data-edit-index][data-edit-field]");
+        if (target) startInlineEdit(target);
+      });
+
+      const importJsonInput = document.getElementById("import-json-input");
+      document.getElementById("import-json").addEventListener("click", () => importJsonInput.click());
+      importJsonInput.addEventListener("change", async () => {
+        await importJson(importJsonInput.files[0]);
+        importJsonInput.value = "";
+      });
+      document.getElementById("edit-json").addEventListener("click", openJsonEditor);
+      document.getElementById("apply-json").addEventListener("click", applyJsonEditor);
+      document.getElementById("close-json").addEventListener("click", closeJsonEditor);
+      jsonModal.addEventListener("click", (event) => {
+        if (event.target === jsonModal) closeJsonEditor();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !jsonModal.hidden) closeJsonEditor();
+      });
+
+      document.getElementById("add-question").addEventListener("click", () => addQuestion(false));
+      document.getElementById("add-part").addEventListener("click", () => addQuestion(true));
+      document.getElementById("print-paper").addEventListener("click", () => window.print());
+      document.getElementById("download-paper").addEventListener("click", downloadPaper);
+      document.getElementById("download-json").addEventListener("click", downloadJson);
+      document.getElementById("save-questions").addEventListener("click", downloadJson);
+      document.getElementById("copy-ai-template").addEventListener("click", copyAiTemplate);
+      document.getElementById("reset-paper").addEventListener("click", resetPaper);
+      document.getElementById("clear-paper").addEventListener("click", clearPaper);
+
+      paperTitleInput.value = pageData.title;
+      if (uiSettings.theme) pageData.theme = getThemeId(uiSettings.theme);
+      renderThemes();
+      renderTabs();
+      renderEditor();
+      renderPreview();
+      restoreUiScrollPositions();
+      requestAnimationFrame(() => requestAnimationFrame(reapplyPreviewZoom));
+
+      const requestedFile = new URLSearchParams(window.location.search).get("file");
+      if (requestedFile) {
+        fetch(`lessions%20json/${encodeURIComponent(requestedFile)}`)
+          .then(response => response.ok ? response.json() : Promise.reject(new Error("Unable to load file")))
+          .then(data => {
+            const imported = normalizePageData(data);
+            copyIntoPageData(imported);
+            if (uiSettings.theme) pageData.theme = getThemeId(uiSettings.theme);
+            const currentTab = getActiveTab();
+            if (currentTab) {
+              currentTab.data = pageData;
+              currentTab.name = (pageData.title || "Lesson")
+                .replace(/^Assignment\s*[—-]\s*/i, "")
+                .replace(/^Unit\s*\d+\s*[—:-]\s*/i, "")
+                .replace(/\s*[—-]\s*Unit\s*\d+/i, "")
+                .trim() || "Lesson";
+            }
+            paperTitleInput.value = pageData.title;
+            renderTabs();
+            renderEditor();
+            renderPreview();
+            requestAnimationFrame(() => requestAnimationFrame(reapplyPreviewZoom));
+          })
+          .catch(error => console.error("Question file could not be loaded:", error));
+      }
+    </script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+      onload="renderMathInElement(document.getElementById('paper'), { delimiters: [{ left: '\\(', right: '\\)', display: false }, { left: '$$', right: '$$', display: true }] })"
+    ></script>
+  </body>
+</html>

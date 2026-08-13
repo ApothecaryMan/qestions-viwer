@@ -1,0 +1,226 @@
+{
+  "title": "",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Think & Discuss",
+      "part_intro": "For any three real numbers \\(a\\), \\(b\\) and \\(c\\):",
+      "type": "open",
+      "question_latex": "Is \\(a-b=b-a\\)?",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Think & Discuss",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Is \\(\\dfrac{a}{b}=\\dfrac{b}{a}\\)?",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 3,
+      "part": "Part 1: Think & Discuss",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Is \\(\\dfrac{a}{b}\\in\\mathbb{R}\\)?",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 4,
+      "part": "Part 1: Think & Discuss",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Is \\(a(b-c)=ab-ac\\)?",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 5,
+      "part": "Part 1: Think & Discuss",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Is \\(a(b-c)=-(a-b)c\\)?",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 6,
+      "part": "Part 2: Self-Evaluation",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(x=(\\sqrt{5}-2)\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 7,
+      "part": "Part 2: Self-Evaluation",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(y=(\\sqrt{5}+2)\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 8,
+      "part": "Part 2: Self-Evaluation",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Find in a simple form the value of the expression \\(x^2-y^2\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 9,
+      "part": "Part 3: Example",
+      "part_intro": "Find the result of each of the following in its simplest form:",
+      "type": "open",
+      "question_latex": "\\((\\sqrt{5}+1)(\\sqrt{5}-1)\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 10,
+      "part": "Part 3: Example",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\((\\sqrt{2}-7)(\\sqrt{2}+3)\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 11,
+      "part": "Part 3: Example",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\((7\\sqrt{2}+1)(7\\sqrt{2}-1)\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 12,
+      "part": "Part 3: Example",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\((2\\sqrt{5}-3)^2\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 13,
+      "part": "Part 4: Multiple Choice",
+      "part_intro": "Choose the correct answer from the given ones:",
+      "type": "mcq",
+      "question_latex": "If \\(a+\\sqrt{5}=0\\), what is the value of \\(a\\)?",
+      "options": [
+        "\\(0\\)",
+        "\\(\\sqrt{5}\\)",
+        "\\(-\\sqrt{5}\\)",
+        "\\(\\frac{1}{\\sqrt{5}}\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 14,
+      "part": "Part 4: Multiple Choice",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(a\\times\\sqrt{2}=1\\), what is the value of \\(a\\)?",
+      "options": [
+        "\\(1\\)",
+        "\\(\\sqrt{2}\\)",
+        "\\(-\\sqrt{2}\\)",
+        "\\(\\frac{\\sqrt{2}}{2}\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 15,
+      "part": "Part 4: Multiple Choice",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the value of \\(\\sqrt{3}+\\sqrt{3}\\)?",
+      "options": [
+        "\\(\\sqrt{3}\\)",
+        "\\(2\\sqrt{3}\\)",
+        "\\(\\sqrt{6}\\)",
+        "\\(3\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 16,
+      "part": "Part 4: Multiple Choice",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(a\\sqrt{5}-4\\sqrt{5}=3\\sqrt{5}\\), then:",
+      "options": [
+        "\\(a=-1\\)",
+        "\\(a=1\\)",
+        "\\(a=7\\)",
+        "\\(a=10\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 17,
+      "part": "Part 4: Multiple Choice",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\((2\\sqrt{3})^n=12\\), then:",
+      "options": [
+        "\\(n=2\\)",
+        "\\(n=3\\)",
+        "\\(n=4\\)",
+        "\\(n=6\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 18,
+      "part": "Part 4: Multiple Choice",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(\\sqrt[3]{5}+3a=4\\sqrt[3]{5}\\), then:",
+      "options": [
+        "\\(a=1\\)",
+        "\\(a=\\sqrt{5}\\)",
+        "\\(a=\\sqrt[3]{5}\\)",
+        "\\(a=5\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 19,
+      "part": "Part 4: Multiple Choice",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the additive inverse of the number \\(\\frac{7}{\\sqrt{7}}\\) in its simplest form?",
+      "options": [
+        "\\(\\frac{\\sqrt{7}}{7}\\)",
+        "\\(7\\)",
+        "\\(-\\sqrt{7}\\)",
+        "\\(-7\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 20,
+      "part": "Part 4: Multiple Choice",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the multiplicative inverse of the number \\(\\sqrt{3}-2\\)?",
+      "options": [
+        "\\(2-\\sqrt{3}\\)",
+        "\\(\\sqrt{3}+2\\)",
+        "\\(-\\sqrt{3}-2\\)",
+        "\\(\\sqrt{3}-2\\)"
+      ],
+      "answer_lines": 1
+    }
+  ]
+}

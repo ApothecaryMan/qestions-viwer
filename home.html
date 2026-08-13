@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Course Home</title>
+    <style>
+      :root { font-family: Arial, sans-serif; color: #172033; background: #f2f4f8; }
+      * { box-sizing: border-box; }
+      body { min-height: 100vh; margin: 0; padding: 28px 4vw; }
+      main { width: 100%; }
+      h1 { margin: 0 0 30px; }
+      .unit { margin: 0; }
+      .unit summary { cursor: pointer; padding: 18px 0; border-bottom: 1px solid #cbd3df; font-size: 24px; font-weight: 700; list-style-position: inside; }
+      .unit-content { display: flex; flex-wrap: wrap; gap: 18px; padding: 24px 0 30px; }
+      .book { width: 330px; min-height: 210px; margin-top: 18px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #cbd3df; border-radius: 8px; background: #fff; box-shadow: 0 5px 14px #17203314; }
+      .book h2 { margin: 0 0 12px; font-size: 19px; line-height: 1.35; }
+      .kind { color: #52627a; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+      button { border: 0; border-radius: 6px; padding: 11px 16px; color: white; background: #315f98; cursor: pointer; font-size: 15px; }
+      button:hover { background: #244b7a; }
+      .empty, .error { color: #68758a; padding: 20px 0; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Course Home</h1>
+      <div id="units"><p class="empty">Loading course content...</p></div>
+    </main>
+    <script>
+      const units = document.getElementById("units");
+      const kindOf = title => /assignment/i.test(title) ? "Assignment" : /example/i.test(title) ? "Example" : "Lesson";
+      const displayTitle = title => String(title || "")
+        .replace(/^Assignment\s*[—-]\s*/i, "")
+        .replace(/^Unit\s*\d+\s*[—:-]\s*/i, "")
+        .replace(/^Lesson\s*\d+\s*[:—-]\s*/i, "")
+        .trim();
+      function render(files) {
+        const groups = {};
+        files.forEach(file => {
+          const unit = (file.title.match(/Unit\s*\d+/i) || ["Unit 1"])[0];
+          (groups[unit] ||= []).push(file);
+        });
+        units.innerHTML = Object.entries(groups).map(([unit, files]) => `
+          <details class="unit" open><summary>${unit}</summary><div class="unit-content">
+            ${files.map(file => `<article class="book"><div>${kindOf(file.title) ? `<div class="kind">${kindOf(file.title)}</div>` : ""}<h2>${displayTitle(file.title) || file.name}</h2></div><button data-file="${file.name}">Open</button></article>`).join("")}
+          </div></details>`).join("");
+        units.querySelectorAll("button").forEach(button => button.onclick = () => {
+          window.location.href = `exam-paper.html?file=${encodeURIComponent(button.dataset.file)}`;
+        });
+      }
+      fetch("lessions%20json/index.json").then(response => response.json()).then(render)
+        .catch(() => units.innerHTML = '<p class="error">Run this project through a local web server to load the course files.</p>');
+    </script>
+  </body>
+</html>
