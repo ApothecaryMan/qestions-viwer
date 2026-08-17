@@ -1,0 +1,96 @@
+{
+  "title": "Unit 1 - Lesson 2: Intervals and Their Operations",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Example 1",
+      "part_intro": "Write in the form of an interval and represent on the number line set \\(A\\).",
+      "type": "open",
+      "question_latex": "Let \\(A=\\{x:x\\in\\mathbb{R},\\ 1<x\\leq3\\}\\). Is \\(\\sqrt{2}\\in A\\)?",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Example 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Write in the form of an interval and represent on the number line set \\(B\\). Let \\(B=\\{x:x\\in\\mathbb{R},\\ -2<x<2\\}\\). Is \\(\\sqrt[3]{-9}\\in B\\)?",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 3,
+      "part": "Part 2: Example 2",
+      "part_intro": "Write each of the following sets as an interval and represent it on the number line:",
+      "type": "open",
+      "question_latex": "The set of positive real numbers.",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 4,
+      "part": "Part 2: Example 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "The set of non-positive real numbers.",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 5,
+      "part": "Part 2: Example 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\{x:x\\in\\mathbb{R},\\ x\\geq-2\\}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 6,
+      "part": "Part 2: Example 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\{x:x\\in\\mathbb{R},\\ x<1\\}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 7,
+      "part": "Part 3: Example 3",
+      "part_intro": "Find using the number line each of the following:",
+      "type": "open",
+      "question_latex": "\\([-3,5[\\cup]2,7[\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 8,
+      "part": "Part 3: Example 3",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(]1,5]\\cap]-\\infty,3]\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 9,
+      "part": "Part 3: Example 3",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(]-\\infty,6]\\setminus]-4,\\infty[\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 10,
+      "part": "Part 3: Example 3",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Find \\(X'\\) where \\(X=]-\\infty,3[\\).",
+      "options": [],
+      "answer_lines": 2
+    }
+  ]
+}

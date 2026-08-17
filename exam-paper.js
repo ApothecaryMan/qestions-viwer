@@ -53,7 +53,7 @@
       let selectedMcq = null;
       let linkedHoverKey = "";
       let activeTabId = "tab-1";
-      const tabs = [{ id: activeTabId, name: "الورقة 1", data: pageData }];
+      const tabs = [{ id: activeTabId, name: "الورقة 1", kind: "", data: pageData }];
 
       const docStorageKey = "exam-paper-document-v1";
 
@@ -63,7 +63,7 @@
           if (currentTab) currentTab.data = clonePageData(pageData);
           localStorage.setItem(docStorageKey, JSON.stringify({
             activeTabId,
-            tabs: tabs.map((tab) => ({ id: tab.id, name: tab.name, data: tab.data }))
+            tabs: tabs.map((tab) => ({ id: tab.id, name: tab.name, kind: tab.kind || "", data: tab.data }))
           }));
         } catch {}
       }
@@ -76,6 +76,7 @@
             .map((tab) => ({
               id: String(tab?.id || ""),
               name: String(tab?.name || "الورقة"),
+              kind: String(tab?.kind || getContentKind(tab?.name) || ""),
               data: clonePageData(normalizePageData(tab?.data))
             }))
             .filter((tab) => tab.id);
@@ -165,12 +166,21 @@
         return tabs.find((tab) => tab.id === activeTabId);
       }
 
-      function getTabName(title) {
-        return String(title || "Lesson")
+      function getContentKind(value) {
+        const text = String(value || "");
+        if (/self[-\s]?evaluation/i.test(text)) return "Self-Evaluation";
+        if (/assignment|lesson assessment/i.test(text)) return "Assignment";
+        if (/example/i.test(text)) return "Examples";
+        return "";
+      }
+
+      function getTabName(title, kind = "") {
+        const baseName = String(title || "Lesson")
           .replace(/^Assignment\s*[—-]\s*/i, "")
           .replace(/^Unit\s*\d+\s*[—:-]\s*/i, "")
           .replace(/\s*[—-]\s*Unit\s*\d+/i, "")
           .trim() || "Lesson";
+        return kind ? `${baseName} — ${kind}` : baseName;
       }
 
       function copyIntoPageData(source) {
@@ -215,6 +225,7 @@
         const nextTab = {
           id: tabId,
           name: `الورقة ${tabs.length + 1}`,
+          kind: "",
           data: createBlankPage()
         };
         tabs.push(nextTab);
@@ -230,7 +241,8 @@
         saveDocState();
       }
 
-      function openPageInTab(source) {
+      function openPageInTab(source, sourceName = "") {
+        const kind = getContentKind(sourceName) || getContentKind(source.title);
         const currentTab = getActiveTab();
         const canReuseBlankTab = tabs.length === 1
           && currentTab?.name === "الورقة 1"
@@ -238,7 +250,8 @@
           && pageData.questions.length === 0;
 
         if (canReuseBlankTab) {
-          currentTab.name = getTabName(source.title);
+          currentTab.name = getTabName(source.title, kind);
+          currentTab.kind = kind;
           copyIntoPageData(source);
           currentTab.data = pageData;
           return;
@@ -248,7 +261,8 @@
         const tabId = `tab-${Date.now()}-${tabs.length}`;
         const nextTab = {
           id: tabId,
-          name: getTabName(source.title),
+          name: getTabName(source.title, kind),
+          kind,
           data: clonePageData(source)
         };
         tabs.push(nextTab);
@@ -456,9 +470,21 @@
         paper.innerHTML = "";
 
         if (pageData.title.trim()) {
-          const title = document.createElement("h1");
+          const titleMatch = pageData.title.match(/^(Unit\s*\d+)\s*[—:-]\s*(Lesson\s*\d+)\s*[—:-]\s*(.+)$/i);
+          const title = document.createElement("header");
           title.className = "paper-title";
-          title.textContent = pageData.title;
+
+          const meta = document.createElement("div");
+          meta.className = "paper-title-meta";
+          const contentKind = getActiveTab()?.kind || getContentKind(pageData.title);
+          meta.textContent = titleMatch
+            ? [titleMatch[1], titleMatch[2], contentKind].filter(Boolean).join(" · ")
+            : contentKind;
+
+          const name = document.createElement("h1");
+          name.className = "paper-title-name";
+          name.textContent = titleMatch ? titleMatch[3].trim() : pageData.title;
+          title.append(meta, name);
           paper.appendChild(title);
         }
 
@@ -470,9 +496,6 @@
 
           const heading = document.createElement("h2");
           heading.className = "part-heading";
-          heading.classList.add("preview-editable");
-          heading.dataset.editIndex = sourceIndex;
-          heading.dataset.editField = "part";
           heading.textContent = part.title;
           section.appendChild(heading);
 
@@ -807,6 +830,7 @@
       }
 
       function startInlineEdit(element) {
+        if (document.body.classList.contains("tools-hidden")) return;
         if (element.dataset.editing === "true") return;
 
         const index = Number(element.dataset.editIndex);
@@ -1148,7 +1172,7 @@
           if (!css || !runtime) throw new Error("Unable to load exported assets");
           const source = "<!doctype html>\n" + document.documentElement.outerHTML;
           const stylesLink = '<link rel="stylesheet" href="styles.css" />';
-          const runtimeScript = '<script src="exam-paper.js"></script>';
+          const runtimeScript = /<script src="exam-paper\.js(?:\?[^\"]*)"><\/script>/;
           const sourceWithInlineAssets = source
             .replace(stylesLink, `<style>\n${css}\n    </style>`)
             .replace(runtimeScript, `<script>\n${runtime}\n    </script>`);
@@ -1331,7 +1355,9 @@
 
       function getMaxPreviewZoom() {
         const availableWidth = Math.max(120, previewStage.clientWidth - 18);
-        const paperWidth = paper.offsetWidth || 793;
+        // Keep the fit calculation stable even when CSS zoom was previously
+        // applied to the paper. A4 width at 96 CSS pixels per inch is ~794px.
+        const paperWidth = 210 / 25.4 * 96;
         const fitZoom = Math.floor((availableWidth / paperWidth) * 100 / 5) * 5;
         return Math.max(5, Math.min(250, fitZoom));
       }
@@ -1491,6 +1517,7 @@
       previewStage.addEventListener("scroll", updateSectionNavActive, { passive: true });
 
       paper.addEventListener("dblclick", (event) => {
+        if (document.body.classList.contains("tools-hidden")) return;
         const target = event.target.closest("[data-edit-index][data-edit-field]");
         if (target) startInlineEdit(target);
       });
@@ -1537,7 +1564,7 @@
           .then(data => {
             const imported = normalizePageData(data);
             if (uiSettings.theme) imported.theme = getThemeId(uiSettings.theme);
-            openPageInTab(imported);
+            openPageInTab(imported, requestedFile);
             paperTitleInput.value = pageData.title;
             renderTabs();
             renderEditor();

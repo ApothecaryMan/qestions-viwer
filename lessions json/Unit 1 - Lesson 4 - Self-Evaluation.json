@@ -1,0 +1,87 @@
+{
+  "title": "Unit 1 - Lesson 4: Laws of Square and Cube Roots",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "Write each of the following in its simplest form:",
+      "type": "open",
+      "question_latex": "\\(\\sqrt{50}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(4\\sqrt{\\frac12}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 3,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(2\\sqrt[3]{\\frac1{16}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 4,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(2\\sqrt[3]{\\frac34}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 5,
+      "part": "Part 2: Self-Evaluation 2",
+      "part_intro": "Simplify each of the following to its simplest form:",
+      "type": "open",
+      "question_latex": "\\(2\\sqrt{32}-\\sqrt{18}+\\sqrt{50}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 6,
+      "part": "Part 2: Self-Evaluation 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(2\\sqrt[3]{16}+\\sqrt[3]{54}-\\sqrt[3]{128}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 8,
+      "part": "Part 4: Self-Evaluation 4",
+      "part_intro": "If \\(x=\\frac{\\sqrt3-\\sqrt2}{\\sqrt3+\\sqrt2}\\), find in its simplest form the value of:",
+      "type": "open",
+      "question_latex": "\\(x+\\frac1x\\)",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 9,
+      "part": "Part 5: Critical Thinking",
+      "part_intro": "Answer the following critical-thinking question:",
+      "type": "open",
+      "question_latex": "Dina wrote: \\(2\\sqrt3+3\\sqrt2=5\\sqrt5\\). Is what Dina wrote correct? Discuss.",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 10,
+      "part": "Part 5: Critical Thinking",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Islam wrote: \\(2\\sqrt5+5=7\\sqrt5\\). Is what Islam wrote correct? Discuss.",
+      "options": [],
+      "answer_lines": 2
+    }
+  ]
+}

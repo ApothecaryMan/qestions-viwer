@@ -1,0 +1,87 @@
+{
+  "title": "Unit 1 - Lesson 5: Laws of Exponents in Real Numbers",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Example 1",
+      "part_intro": "Find the value of each of the following:",
+      "type": "open",
+      "question_latex": "\\((-\\sqrt5)^4\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Example 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(-(\\sqrt5)^4\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 3,
+      "part": "Part 1: Example 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\((-\\sqrt5)^3\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 4,
+      "part": "Part 2: Example 2",
+      "part_intro": "Simplify each of the following to its simplest form:",
+      "type": "open",
+      "question_latex": "\\(\\frac{(6a)^2}{2a}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 5,
+      "part": "Part 2: Example 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{(-\\sqrt3ab)^4}{3a^4b^2}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 6,
+      "part": "Part 2: Example 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{(\\sqrt8)^4(\\sqrt2)^3}{(2\\sqrt2)^5}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 7,
+      "part": "Part 3: Example 3",
+      "part_intro": "Simplify each of the following to its simplest form, then find the numerical value when the stated condition holds:",
+      "type": "open",
+      "question_latex": "\\((\\sqrt6)^n(\\sqrt3)^{n-1}(\\sqrt2)^{-n}\\), when \\(n=1\\)",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 8,
+      "part": "Part 3: Example 3",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{10^{2n}\\times0.001}{10^{-n+1}\\times100}\\), when \\(n=2\\)",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 9,
+      "part": "Part 4: Example 4",
+      "part_intro": "A square has side length \\(3^x\\) cm and a rectangle has dimensions \\(3^{x+1}\\) cm and \\(3\\) cm. If the perimeter of the square is \\(20\\) cm, find the area of the rectangle.",
+      "type": "open",
+      "question_latex": "Area of the rectangle",
+      "options": [],
+      "answer_lines": 4
+    }
+  ]
+}

@@ -1,0 +1,308 @@
+{
+  "title": "Unit 1 - Lesson 4: Laws of Square and Cube Roots",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "Choose the correct answer from the given ones:",
+      "type": "mcq",
+      "question_latex": "Which of the following is correct?",
+      "options": [
+        "\\(\\sqrt{40}=4\\sqrt{10}\\)",
+        "\\(\\sqrt{32}=8\\sqrt2\\)",
+        "\\(\\sqrt{12}=2\\sqrt3\\)",
+        "\\(\\sqrt{48}=3\\sqrt6\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the value of \\(\\sqrt{18}+\\sqrt{32}\\)?",
+      "options": [
+        "\\(\\sqrt{50}\\)",
+        "\\(7\\sqrt2\\)",
+        "\\(7\\sqrt4\\)",
+        "\\(5\\sqrt4\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 3,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "Which of the following is equivalent to \\(\\sqrt[3]{5}\\times\\sqrt[3]{25}\\)?",
+      "options": [
+        "\\(\\sqrt[3]{30}\\)",
+        "5",
+        "\\(5\\sqrt[3]{5}\\)",
+        "125"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 4,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "Which of the following is equivalent to \\(\\frac{\\sqrt{72}}{\\sqrt2}\\)?",
+      "options": [
+        "\\(2\\sqrt6\\)",
+        "\\(6\\sqrt2\\)",
+        "6",
+        "\\(\\sqrt{70}\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 5,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "Which of the following is equivalent to \\(\\frac{\\sqrt{25}}{\\sqrt{15}}\\)?",
+      "options": [
+        "5/15",
+        "5/3",
+        "\\(\\frac{\\sqrt5}{3}\\)",
+        "\\(\\frac{\\sqrt{15}}3\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 6,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(\\sqrt{160}=x\\sqrt{10}\\), what is the value of \\(x\\)?",
+      "options": [
+        "8",
+        "6",
+        "4",
+        "3"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 7,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(a\\sqrt[3]{2}=\\sqrt[3]{3}\\times\\sqrt[3]{10}\\), what is the value of \\(a\\)?",
+      "options": [
+        "30",
+        "\\(\\sqrt[3]{30}\\)",
+        "15",
+        "\\(\\sqrt[3]{15}\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 8,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(2\\sqrt3\\times4a=8\\sqrt6\\), what is the value of \\(a\\)?",
+      "options": [
+        "\\(\\sqrt2\\)",
+        "\\(\\sqrt3\\)",
+        "2",
+        "\\(\\sqrt6\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 9,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(\\frac{\\sqrt3}{\\sqrt a}=\\frac{\\sqrt2}{\\sqrt6}\\), what is the value of \\(a\\)?",
+      "options": [
+        "\\(\\sqrt3\\)",
+        "\\(\\sqrt6\\)",
+        "3",
+        "9"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 10,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(x+\\sqrt{28}=\\sqrt7\\), what is the value of \\(x\\)?",
+      "options": [
+        "\\(\\sqrt{21}\\)",
+        "\\(-\\sqrt{21}\\)",
+        "\\(\\sqrt7\\)",
+        "\\(-\\sqrt7\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 11,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "Simplify each of the following to its simplest form:",
+      "type": "open",
+      "question_latex": "\\(3\\sqrt{\\frac13}-\\sqrt{27}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 12,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(2\\sqrt[3]{\\frac14}+\\sqrt[3]{16}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 13,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{2\\sqrt[3]5\\times\\sqrt[3]{54}}{\\sqrt[3]{10}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 14,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{\\sqrt{98}+\\sqrt8}{\\sqrt{18}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 15,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{3\\sqrt[3]{32}-3\\sqrt[3]4}{\\sqrt[3]4}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 16,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(3\\sqrt8+\\sqrt{18}-\\sqrt{32}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 17,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(4\\sqrt{48}+\\frac43\\sqrt{27}+\\sqrt{75}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 18,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\sqrt[3]{192}-3\\sqrt[3]{375}+2\\sqrt[3]{24}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 19,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac32\\sqrt[3]{256}+\\frac{12}{\\sqrt[3]{16}}+\\sqrt[3]{32}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 20,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(x\\sqrt{32}=2\\sqrt{50}+\\sqrt{72}\\), find \\(x\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 21,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(x\\sqrt[3]{10}=\\sqrt[3]{80}-\\sqrt[3]{270}\\), find \\(x\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 22,
+      "part": "Part 3: Applying Concepts",
+      "part_intro": "Answer the following questions:",
+      "type": "open",
+      "question_latex": "If \\(4\\sqrt5=2\\sqrt a\\) and \\(2\\sqrt{24}=b\\sqrt6\\), find \\(a+b\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 23,
+      "part": "Part 3: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(x=\\sqrt3+\\sqrt2\\) and \\(y=\\sqrt3-\\sqrt2\\), find \\(x\\times y\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 24,
+      "part": "Part 3: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Using the same \\(x,y\\), find \\(\\frac{x}{y}\\).",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 25,
+      "part": "Part 3: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Using the same \\(x,y\\), find \\(\\left(x-\\frac1x\\right)^2\\).",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 26,
+      "part": "Part 3: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(a=\\sqrt[3]5+\\sqrt[3]2\\) and \\(b=\\sqrt[3]5-\\sqrt[3]2\\), find \\((a+b)^3\\).",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 27,
+      "part": "Part 3: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Using the same \\(a,b\\), find \\(a\\times b\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 28,
+      "part": "Part 3: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Using the same \\(a,b\\), find \\(a^2-b^2\\).",
+      "options": [],
+      "answer_lines": 3
+    }
+  ]
+}

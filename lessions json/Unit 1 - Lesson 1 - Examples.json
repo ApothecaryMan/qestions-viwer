@@ -1,0 +1,132 @@
+{
+  "title": "Unit 1 - Lesson 1: Real Numbers",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Example 1",
+      "part_intro": "Which of the following numbers are rational numbers, and which are irrational? Give reasons.",
+      "type": "open",
+      "question_latex": "\\(-12\\), \\(\\sqrt{25}\\), \\(\\sqrt{13}\\), \\(\\sqrt[3]{-27}\\), \\(2\\frac{2}{5}\\), \\(-\\sqrt[3]{10}\\), \\(0.125\\), \\(3.\\overline{6}\\)",
+      "options": [],
+      "answer_lines": 4
+    },
+    {
+      "id": 2,
+      "part": "Part 2: Example 2",
+      "part_intro": "Find two consecutive integers between which each of the following numbers lies, and determine its approximate location on the number line.",
+      "type": "open",
+      "question_latex": "\\(\\sqrt{11}\\)",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 3,
+      "part": "Part 2: Example 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\sqrt[3]{20}\\)",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 4,
+      "part": "Part 3: Example 3",
+      "part_intro": "Nature: The golden rectangle is noticed in the shell of a marine organism, and the ratio of its length to its width is equal to \\(\\frac{1+\\sqrt{5}}{2}\\). Estimate this value.",
+      "type": "open",
+      "question_latex": "Estimate \\(\\frac{1+\\sqrt{5}}{2}\\).",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 5,
+      "part": "Part 4: Example 4",
+      "part_intro": "Put the appropriate symbol \\(\\in\\) or \\(\\notin\\) in the empty box:",
+      "type": "open",
+      "question_latex": "\\(0.\\overline{63}\\) ____ \\(\\mathbb{Q}'\\)",
+      "options": [],
+      "answer_lines": 1
+    },
+    {
+      "id": 6,
+      "part": "Part 4: Example 4",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\sqrt{5}\\) ____ \\(\\mathbb{R}\\)",
+      "options": [],
+      "answer_lines": 1
+    },
+    {
+      "id": 7,
+      "part": "Part 4: Example 4",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(|-4|\\) ____ \\(\\mathbb{N}\\)",
+      "options": [],
+      "answer_lines": 1
+    },
+    {
+      "id": 8,
+      "part": "Part 4: Example 4",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\sqrt[3]{3\\frac{3}{8}}\\) ____ \\(\\mathbb{Z}\\)",
+      "options": [],
+      "answer_lines": 1
+    },
+    {
+      "id": 9,
+      "part": "Part 4: Example 4",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\sqrt[3]{3}\\) ____ \\(\\mathbb{Q}\\)",
+      "options": [],
+      "answer_lines": 1
+    },
+    {
+      "id": 10,
+      "part": "Part 4: Example 4",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\sqrt{-1}\\) ____ \\(\\mathbb{R}\\)",
+      "options": [],
+      "answer_lines": 1
+    },
+    {
+      "id": 11,
+      "part": "Part 5: Example 5",
+      "part_intro": "Find the solution set for each of the following equations:",
+      "type": "open",
+      "question_latex": "\\(x^2-3=2\\), where \\(x\\in\\mathbb{Q}'\\).",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 12,
+      "part": "Part 5: Example 5",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(4x^3=-32\\), where \\(x\\in\\mathbb{Q}'\\).",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 13,
+      "part": "Part 5: Example 5",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{1}{2}x^2+1=-4\\), where \\(x\\in\\mathbb{R}\\).",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 14,
+      "part": "Part 5: Example 5",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(5x^3-1=4x^3+8\\), where \\(x\\in\\mathbb{R}\\).",
+      "options": [],
+      "answer_lines": 3
+    }
+  ]
+}

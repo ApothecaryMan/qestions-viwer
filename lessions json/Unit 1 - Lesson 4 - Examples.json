@@ -1,0 +1,78 @@
+{
+  "title": "Unit 1 - Lesson 4: Laws of Square and Cube Roots",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Example 1",
+      "part_intro": "Write each of the following numbers in its simplest form:",
+      "type": "open",
+      "question_latex": "\\(\\sqrt{32}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Example 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\sqrt[3]{24}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 3,
+      "part": "Part 1: Example 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(2\\sqrt{\\frac{5}{2}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 4,
+      "part": "Part 1: Example 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(3\\sqrt[3]{-\\frac{2}{3}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 5,
+      "part": "Part 2: Example 2",
+      "part_intro": "Simplify each of the following to its simplest form:",
+      "type": "open",
+      "question_latex": "\\(2\\sqrt3+5\\sqrt{27}-\\sqrt{48}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 6,
+      "part": "Part 2: Example 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{\\sqrt[3]{40}-2\\sqrt[3]{135}}{\\sqrt[3]{5}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 8,
+      "part": "Part 4: Example 4",
+      "part_intro": "If \\(x=\\sqrt5+\\sqrt2,\\ y=\\frac3x\\), find in its simplest form:",
+      "type": "open",
+      "question_latex": "\\(x-y\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 9,
+      "part": "Part 4: Example 4",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{y}{x}\\)",
+      "options": [],
+      "answer_lines": 2
+    }
+  ]
+}

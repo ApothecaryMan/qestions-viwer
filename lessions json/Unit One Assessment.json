@@ -1,0 +1,134 @@
+{
+  "title": "Unit One Assessment",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Unit Assessment — Choose the correct answer from the given ones",
+      "part_intro": "Choose the correct answer from the given ones:",
+      "type": "mcq",
+      "question_latex": "If \\(a=2\\sqrt[3]{\\frac14}-\\frac12\\sqrt[3]{16}\\), what is the value of \\(a\\)?",
+      "options": [
+        "\\(-1\\)",
+        "1",
+        "\\(\\sqrt[3]{2}\\)",
+        "0"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Unit Assessment — Choose the correct answer from the given ones",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "Which interval does represent \\(R^{c}\\cap]-2,3]\\)?",
+      "options": [
+        "\\(]-2,0[\\)",
+        "\\(]-2,0]\\)",
+        "\\(]-2,1[\\)",
+        "\\(]0,3]\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 3,
+      "part": "Part 1: Unit Assessment — Choose the correct answer from the given ones",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\((\\sqrt2)^{x-1}=\\sqrt3\\), what is the value of \\((\\sqrt2)^x\\)?",
+      "options": [
+        "\\(\\frac12\\sqrt6\\)",
+        "\\(\\frac12\\sqrt3\\)",
+        "\\(\\sqrt6\\)",
+        "\\(\\frac16\\sqrt6\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 4,
+      "part": "Part 1: Unit Assessment — Choose the correct answer from the given ones",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "Which of the following numbers is an irrational number?",
+      "options": [
+        "\\(\\sqrt[3]{-27}\\)",
+        "\\(-\\sqrt{2\\frac14}\\)",
+        "\\(0.\\overline5\\)",
+        "\\(3\\sqrt{\\frac13}\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 5,
+      "part": "Part 2: Unit Assessment — Complete each of the following with the correct answer",
+      "part_intro": "Complete each of the following with the correct answer:",
+      "type": "open",
+      "question_latex": "The solution set of the equation \\(\\frac12x^2+2=0\\) in \\(R\\) is ...............",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 6,
+      "part": "Part 1: Unit Assessment — Complete each of the following with the correct answer",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(n\\) is an integer, \\(n<\\sqrt{29}<n+1\\), then \\(n=\\) ...............",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 7,
+      "part": "Part 1: Unit Assessment — Complete each of the following with the correct answer",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "The multiplicative inverse of the number \\(\\sqrt{10}-3\\) in its simplest form is ...............",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 8,
+      "part": "Part 1: Unit Assessment — Complete each of the following with the correct answer",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(X=]-1,\\infty[\\), then the interval that represents the complement of \\(X\\) is equal to ...............",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 9,
+      "part": "Part 3: Unit Assessment — Answer the following questions",
+      "part_intro": "Answer the following questions:",
+      "type": "open",
+      "question_latex": "Simplify the expression \\(\\frac{(\\sqrt{15})^{n-2}\\times(\\sqrt6)^n}{2\\times(\\sqrt{10})^{n-2}}\\) to its simplest form, then find the numerical value of the result when \\(n=1\\).",
+      "options": [],
+      "answer_lines": 4
+    },
+    {
+      "id": 10,
+      "part": "Part 2: Unit Assessment — Answer the following questions",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(x=\\sqrt7-\\sqrt6\\), then find in simplest form: \\(x-\\frac1x\\).",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 11,
+      "part": "Part 2: Unit Assessment — Answer the following questions",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(A=]-\\infty,1]\\), \\(B=]-2,2]\\), then find in the form of an interval \\(B-A\\).",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 12,
+      "part": "Part 2: Unit Assessment — Answer the following questions",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Arrange the numbers in ascending order: \\(3\\frac12,\\ 3.5,\\ 2\\sqrt3\\).",
+      "options": [],
+      "answer_lines": 2
+    }
+  ]
+}

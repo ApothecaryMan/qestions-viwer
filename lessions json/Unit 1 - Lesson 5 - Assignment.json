@@ -1,0 +1,286 @@
+{
+  "title": "Unit 1 - Lesson 5: Laws of Exponents in Real Numbers",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "Choose the correct answer from the given ones:",
+      "type": "mcq",
+      "question_latex": "What is the result of \\(\\frac{(ab)^3}{b^3}\\)?",
+      "options": [
+        "\\(a^3\\)",
+        "\\(\\frac ab\\)",
+        "\\(\\frac{a^3}{b^2}\\)",
+        "\\(\\frac{a^2}{b^3}\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the value of \\(\\left(\\frac7{\\sqrt7}\\right)^0-\\frac7{(\\sqrt7)^0}\\)?",
+      "options": [
+        "0",
+        "6",
+        "1",
+        "-6"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 3,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the result of \\((\\sqrt3)^3\\times(\\sqrt3)^{-4}\\)?",
+      "options": [
+        "\\(\\sqrt3\\)",
+        "\\(\\frac{\\sqrt3}{3}\\)",
+        "3",
+        "\\(\\frac13\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 4,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the result of \\(\\left(\\frac{\\sqrt5}{10}\\right)^{-1}\\)?",
+      "options": [
+        "\\(2\\sqrt5\\)",
+        "\\(5\\sqrt2\\)",
+        "\\(\\frac5{\\sqrt{10}}\\)",
+        "2"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 5,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the perimeter of a square with an area of \\(a\\,cm^2\\)?",
+      "options": [
+        "\\(a^4\\,cm\\)",
+        "\\((\\sqrt a)^4\\,cm\\)",
+        "\\(4\\sqrt a\\,cm\\)",
+        "\\(4a\\,cm\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 6,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the value of \\(4^2+4^2+4^2+4^2\\)?",
+      "options": [
+        "\\(4^2\\)",
+        "\\(4^3\\)",
+        "\\(4^8\\)",
+        "\\(4^{16}\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 7,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(2^{x-1}=1\\), what is the value of \\(x\\)?",
+      "options": [
+        "0",
+        "1",
+        "-1",
+        "-2"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 8,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(\\sqrt6\\times(\\sqrt6)^x=1\\), what is the value of \\(x\\)?",
+      "options": [
+        "0",
+        "1",
+        "-1",
+        "-2"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 9,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the \\(\\frac15\\) of the number \\((\\sqrt[3]5)^6\\)?",
+      "options": [
+        "5",
+        "25",
+        "\\(\\sqrt[3]5\\)",
+        "\\((\\sqrt[3]5)^8\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 10,
+      "part": "Part 1: Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(2^x=3\\), what is the value of \\(2^{x+1}\\)?",
+      "options": [
+        "4",
+        "5",
+        "6",
+        "9"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 11,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "Simplify each of the following to its simplest form:",
+      "type": "open",
+      "question_latex": "\\(\\frac{(-2xy)^{-3}}{x^{-4}y^{-3}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 12,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{-3a^2b\\times4a^{-1}b^{-2}}{12(ab)^{-2}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 13,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\left(\\frac{2\\sqrt3}{3\\sqrt2}\\right)^4\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 14,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{(\\sqrt3)^3\\times27}{(\\sqrt3)^5\\times(\\sqrt3)^4}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 15,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{(\\sqrt{18})^2\\times(\\sqrt2)^{-1}}{(\\sqrt8)^{-1}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 16,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{2^{2n+1}\\times3^{2n+1}}{(6)^{2n}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 17,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "Simplify each of the following to its simplest form, then find the value when the stated condition holds:",
+      "type": "open",
+      "question_latex": "\\(\\frac{(\\sqrt6)^{n+2}(\\sqrt3)^n}{4(\\sqrt2)^{n-2}}\\), when \\(n=1\\)",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 18,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{10^{-n}\\times0.01}{10^{-n-6}\\times10^n}\\), when \\(n=3\\)",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 19,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(x=\\sqrt2,\\ y=\\sqrt6\\), what is the value of \\(\\frac{y^6x^{-4}}{x^2}\\)?",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 20,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(x=2\\sqrt3,\\ y=3\\sqrt2\\), find the numerical value of \\((x^2-y^2)^{-1}\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 21,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(2^x=5\\), find the value of \\(2^{x+1}\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 22,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(2^x=5\\), find the value of \\(2^{1-x}\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 23,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(2^x=5\\), find the value of \\(2^{x+2}+2^{x+3}\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 24,
+      "part": "Part 2: Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\(x=\\sqrt5,\\ y=5\\), find the value of \\(x^{-10}y^{10}\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 25,
+      "part": "Part 3: Creative Thinking",
+      "part_intro": "Creative Thinking:",
+      "type": "mcq",
+      "question_latex": "Which of the following expresses the arithmetic mean of the two numbers \\(2^{x+1}\\) and \\(2^x\\), where \\(x\\in\\mathbb Z\\)?",
+      "options": [
+        "\\(2\\)",
+        "\\(2^{2x+1}\\)",
+        "\\(2^{x-1}+2^x\\)",
+        "\\(2^{x+1}+2^x\\)"
+      ],
+      "answer_lines": 1
+    }
+  ]
+}

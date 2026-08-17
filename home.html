@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Course Home</title>
+    <title>Mathematics for the Second Preparatory Grade — First Term</title>
     <style>
       :root { font-family: Arial, sans-serif; color: #172033; background: #f2f4f8; }
       * { box-sizing: border-box; }
@@ -11,8 +11,12 @@
       main { width: 100%; }
       h1 { margin: 0 0 30px; }
       .unit { margin: 0; }
-      .unit summary { cursor: pointer; padding: 18px 0; border-bottom: 1px solid #cbd3df; font-size: 24px; font-weight: 700; list-style-position: inside; }
-      .unit-content { display: flex; flex-wrap: wrap; gap: 18px; padding: 24px 0 30px; }
+      .unit summary, .lesson summary { cursor: pointer; list-style-position: inside; }
+      .unit summary { padding: 18px 0; border-bottom: 1px solid #cbd3df; font-size: 24px; font-weight: 700; }
+      .unit-content { padding: 10px 0 24px 24px; }
+      .lesson { border-bottom: 1px solid #d9dfe8; }
+      .lesson summary { padding: 16px 0; color: #315f98; font-size: 20px; font-weight: 700; }
+      .lesson-content { display: flex; flex-wrap: wrap; gap: 18px; padding: 4px 0 24px 24px; }
       .book { width: 330px; min-height: 210px; margin-top: 18px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #cbd3df; border-radius: 8px; background: #fff; box-shadow: 0 5px 14px #17203314; }
       .book h2 { margin: 0 0 12px; font-size: 19px; line-height: 1.35; }
       .kind { color: #52627a; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
@@ -23,12 +27,18 @@
   </head>
   <body>
     <main>
-      <h1>Course Home</h1>
+      <h1>Mathematics for the Second Preparatory Grade — First Term</h1>
       <div id="units"><p class="empty">Loading course content...</p></div>
     </main>
     <script>
       const units = document.getElementById("units");
-      const kindOf = title => /assignment/i.test(title) ? "Assignment" : /example/i.test(title) ? "Example" : "Lesson";
+      const kindOf = title => /unit\s+(one|1)\s+assessment|unit\s+assessment/i.test(title) ? "Unit Assessment" : /self[-\s]?evaluation/i.test(title) ? "Self-Evaluation" : /assignment|lesson assessment/i.test(title) ? "Assignment" : /example/i.test(title) ? "Examples" : "Lesson";
+      const lessonOf = title => {
+        if (/unit\s+(one|1)\s+assessment|unit\s+assessment/i.test(String(title || ""))) return "Unit Assessment";
+        const cleanTitle = String(title || "").replace(/\s*[—-]\s*(Assignment|Examples?|Self[-\s]?Evaluation)\s*$/i, "").trim();
+        const match = cleanTitle.match(/Lesson\s*\d+\s*[—:-]\s*.+$/i);
+        return match ? match[0].trim() : cleanTitle;
+      };
       const displayTitle = title => String(title || "")
         .replace(/^Assignment\s*[—-]\s*/i, "")
         .replace(/^Unit\s*\d+\s*[—:-]\s*/i, "")
@@ -37,13 +47,24 @@
       function render(files) {
         const groups = {};
         files.forEach(file => {
-          const unit = (file.title.match(/Unit\s*\d+/i) || ["Unit 1"])[0];
+          const unit = file.unit || (file.title.match(/Unit\s*\d+/i) || ["Unit 1"])[0];
           (groups[unit] ||= []).push(file);
         });
-        units.innerHTML = Object.entries(groups).map(([unit, files]) => `
-          <details class="unit" open><summary>${unit}</summary><div class="unit-content">
-            ${files.map(file => `<article class="book"><div>${kindOf(file.title) ? `<div class="kind">${kindOf(file.title)}</div>` : ""}<h2>${displayTitle(file.title) || file.name}</h2></div><button data-file="${file.name}">Open</button></article>`).join("")}
-          </div></details>`).join("");
+        units.innerHTML = Object.entries(groups).map(([unit, files]) => {
+          const unitTitle = files.find(file => file.unitTitle)?.unitTitle;
+          const lessons = {};
+          files.forEach(file => {
+            const lesson = lessonOf(file.title) || "Lesson";
+            (lessons[lesson] ||= []).push(file);
+          });
+          return `
+          <details class="unit"><summary>${unit}${unitTitle ? `: ${unitTitle}` : ""}</summary><div class="unit-content">
+            ${Object.entries(lessons).map(([lesson, lessonFiles]) => `
+              <details class="lesson"><summary>${lesson}</summary><div class="lesson-content">
+                ${lessonFiles.map(file => `<article class="book"><div>${kindOf(file.title) ? `<div class="kind">${kindOf(file.title)}</div>` : ""}<h2>${displayTitle(file.title) || file.name}</h2></div><button data-file="${file.name}">Open</button></article>`).join("")}
+              </div></details>`).join("")}
+          </div></details>`;
+        }).join("");
         units.querySelectorAll("button").forEach(button => button.onclick = () => {
           window.location.href = `exam-paper.html?file=${encodeURIComponent(button.dataset.file)}`;
         });

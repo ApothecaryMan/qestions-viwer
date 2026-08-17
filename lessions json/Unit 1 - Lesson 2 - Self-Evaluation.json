@@ -1,0 +1,105 @@
+{
+  "title": "Unit 1 - Lesson 2: Intervals and Their Operations",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "Write in the form of an interval and represent on the number line each of the following sets:",
+      "type": "open",
+      "question_latex": "\\(\\{x:x\\in\\mathbb{R},\\ -1<x<5\\}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\{x:x\\in\\mathbb{R},\\ 0.5\\leq x<\\sqrt{9}\\}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 3,
+      "part": "Part 2: Self-Evaluation 2",
+      "part_intro": "Write in the form of an interval and represent on the number line:",
+      "type": "open",
+      "question_latex": "The set of negative real numbers \\(\\mathbb{R}^{-}\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 4,
+      "part": "Part 2: Self-Evaluation 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "The set of non-negative real numbers.",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 5,
+      "part": "Part 2: Self-Evaluation 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\{x:x\\in\\mathbb{R}^{+},\\ x<3\\}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 6,
+      "part": "Part 3: Self-Evaluation 3",
+      "part_intro": "Find using the number line:",
+      "type": "open",
+      "question_latex": "\\([4,9]\\cap[7,10[\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 7,
+      "part": "Part 3: Self-Evaluation 3",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(]-3,2[\\cup]0,\\infty[\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 8,
+      "part": "Part 3: Self-Evaluation 3",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(]0,5[\\setminus]-3,7]\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 9,
+      "part": "Part 3: Self-Evaluation 3",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(X'\\) where \\(X=[-5,\\infty[\\).",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 10,
+      "part": "Part 4: Creative Thinking",
+      "part_intro": "Answer the following creative-thinking questions:",
+      "type": "open",
+      "question_latex": "If \\(a,b,c,d\\) are real numbers, \\(a<c<b<d\\), find each of the following: \\([a,b]\\cap[c,d]\\) and \\([a,b]-[c,d]\\).",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 11,
+      "part": "Part 4: Creative Thinking",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "If \\([-2,a]\\cap[b,7]=[2,4]\\), what is the value of \\(\\frac{b^a}{a^b}\\)?",
+      "options": [],
+      "answer_lines": 3
+    }
+  ]
+}

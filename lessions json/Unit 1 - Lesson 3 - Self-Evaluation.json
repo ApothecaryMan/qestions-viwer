@@ -1,0 +1,123 @@
+{
+  "title": "Unit 1 - Lesson 3: Operations on Real Numbers",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "Find the value of each of the following:",
+      "type": "open",
+      "question_latex": "\\(3\\sqrt{5}-4\\sqrt{5}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(-5\\sqrt{2}\\times3\\sqrt{2}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 3,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{(\\sqrt{7})^2\\times3\\sqrt{3}}{7\\sqrt{3}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 4,
+      "part": "Part 2: Self-Evaluation 2",
+      "part_intro": "Write each of the following in the simplest form, so that the denominator is an integer:",
+      "type": "open",
+      "question_latex": "\\(\\frac{6}{\\sqrt{3}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 5,
+      "part": "Part 2: Self-Evaluation 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(-\\frac{5}{\\sqrt{2}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 6,
+      "part": "Part 2: Self-Evaluation 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{9}{5\\sqrt{3}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 7,
+      "part": "Part 3: Self-Evaluation 3",
+      "part_intro": "If \\(x=(\\sqrt{5}-2)\\), \\(y=(\\sqrt{5}+2)\\), find in its simplest form the value of the expression \\(x^2-y^2\\).",
+      "type": "open",
+      "question_latex": "\\(x^2-y^2\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 8,
+      "part": "Part 4: Self-Evaluation 4",
+      "part_intro": "Find in its simplest form the additive inverse and the multiplicative inverse of each of the following:",
+      "type": "open",
+      "question_latex": "\\(-4\\sqrt{2}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 9,
+      "part": "Part 4: Self-Evaluation 4",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{\\sqrt{5}}{5}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 10,
+      "part": "Part 4: Self-Evaluation 4",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(3\\sqrt{7}-4\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 11,
+      "part": "Part 5: Self-Evaluation 5",
+      "part_intro": "In the figure, a flower pot has a base in the shape of a trapezoid. Find the area of the base of the pot.",
+      "type": "open",
+      "question_latex": "The parallel sides of the trapezoid are \\((\\sqrt{5}-\\sqrt{2})\\,m\\) and \\((\\sqrt{5}+\\sqrt{2})\\,m\\), and its height is \\(\\sqrt{5}\\,m\\). Find the area of the base.",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 12,
+      "part": "Part 6: Critical Thinking",
+      "part_intro": "Answer the following critical-thinking questions:",
+      "type": "open",
+      "question_latex": "Dina wrote: \\(2\\sqrt{3}+3\\sqrt{2}=5\\sqrt{5}\\). Is what Dina wrote correct? Discuss.",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 13,
+      "part": "Part 6: Critical Thinking",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "Islam wrote: \\(2\\sqrt{5}+5=7\\sqrt{5}\\). Is what Islam wrote correct? Discuss.",
+      "options": [],
+      "answer_lines": 2
+    }
+  ]
+}

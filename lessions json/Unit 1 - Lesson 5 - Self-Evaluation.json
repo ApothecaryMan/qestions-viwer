@@ -1,0 +1,96 @@
+{
+  "title": "Unit 1 - Lesson 5: Laws of Exponents in Real Numbers",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "Find the value of each of the following:",
+      "type": "open",
+      "question_latex": "\\((-\\sqrt2)^5\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(-(\\sqrt2)^5\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 3,
+      "part": "Part 1: Self-Evaluation 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\((-\\sqrt2)^6\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 4,
+      "part": "Part 2: Self-Evaluation 2",
+      "part_intro": "Simplify each of the following to its simplest form:",
+      "type": "open",
+      "question_latex": "\\(\\frac{(\\sqrt3)^2(\\sqrt3)^4(\\sqrt3)^{-1}}{(\\sqrt3)^5(\\sqrt3)^{-2}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 5,
+      "part": "Part 2: Self-Evaluation 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{(\\sqrt{18})^5(\\sqrt2)^3}{(\\sqrt{12})^4}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 6,
+      "part": "Part 3: Self-Evaluation 3",
+      "part_intro": "Simplify to the simplest form, then find the numerical value when \\(n=-2\\):",
+      "type": "open",
+      "question_latex": "\\(\\frac{(\\sqrt5)^n(\\sqrt3)^{2-n}}{3(\\sqrt{15})^{-n}}\\)",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 7,
+      "part": "Part 3: Self-Evaluation 3",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{1000\\times0.1^n\\times10^{n-1}}{10^{n+2}}\\), when \\(n=-2\\)",
+      "options": [],
+      "answer_lines": 3
+    },
+    {
+      "id": 8,
+      "part": "Part 4: Self-Evaluation 4",
+      "part_intro": "If \\(3^x=4\\), find the numerical value of each of the following:",
+      "type": "open",
+      "question_latex": "\\(3^{x+1}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 9,
+      "part": "Part 4: Self-Evaluation 4",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(3^{x-1}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 10,
+      "part": "Part 4: Self-Evaluation 4",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(3^{x+2}+3^{x+3}\\)",
+      "options": [],
+      "answer_lines": 2
+    }
+  ]
+}

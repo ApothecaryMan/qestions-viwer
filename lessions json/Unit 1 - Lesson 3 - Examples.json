@@ -1,0 +1,132 @@
+{
+  "title": "Unit 1 - Lesson 3: Operations on Real Numbers",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Example 1",
+      "part_intro": "If \\(x=-4\\sqrt{3}\\), \\(y=\\sqrt{3}\\), \\(z=\\sqrt[3]{5}\\), find the value of each of the following:",
+      "type": "open",
+      "question_latex": "\\(x+y\\)",
+      "options": [],
+      "answer_lines": 1
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Example 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(x\\times y\\)",
+      "options": [],
+      "answer_lines": 1
+    },
+    {
+      "id": 3,
+      "part": "Part 1: Example 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{x}{2y}\\)",
+      "options": [],
+      "answer_lines": 1
+    },
+    {
+      "id": 4,
+      "part": "Part 1: Example 1",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(2x-z^3\\)",
+      "options": [],
+      "answer_lines": 1
+    },
+    {
+      "id": 5,
+      "part": "Part 2: Example 2",
+      "part_intro": "Write each of the following numbers in the simplest form, so that the denominator is an integer:",
+      "type": "open",
+      "question_latex": "\\(\\frac{7}{\\sqrt{3}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 6,
+      "part": "Part 2: Example 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(-\\frac{15}{\\sqrt{5}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 7,
+      "part": "Part 2: Example 2",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{12}{5\\sqrt{2}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 8,
+      "part": "Part 3: Example 3",
+      "part_intro": "Find the result of each of the following in its simplest form:",
+      "type": "open",
+      "question_latex": "\\(2\\sqrt{3}(4+\\sqrt{3})-4\\sqrt{3}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 9,
+      "part": "Part 3: Example 3",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\((\\sqrt{7}-1)(2\\sqrt{7}+3)\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 10,
+      "part": "Part 3: Example 3",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\((2\\sqrt{2}+1)(2\\sqrt{2}-1)\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 11,
+      "part": "Part 3: Example 3",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\((2\\sqrt{5}-5)^2\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 12,
+      "part": "Part 4: Example 4",
+      "part_intro": "Find in its simplest form the additive inverse and the multiplicative inverse of each of the following:",
+      "type": "open",
+      "question_latex": "\\(3\\sqrt{2}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 13,
+      "part": "Part 4: Example 4",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(2-\\sqrt{3}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 14,
+      "part": "Part 5: Example 5",
+      "part_intro": "In the opposite figure, a covered glass fish tank is in the shape of a cuboid. Find:",
+      "type": "open",
+      "question_latex": "The volume of the glass tank and the total area of the tank to the nearest \\(m^2\\), given its dimensions are \\(2\\sqrt{2}\\,m\\), \\(2\\,m\\), and \\(\\sqrt{2}\\,m\\).",
+      "options": [],
+      "answer_lines": 3
+    }
+  ]
+}

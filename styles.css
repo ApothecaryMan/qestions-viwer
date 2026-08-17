@@ -309,6 +309,14 @@
         outline-offset: 2px;
       }
 
+      body.tools-hidden .preview-editable {
+        cursor: default;
+      }
+
+      body.tools-hidden .preview-editable:hover {
+        outline: none;
+      }
+
       .inline-preview-editor {
         display: block;
         width: 100%;
@@ -1476,6 +1484,32 @@
         text-align: center;
       }
 
+      .paper-title {
+        position: relative;
+        min-height: 18mm;
+        padding-top: 1mm;
+      }
+
+      .paper-title-meta {
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        text-align: left;
+        text-transform: uppercase;
+      }
+
+      .paper-title-name {
+        margin: 0;
+        font: inherit;
+        font-size: 20px;
+        line-height: 1.2;
+        text-align: center;
+      }
+
       .part {
         margin: 0 0 7mm;
         break-inside: avoid;
@@ -2040,6 +2074,133 @@
       @media screen and (max-width: 640px) {
         .paper {
           margin-left: 0;
+        }
+      }
+
+      @media screen and (max-width: 1000px) {
+        body {
+          padding: 6px;
+        }
+
+        .tab-bar {
+          top: 6px;
+          width: calc(100% - 12px);
+          gap: 4px;
+        }
+
+        .tab-actions {
+          gap: 4px;
+        }
+
+        .menu-button,
+        .add-tab {
+          width: 38px;
+          min-height: 34px;
+        }
+
+        .tab-list {
+          max-width: calc(100% - 80px);
+          gap: 2px;
+          direction: ltr;
+          justify-content: flex-start;
+        }
+
+        .tab-select {
+          max-width: 180px;
+          padding: 7px 8px;
+          font-size: 11px;
+          direction: ltr;
+          text-align: left;
+        }
+
+        .tab-close {
+          width: 24px;
+        }
+
+        .app-shell {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          height: 100%;
+          padding-top: 44px;
+          overflow: auto;
+        }
+
+        .preview-stage {
+          order: 1;
+          flex: 0 0 auto;
+          height: calc(100dvh - 62px);
+          min-height: 360px;
+          padding-bottom: 12px;
+          overflow: auto;
+        }
+
+        .designer-panel {
+          order: 2;
+          flex: 0 0 auto;
+          height: auto;
+          max-height: none;
+          padding: 10px;
+          overflow: visible;
+        }
+
+        body.tools-hidden .app-shell {
+          height: 100%;
+          overflow: hidden;
+        }
+
+        body.tools-hidden .preview-stage {
+          flex: 1 1 auto;
+          height: auto;
+          min-height: 0;
+        }
+
+        .preview-label {
+          margin-bottom: 6px;
+          font-size: 11px;
+        }
+
+        .paper {
+          margin-right: 0 !important;
+          margin-left: 0 !important;
+        }
+
+        .theme-carousel {
+          margin-bottom: 8px;
+        }
+
+        .theme-card {
+          min-width: 140px;
+          grid-template-columns: 32px minmax(90px, 1fr);
+          gap: 6px;
+          padding: 5px 6px;
+        }
+
+        .theme-swatch {
+          width: 32px;
+          height: 24px;
+        }
+
+        .theme-card-name {
+          font-size: 11px;
+        }
+
+        .theme-card-description {
+          font-size: 9px;
+        }
+
+        .section-nav {
+          display: none !important;
+        }
+
+        .section-nav-label {
+          min-width: 0;
+          max-width: calc(100vw - 52px);
+          font-size: 11px;
+        }
+
+        .menu-panel {
+          width: min(290px, calc(100vw - 12px));
         }
       }
 

@@ -1,3 +1,8 @@
+---
+name: exam-question-creator-v2
+description: Extract textbook lesson questions into strict, source-faithful JSON while preserving educational blocks, question boundaries, mathematical notation, question types, and ordering. Use when creating or reviewing lesson, example, self-evaluation, or assessment question files for the exam-paper application.
+---
+
 # Lesson Content & Exam Question Creator
 
 A strict skill for converting textbook lessons, copied PDF/OCR text, or manually supplied questions into structured JSON for an exam-paper / lesson-content website.
@@ -170,11 +175,42 @@ Extract the original question statement, NOT the worked solution.
 Example:
 
 Example 1:
-- `(-√5)^4`
-- `-(√5)^4`
-- `(-√5)^3`
+- If the source gives one instruction such as “classify the following numbers” and then lists several values, keep the complete list as one question object.
+- If the source shows three separately numbered exercises, each requiring its own response, create three question objects under the same part.
 
-These are three question objects.
+Do not infer question boundaries from line breaks or numbering alone.
+
+### 6.1 Question-boundary decision rule
+
+Determine the educational unit before creating objects:
+
+1. Read the instruction above the values or equations.
+2. Decide whether the source expects one collective response or separate responses.
+3. Keep one collective task in one question object, even when it contains many values.
+4. Split independently numbered exercises when each has its own answer or calculation.
+5. Keep split exercises under the same `part` when they belong to the same source block.
+6. Do not create a new `part` for every numbered exercise.
+7. Prefer an existing question pattern from the source before inventing a new pattern.
+
+Use this verified pattern from Unit 1 — Lesson 1 as a boundary reference:
+
+| Source block | Correct question-object structure |
+|---|---|
+| Example 1: classify 8 listed numbers | 1 grouped open question |
+| Example 2: `√11` and `∛20` | 2 open questions under the same part |
+| Example 3: golden-ratio estimate | 1 open question |
+| Example 4: six separate `∈` / `∉` statements | 6 open questions under the same part |
+| Example 5: four equations | 4 open questions under the same part |
+| Self-Evaluation 1: one classification table/list | 1 grouped open question |
+| Self-Evaluation 2: one inequality and estimate | 1 open question |
+| Self-Evaluation 3: one application problem | 1 open question |
+| Self-Evaluation 4: five numbers under one set-membership instruction | 1 grouped open question |
+| Self-Evaluation 5: three equations | 3 open questions under the same part |
+| Creative Thinking: two separately stated problems | 2 open questions under the same part |
+
+The key distinction is collective instruction versus independent exercise, not the number of values shown.
+
+For a classification/list prompt, do not convert the values into an MCQ merely because there are many possible answers. Use `open` unless the source visibly provides exactly four answer choices.
 
 The solution steps printed underneath them are NOT question objects.
 
@@ -529,17 +565,18 @@ Do not place the intro inside `question_latex`.
 
 # 19. IDs
 
-Output IDs are always regenerated.
+Preserve source question numbers whenever the source provides them.
 
 Rules:
 
-- start at `1`
-- increase by exactly `1`
-- no duplicates
-- no gaps
-- integers only
+- keep each valid source `id` unchanged
+- do not renumber later questions after deleting or excluding a question
+- a deleted source question may leave a visible numeric gap
+- do not change IDs merely to make them contiguous
+- keep IDs unique integers within the file
+- for newly authored questions with no source number, assign the next available integer
 
-Source numbering does not control output IDs.
+Source numbering controls output IDs. Never replace it with a newly generated sequence.
 
 ---
 
@@ -709,6 +746,8 @@ For complete-lesson mode, keep all question-bearing blocks.
 
 From each selected block, extract only actual questions.
 
+Determine each question boundary using the collective-versus-independent rule in Section 6.1. Do not split a grouped classification or list prompt just because it contains several values, and do not merge separately numbered exercises that require separate responses.
+
 ### Step 6 — Verify each mathematical expression
 
 Use page images whenever available.
@@ -729,9 +768,9 @@ Use `open` or `mcq` based on source structure.
 
 Convert mathematical notation without changing its meaning.
 
-### Step 11 — Generate IDs
+### Step 11 — Preserve or assign IDs
 
-Start at 1 and increment.
+Preserve every valid source ID. If a new question has no source ID, assign the next unused integer without changing existing IDs.
 
 ### Step 12 — Validate
 
@@ -825,7 +864,7 @@ Before returning JSON, silently verify:
 7. Every question has exactly 7 properties.
 8. Property order is correct.
 9. No unknown properties exist.
-10. IDs start at 1 and increment by 1.
+10. Existing source IDs are unchanged; deleted questions may leave gaps.
 11. Parts are contiguous.
 12. Source sequence is preserved.
 13. Examples are not omitted when complete-lesson mode is requested.
@@ -846,6 +885,11 @@ Before returning JSON, silently verify:
 28. No question was silently rewritten into a different mathematical problem.
 29. No unrelated source section was merged.
 30. Output contains JSON only.
+31. Question boundaries were determined from the source instruction and expected response, not from numbering alone.
+32. Grouped classification/list prompts remain grouped when the source treats them as one task.
+33. Independently numbered exercises are separate objects but retain their source `part`.
+34. No new question template was invented when an existing source pattern applied.
+35. No existing source ID was renumbered after deletion or filtering.
 
 If any check fails, repair the output before returning.
 

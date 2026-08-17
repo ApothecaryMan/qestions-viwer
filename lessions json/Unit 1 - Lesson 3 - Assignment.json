@@ -1,0 +1,280 @@
+{
+  "title": "Unit 1 - Lesson 3: Operations on Real Numbers",
+  "theme": "classic",
+  "questions": [
+    {
+      "id": 1,
+      "part": "Part 1: Lesson Assessment — Measuring Conceptual Understanding",
+      "part_intro": "Choose the correct answer from the given ones:",
+      "type": "mcq",
+      "question_latex": "If \\(a+\\sqrt{5}=0\\), what is the value of \\(a\\)?",
+      "options": [
+        "\\(0\\)",
+        "\\(\\sqrt{5}\\)",
+        "\\(-\\sqrt{5}\\)",
+        "\\(\\frac{1}{\\sqrt{5}}\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 2,
+      "part": "Part 1: Lesson Assessment — Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(a\\times\\sqrt{2}=1\\), what is the value of \\(a\\)?",
+      "options": [
+        "\\(1\\)",
+        "\\(\\sqrt{2}\\)",
+        "\\(-\\sqrt{2}\\)",
+        "\\(\\frac{\\sqrt{2}}{2}\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 3,
+      "part": "Part 1: Lesson Assessment — Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the value of \\(\\sqrt{3}+\\sqrt{3}\\)?",
+      "options": [
+        "\\(\\sqrt{3}\\)",
+        "\\(2\\sqrt{3}\\)",
+        "\\(\\sqrt{6}\\)",
+        "\\(3\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 4,
+      "part": "Part 1: Lesson Assessment — Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(a\\sqrt{5}-4\\sqrt{5}=3\\sqrt{5}\\), then:",
+      "options": [
+        "\\(a=-1\\)",
+        "\\(a=1\\)",
+        "\\(a=7\\)",
+        "\\(a=10\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 5,
+      "part": "Part 1: Lesson Assessment — Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\((2\\sqrt{3})^n=12\\), then:",
+      "options": [
+        "\\(n=2\\)",
+        "\\(n=3\\)",
+        "\\(n=4\\)",
+        "\\(n=6\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 6,
+      "part": "Part 1: Lesson Assessment — Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "If \\(\\sqrt[3]{5}+3a=4\\sqrt[3]{5}\\), then:",
+      "options": [
+        "\\(a=1\\)",
+        "\\(a=\\sqrt{5}\\)",
+        "\\(a=\\sqrt[3]{5}\\)",
+        "\\(a=5\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 7,
+      "part": "Part 1: Lesson Assessment — Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the additive inverse of the number \\(\\frac{7}{\\sqrt{7}}\\) in its simplest form?",
+      "options": [
+        "\\(\\frac{\\sqrt{7}}{7}\\)",
+        "\\(7\\)",
+        "\\(-\\sqrt{7}\\)",
+        "\\(-7\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 8,
+      "part": "Part 1: Lesson Assessment — Measuring Conceptual Understanding",
+      "part_intro": "",
+      "type": "mcq",
+      "question_latex": "What is the multiplicative inverse of the number \\(\\sqrt{3}-2\\)?",
+      "options": [
+        "\\(2-\\sqrt{3}\\)",
+        "\\(\\sqrt{3}+2\\)",
+        "\\(-\\sqrt{3}-2\\)",
+        "\\(\\sqrt{3}-2\\)"
+      ],
+      "answer_lines": 1
+    },
+    {
+      "id": 9,
+      "part": "Part 2: Lesson Assessment — Applying Concepts",
+      "part_intro": "Make the denominator in each of the following an integer and write the number in its simplest form:",
+      "type": "open",
+      "question_latex": "\\(\\frac{1}{\\sqrt{15}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 10,
+      "part": "Part 2: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{30}{\\sqrt{10}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 11,
+      "part": "Part 2: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{10}{2\\sqrt{5}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 12,
+      "part": "Part 2: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{\\sqrt{2}+3}{\\sqrt{2}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 13,
+      "part": "Part 2: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{1}{2+\\sqrt{6}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 14,
+      "part": "Part 2: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{20}{5-\\sqrt{15}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 15,
+      "part": "Part 2: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\frac{3}{\\sqrt{5}+\\sqrt{2}}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 16,
+      "part": "Part 3: Lesson Assessment — Applying Concepts",
+      "part_intro": "Find the result of each of the following in its simplest form:",
+      "type": "open",
+      "question_latex": "\\(2\\sqrt{7}-3\\sqrt{3}+\\sqrt{7}+2\\sqrt{3}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 17,
+      "part": "Part 3: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(2\\sqrt{5}-3\\sqrt[3]{2}+4\\sqrt{5}+\\sqrt[3]{2}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 18,
+      "part": "Part 3: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\((\\sqrt[3]{5})^3\\times2\\sqrt{3}\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 19,
+      "part": "Part 3: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(\\sqrt{5}(2-\\sqrt{5})-2(1+\\sqrt{5})\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 20,
+      "part": "Part 3: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\((\\sqrt{7}-1)^2+(\\sqrt{7}+2)(\\sqrt{7}-3)\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 21,
+      "part": "Part 3: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\((3+2\\sqrt{2})^2-\\sqrt{2}(1-\\sqrt{2})\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 22,
+      "part": "Part 3: Lesson Assessment — Applying Concepts",
+      "part_intro": "If \\(x=\\frac{1}{\\sqrt{3}+2}\\), \\(y=\\sqrt{3}+2\\), find the value of each of the following in its simplest form:",
+      "type": "open",
+      "question_latex": "\\((x+y)^2\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 23,
+      "part": "Part 3: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(xy\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 24,
+      "part": "Part 3: Lesson Assessment — Applying Concepts",
+      "part_intro": "",
+      "type": "open",
+      "question_latex": "\\(x^2+y^2\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 25,
+      "part": "Part 3: Lesson Assessment — Applying Concepts",
+      "part_intro": "If \\(\\frac{x}{3\\sqrt{2}}=\\frac{y}{2\\sqrt{3}}=1\\), then find the value of \\(x^2+y^2\\).",
+      "type": "open",
+      "question_latex": "\\(x^2+y^2\\)",
+      "options": [],
+      "answer_lines": 2
+    },
+    {
+      "id": 26,
+      "part": "Part 4: Lesson Assessment — Creative Thinking",
+      "part_intro": "Answer the following creative-thinking question:",
+      "type": "open",
+      "question_latex": "When constructing a storage room in the shape of a cuboid, its dimensions were \\(a\\), \\(b\\), and \\(c\\) meters. If \\(ab=3\\sqrt{3}\\), \\(bc=5\\sqrt{3}\\), and \\(ac=5\\), find the volume of the storage room.",
+      "options": [],
+      "answer_lines": 3
+    }
+  ]
+}

@@ -1,479 +1,475 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>مصمم ورقة امتحان</title>
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
-    />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>مصمم ورقة امتحان</title>
 
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" />
 
-  <body>
-    <nav class="tab-bar" aria-label="تبويبات الصفحات">
-      <div class="tab-actions">
-        <button class="menu-button" id="toggle-tools" type="button" title="فتح القائمة" aria-label="فتح القائمة" aria-expanded="false">☰</button>
-        <button class="add-tab" id="add-tab" type="button" title="إضافة صفحة جديدة">+</button>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <nav class="tab-bar" aria-label="تبويبات الصفحات">
+    <div class="tab-actions">
+      <button class="menu-button" id="toggle-tools" type="button" title="فتح القائمة" aria-label="فتح القائمة"
+        aria-expanded="false">☰</button>
+      <button class="add-tab" id="add-tab" type="button" title="إضافة صفحة جديدة">+</button>
+    </div>
+    <div class="tab-list" id="tab-list"></div>
+  </nav>
+
+  <div class="app-shell">
+    <aside class="designer-panel" aria-label="لوحة تصميم الصفحة">
+      <header class="designer-header">
+        <p class="eyebrow">A4 PAGE DESIGNER</p>
+        <h1>مصمم ورقة الامتحان</h1>
+      </header>
+
+      <div class="designer-actions">
+        <button class="primary" id="add-question" type="button">+ سؤال</button>
+        <button class="primary" id="add-part" type="button">+ قسم جديد</button>
+        <button id="print-paper" type="button">طباعة</button>
+        <button id="download-paper" type="button">تحميل HTML</button>
+        <button id="reset-paper" type="button">إرجاع الافتراضي</button>
+        <button id="clear-paper" type="button">مسح الأسئلة</button>
       </div>
-      <div class="tab-list" id="tab-list"></div>
-    </nav>
 
-    <div class="app-shell">
-      <aside class="designer-panel" aria-label="لوحة تصميم الصفحة">
-        <header class="designer-header">
-          <p class="eyebrow">A4 PAGE DESIGNER</p>
-          <h1>مصمم ورقة الامتحان</h1>
-          <p>عدّل الأسئلة وشاهد النتيجة مباشرة في معاينة A4.</p>
-        </header>
+      <input id="import-json-input" type="file" accept=".json,application/json" hidden />
 
-        <div class="designer-actions">
-          <button class="primary" id="add-question" type="button">+ سؤال</button>
-          <button class="primary" id="add-part" type="button">+ قسم جديد</button>
-          <button id="print-paper" type="button">طباعة</button>
-          <button id="download-paper" type="button">تحميل HTML</button>
-          <button id="reset-paper" type="button">إرجاع الافتراضي</button>
-          <button id="clear-paper" type="button">مسح الأسئلة</button>
+      <div class="json-actions" aria-label="خيارات JSON">
+        <button id="save-questions" type="button">حفظ الأسئلة</button>
+        <button id="download-json" type="button">تحميل JSON</button>
+        <button id="edit-json" type="button">تعديل JSON</button>
+        <button id="import-json" type="button">رفع JSON</button>
+        <button id="copy-ai-template" type="button" title="Copy an AI-ready JSON template">نسخ قالب AI</button>
+      </div>
+
+      <label class="field">
+        عنوان اختياري للورقة
+        <input id="paper-title" type="text" placeholder="مثال: Mathematics Exam" />
+      </label>
+
+      <div class="editor-toolbar" aria-label="أدوات البحث داخل الأسئلة">
+        <input id="question-search" type="search" placeholder="ابحث برقم السؤال أو النص أو القسم" />
+        <select id="question-type-filter">
+          <option value="all">كل الأنواع</option>
+          <option value="open">إجابة مفتوحة</option>
+          <option value="mcq">MCQ</option>
+        </select>
+        <select class="part-filter" id="question-part-filter">
+          <option value="all">كل الأقسام</option>
+        </select>
+      </div>
+
+      <div class="editor-list-status">
+        <span id="editor-count"></span>
+        <span>
+          <button id="expand-all" type="button">فتح الكل</button>
+          <button id="collapse-all" type="button">إغلاق الكل</button>
+        </span>
+      </div>
+
+      <div class="editor-list" id="editor-list"></div>
+
+      <small class="help-text">
+        اكتب المعادلات بين <b>\(...\)</b> أو <b>$$...$$</b>، وسيتم تحويلها تلقائياً بواسطة KaTeX.
+      </small>
+    </aside>
+
+    <section class="preview-stage" aria-label="المعاينة">
+      <div class="preview-label">Live A4 preview — اضغط مرتين على أي نص لتعديله مباشرة</div>
+      <div class="theme-carousel" aria-label="اختيار Theme للورقة">
+        <button class="theme-carousel-arrow" id="theme-prev" type="button" title="الثيم السابق">‹</button>
+        <div class="theme-viewport" id="theme-viewport">
+          <div class="theme-list" id="theme-list"></div>
         </div>
+        <button class="theme-carousel-arrow" id="theme-next" type="button" title="الثيم التالي">›</button>
+      </div>
+      <nav class="section-nav" id="section-nav" aria-label="التنقل بين الأقسام"></nav>
+      <main class="paper" id="paper" aria-label="Mathematics exam paper"></main>
+    </section>
+  </div>
 
-        <input id="import-json-input" type="file" accept=".json,application/json" hidden />
+  <div class="json-modal" id="json-modal" hidden>
+    <section class="json-modal-card" role="dialog" aria-modal="true" aria-labelledby="json-modal-title">
+      <h2 id="json-modal-title">تعديل JSON للتاب الحالي</h2>
+      <p>عدّل البيانات ثم اضغط تطبيق. يجب أن يحتوي الملف على <code>questions</code> أو يكون Array من الأسئلة.</p>
+      <textarea id="json-editor" spellcheck="false"></textarea>
+      <div class="json-modal-actions">
+        <button class="primary" id="apply-json" type="button">تطبيق التعديلات</button>
+        <button id="close-json" type="button">إلغاء</button>
+      </div>
+    </section>
+  </div>
 
-        <div class="json-actions" aria-label="خيارات JSON">
-          <button id="save-questions" type="button">حفظ الأسئلة</button>
-          <button id="download-json" type="button">تحميل JSON</button>
-          <button id="edit-json" type="button">تعديل JSON</button>
-          <button id="import-json" type="button">رفع JSON</button>
-          <button id="copy-ai-template" type="button" title="Copy an AI-ready JSON template">نسخ قالب AI</button>
-        </div>
+  <!-- مصدر التصميم كله هنا: عدّل pageData أو استخدم لوحة التصميم. -->
+  <script>
+    const pageData = {
+      "title": "Unit 1 - Lesson 1: Real Numbers",
+      "theme": "professional",
+      "questions": [
+        {
+          "id": 1,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "Answer the following questions:",
+          "type": "open",
+          "question_latex": "You have a set of numbers: \\sqrt{40}, 6, 4, \\sqrt{12}.\nExplain how you can arrange them from smallest to largest. Discuss with your classmates.",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 2,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Which of the following numbers are rationals, and which are irrationals?\n-\\sqrt{4}, 17, \\sqrt{8}, 0.2, 0.\\bar{3}, 1\\frac{1}{2}, 0, 25\\%, \\sqrt[3]{25}, \\sqrt{5}+1, \\sqrt[3]{|-64|}",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 3,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Can a number be both rational and irrational at the same time?",
+          "options": [],
+          "answer_lines": 2
+        },
+        {
+          "id": 4,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Which of the following numbers are rational numbers, and which are irrational? Give reasons:\n1) -12\n2) \\sqrt{25}\n3) \\sqrt{13}\n4) \\sqrt[3]{-27}\n5) 2\\frac{2}{5}\n6) -\\sqrt[3]{10}\n7) 0.125\n8) 3.\\bar{6}",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 5,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Find two consecutive integers between which each of the following numbers lies, and determine its approximate location on the number line:\n1) \\sqrt{11}\n2) \\sqrt[3]{20}",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 6,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Find the value of the integer n that satisfies:\nn < \\sqrt{17} < n + 1. Then find the approximate value of \\sqrt{17} to the nearest tenth and mark its approximate location on the number line.",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 7,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Nature: The golden rectangle is noticed in the shell of a marine organism, and the ratio of its length to its width is equal to \\dfrac{1 + \\sqrt{5}}{2}. Estimate this value.",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 8,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "A room has a square floor of area 15\\text{ m}^2. Ahmed wants to surround the floor with a decorative strip. Estimate the length of this strip.",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 9,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Write all possible sets of the number sets (\\mathbb{N}, \\mathbb{Z}, \\mathbb{Q}, \\mathbb{Q}', \\mathbb{R}) to which each of the following numbers belongs:\n1) \\sqrt{10}\n2) \\sqrt{100}\n3) 0.25\n4) -\\sqrt[3]{8}\n5) \\sqrt[3]{9}",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 10,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Put the appropriate symbol \\in or \\notin in the empty box:\n1) 0.63 \\quad \\square \\quad \\mathbb{Q}'\n2) \\sqrt{5} \\quad \\square \\quad \\mathbb{R}\n3) |-4| \\quad \\square \\quad \\mathbb{N}\n4) \\sqrt[3]{\\frac{3}{8}} \\quad \\square \\quad \\mathbb{Z}\n5) \\sqrt[3]{3} \\quad \\square \\quad \\mathbb{Q}\n6) \\sqrt{-1} \\quad \\square \\quad \\mathbb{R}",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 11,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Find the solution set for each of the following equations:\n1) x^2 - 3 = 2 where x \\in \\mathbb{Q}'\n2) 4x^3 = -32 where x \\in \\mathbb{Q}'\n3) \\frac{1}{2}x^2 + 1 = -4 where x \\in \\mathbb{R}\n4) 5x^3 - 1 = 4x^3 + 8 where x \\in \\mathbb{R}",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 12,
+          "part": "Part 1: Think & Discuss & Self-Evaluations",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Find the solution set for each of the following equations:\n1) \\frac{1}{3}x^3 + 9 = 0\n2) \\frac{3}{4}x^2 = \\frac{9}{2}\n3) 2(x^2 - 1) = -10\nIf the substitution set is: First: \\mathbb{Q}', Second: \\mathbb{R}",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 13,
+          "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+          "part_intro": "Choose the correct answer from the given ones:",
+          "type": "mcq",
+          "question_latex": "Which of the following numbers is an irrational number?",
+          "options": [
+            "0.\\bar{3}",
+            "\\sqrt{\\frac{9}{25}}",
+            "\\sqrt{5}",
+            "\\sqrt[3]{-125}"
+          ],
+          "answer_lines": 4
+        },
+        {
+          "id": 14,
+          "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+          "part_intro": "",
+          "type": "mcq",
+          "question_latex": "If x \\in \\mathbb{Z}, x < \\sqrt{29} < x + 1, what is the value of x?",
+          "options": [
+            "4",
+            "5",
+            "6",
+            "7"
+          ],
+          "answer_lines": 4
+        },
+        {
+          "id": 15,
+          "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+          "part_intro": "",
+          "type": "mcq",
+          "question_latex": "Estimating \\sqrt{41} to the closest integer is ........",
+          "options": [
+            "6",
+            "7",
+            "36",
+            "49"
+          ],
+          "answer_lines": 4
+        },
+        {
+          "id": 16,
+          "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+          "part_intro": "",
+          "type": "mcq",
+          "question_latex": "Estimating \\sqrt[3]{25} to the closest integer is ........",
+          "options": [
+            "2",
+            "3",
+            "5",
+            "12.5"
+          ],
+          "answer_lines": 4
+        },
+        {
+          "id": 17,
+          "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+          "part_intro": "",
+          "type": "mcq",
+          "question_latex": "Which of the following numbers is an irrational number that lies between 2 and 3?",
+          "options": [
+            "2.\\bar{5}",
+            "\\sqrt{10}",
+            "\\sqrt{6.25}",
+            "\\sqrt[3]{9}"
+          ],
+          "answer_lines": 4
+        },
+        {
+          "id": 18,
+          "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+          "part_intro": "",
+          "type": "mcq",
+          "question_latex": "If 1 < \\sqrt{n} < 2, which of the following is a possible value for the number n?",
+          "options": [
+            "1",
+            "2",
+            "4",
+            "8"
+          ],
+          "answer_lines": 4
+        },
+        {
+          "id": 19,
+          "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+          "part_intro": "",
+          "type": "mcq",
+          "question_latex": "Which of the following numbers is represented by k on the number line below?\n(A point k lies between 9 and 10 on the number line)",
+          "options": [
+            "\\sqrt{86}",
+            "\\sqrt{96}",
+            "\\sqrt{81}",
+            "\\sqrt{78}"
+          ],
+          "answer_lines": 4
+        },
+        {
+          "id": 20,
+          "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+          "part_intro": "",
+          "type": "mcq",
+          "question_latex": "If x and y are two consecutive integers, what is the value of x + y?\n(Given x < \\sqrt{57} < y on the number line)",
+          "options": [
+            "11",
+            "13",
+            "15",
+            "17"
+          ],
+          "answer_lines": 4
+        },
+        {
+          "id": 21,
+          "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Hamza and Aser answered the following question:\nFind two consecutive integers between which the irrational number -\\sqrt{5} lies.\nHamza's answer:\n4 < 5 < 9 \\implies \\sqrt{4} < \\sqrt{5} < \\sqrt{9} \\implies 2 < \\sqrt{5} < 3 \\implies -3 < -\\sqrt{5} < -2\nAser's answer:\n-9 < -5 < -4 \\implies -\\sqrt{9} < -\\sqrt{5} < -\\sqrt{4} \\implies -3 < -\\sqrt{5} < -2\nWhich of them followed the correct method to solve the problem?",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 22,
+          "part": "Part 3: Lesson Assessment - Applying Concepts",
+          "part_intro": "Answer the following questions:",
+          "type": "open",
+          "question_latex": "Classify each number in the opposite table as rational or irrational and explain why:\nNumbers: 0.323232..., -\\sqrt[3]{64}, 1.\\bar{6}, \\sqrt{\\frac{4}{9}}, \\frac{12}{31}, \\sqrt{6}, \\sqrt[3]{16}, 17\\%, 2\\frac{2}{3}, \\sqrt[3]{-27}, -\\sqrt{121}, 0",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 23,
+          "part": "Part 3: Lesson Assessment - Applying Concepts",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Find two consecutive integers between which each of the following numbers lies, and determine its approximate location on the number line:\n11) \\sqrt{5}\n12) \\sqrt{13}\n13) -\\sqrt{11}\n14) \\sqrt[3]{14}",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 24,
+          "part": "Part 3: Lesson Assessment - Applying Concepts",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Put one of the symbols <, >, or = in each box to get a true statement:\n15) \\sqrt{96} \\quad \\square \\quad 14\n16) -\\sqrt{7} \\quad \\square \\quad -2.6\n17) \\sqrt[3]{25} \\quad \\square \\quad \\sqrt{9}",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 25,
+          "part": "Part 3: Lesson Assessment - Applying Concepts",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Arrange the numbers: 6.36, 6\\frac{4}{5}, 7, \\sqrt{40} from the smallest to the largest.",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 26,
+          "part": "Part 3: Lesson Assessment - Applying Concepts",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Find the solution set for each of the following equations in \\mathbb{R}:\n19) x^3 - 11 = 5\n20) 2x^3 + 13 = 67\n21) 3x^2 - 1 = -13",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 27,
+          "part": "Part 3: Lesson Assessment - Applying Concepts",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Find the solution set for each of the following equations in \\mathbb{Q}':\n22) 2x^2 - 3 = 9\n23) 6x^2 - 3 = 4x^2 + 7\n24) 2(x^3 + 1) = 18",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 28,
+          "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
+          "part_intro": "Answer the following real-life application questions:",
+          "type": "open",
+          "question_latex": "Geometry: A square with an area of 29\\text{ cm}^2, to which of the following sets of numbers does its side length belong? Select all possible sets.\n\\mathbb{R}, \\mathbb{Q}, \\mathbb{Q}', \\mathbb{Z}, \\mathbb{N}",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 29,
+          "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Arts: Samar formed a cube using clay with a total area of 300\\text{ cm}^2. Find the length of its edge. Is the length of the edge a rational number?",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 30,
+          "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Geometry: Which is greater: the length of the side of a square with an area of 16\\text{ cm}^2 or the length of the diagonal of a square with an area of 9\\text{ cm}^2?",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 31,
+          "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "Agriculture: A rectangular garden with an area of 80\\text{ m}^2, its length is twice its width. Find the length and width to the nearest meter.",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 32,
+          "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "What is the smallest valid integer of variable n that makes both numbers \\sqrt{41 + n} and \\sqrt{2n + 20} be rational numbers?",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 33,
+          "part": "Part 5: Creative Thinking",
+          "part_intro": "Solve the following creative thinking problems:",
+          "type": "open",
+          "question_latex": "Find an irrational number lying between 0.\\bar{3} and 0.\\bar{6}",
+          "options": [],
+          "answer_lines": 4
+        },
+        {
+          "id": 34,
+          "part": "Part 5: Creative Thinking",
+          "part_intro": "",
+          "type": "open",
+          "question_latex": "If 10 < \\sqrt{x} < 11, 12 < \\sqrt{y} < 13 where x and y are positive integers, find the largest value of y - x.",
+          "options": [],
+          "answer_lines": 4
+        }
+      ]
+    };
 
-        <label class="field">
-          عنوان اختياري للورقة
-          <input id="paper-title" type="text" placeholder="مثال: Mathematics Exam" />
-        </label>
+    // ابدأ بورقة فارغة؛ سيتم تحميل الأسئلة من ملفات JSON عند الحاجة.
+    pageData.title = "";
+    pageData.questions = [];
+    const defaultPageData = JSON.parse(JSON.stringify(pageData));
+  </script>
+  <script src="exam-paper.js?v=20260813-6"></script>
 
-        <div class="editor-toolbar" aria-label="أدوات البحث داخل الأسئلة">
-          <input id="question-search" type="search" placeholder="ابحث برقم السؤال أو النص أو القسم" />
-          <select id="question-type-filter">
-            <option value="all">كل الأنواع</option>
-            <option value="open">إجابة مفتوحة</option>
-            <option value="mcq">MCQ</option>
-          </select>
-          <select class="part-filter" id="question-part-filter">
-            <option value="all">كل الأقسام</option>
-          </select>
-        </div>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.getElementById('paper'), { delimiters: [{ left: '\\(', right: '\\)', display: false }, { left: '$$', right: '$$', display: true }] })"></script>
+</body>
 
-        <div class="editor-list-status">
-          <span id="editor-count"></span>
-          <span>
-            <button id="expand-all" type="button">فتح الكل</button>
-            <button id="collapse-all" type="button">إغلاق الكل</button>
-          </span>
-        </div>
-
-        <div class="editor-list" id="editor-list"></div>
-
-        <small class="help-text">
-          اكتب المعادلات بين <b>\(...\)</b> أو <b>$$...$$</b>، وسيتم تحويلها تلقائياً بواسطة KaTeX.
-        </small>
-      </aside>
-
-      <section class="preview-stage" aria-label="المعاينة">
-        <div class="preview-label">Live A4 preview — اضغط مرتين على أي نص لتعديله مباشرة</div>
-        <div class="theme-carousel" aria-label="اختيار Theme للورقة">
-          <button class="theme-carousel-arrow" id="theme-prev" type="button" title="الثيم السابق">‹</button>
-          <div class="theme-viewport" id="theme-viewport">
-            <div class="theme-list" id="theme-list"></div>
-          </div>
-          <button class="theme-carousel-arrow" id="theme-next" type="button" title="الثيم التالي">›</button>
-        </div>
-        <nav class="section-nav" id="section-nav" aria-label="التنقل بين الأقسام"></nav>
-        <main class="paper" id="paper" aria-label="Mathematics exam paper"></main>
-      </section>
-    </div>
-
-    <div class="json-modal" id="json-modal" hidden>
-      <section class="json-modal-card" role="dialog" aria-modal="true" aria-labelledby="json-modal-title">
-        <h2 id="json-modal-title">تعديل JSON للتاب الحالي</h2>
-        <p>عدّل البيانات ثم اضغط تطبيق. يجب أن يحتوي الملف على <code>questions</code> أو يكون Array من الأسئلة.</p>
-        <textarea id="json-editor" spellcheck="false"></textarea>
-        <div class="json-modal-actions">
-          <button class="primary" id="apply-json" type="button">تطبيق التعديلات</button>
-          <button id="close-json" type="button">إلغاء</button>
-        </div>
-      </section>
-    </div>
-
-    <!-- مصدر التصميم كله هنا: عدّل pageData أو استخدم لوحة التصميم. -->
-    <script>
-      const pageData = {
-        "title": "Unit 1 - Lesson 1: Real Numbers",
-        "theme": "professional",
-        "questions": [
-          {
-            "id": 1,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "Answer the following questions:",
-            "type": "open",
-            "question_latex": "You have a set of numbers: \\sqrt{40}, 6, 4, \\sqrt{12}.\nExplain how you can arrange them from smallest to largest. Discuss with your classmates.",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 2,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Which of the following numbers are rationals, and which are irrationals?\n-\\sqrt{4}, 17, \\sqrt{8}, 0.2, 0.\\bar{3}, 1\\frac{1}{2}, 0, 25\\%, \\sqrt[3]{25}, \\sqrt{5}+1, \\sqrt[3]{|-64|}",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 3,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Can a number be both rational and irrational at the same time?",
-            "options": [],
-            "answer_lines": 2
-          },
-          {
-            "id": 4,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Which of the following numbers are rational numbers, and which are irrational? Give reasons:\n1) -12\n2) \\sqrt{25}\n3) \\sqrt{13}\n4) \\sqrt[3]{-27}\n5) 2\\frac{2}{5}\n6) -\\sqrt[3]{10}\n7) 0.125\n8) 3.\\bar{6}",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 5,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Find two consecutive integers between which each of the following numbers lies, and determine its approximate location on the number line:\n1) \\sqrt{11}\n2) \\sqrt[3]{20}",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 6,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Find the value of the integer n that satisfies:\nn < \\sqrt{17} < n + 1. Then find the approximate value of \\sqrt{17} to the nearest tenth and mark its approximate location on the number line.",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 7,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Nature: The golden rectangle is noticed in the shell of a marine organism, and the ratio of its length to its width is equal to \\dfrac{1 + \\sqrt{5}}{2}. Estimate this value.",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 8,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "A room has a square floor of area 15\\text{ m}^2. Ahmed wants to surround the floor with a decorative strip. Estimate the length of this strip.",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 9,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Write all possible sets of the number sets (\\mathbb{N}, \\mathbb{Z}, \\mathbb{Q}, \\mathbb{Q}', \\mathbb{R}) to which each of the following numbers belongs:\n1) \\sqrt{10}\n2) \\sqrt{100}\n3) 0.25\n4) -\\sqrt[3]{8}\n5) \\sqrt[3]{9}",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 10,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Put the appropriate symbol \\in or \\notin in the empty box:\n1) 0.63 \\quad \\square \\quad \\mathbb{Q}'\n2) \\sqrt{5} \\quad \\square \\quad \\mathbb{R}\n3) |-4| \\quad \\square \\quad \\mathbb{N}\n4) \\sqrt[3]{\\frac{3}{8}} \\quad \\square \\quad \\mathbb{Z}\n5) \\sqrt[3]{3} \\quad \\square \\quad \\mathbb{Q}\n6) \\sqrt{-1} \\quad \\square \\quad \\mathbb{R}",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 11,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Find the solution set for each of the following equations:\n1) x^2 - 3 = 2 where x \\in \\mathbb{Q}'\n2) 4x^3 = -32 where x \\in \\mathbb{Q}'\n3) \\frac{1}{2}x^2 + 1 = -4 where x \\in \\mathbb{R}\n4) 5x^3 - 1 = 4x^3 + 8 where x \\in \\mathbb{R}",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 12,
-            "part": "Part 1: Think & Discuss & Self-Evaluations",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Find the solution set for each of the following equations:\n1) \\frac{1}{3}x^3 + 9 = 0\n2) \\frac{3}{4}x^2 = \\frac{9}{2}\n3) 2(x^2 - 1) = -10\nIf the substitution set is: First: \\mathbb{Q}', Second: \\mathbb{R}",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 13,
-            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
-            "part_intro": "Choose the correct answer from the given ones:",
-            "type": "mcq",
-            "question_latex": "Which of the following numbers is an irrational number?",
-            "options": [
-              "0.\\bar{3}",
-              "\\sqrt{\\frac{9}{25}}",
-              "\\sqrt{5}",
-              "\\sqrt[3]{-125}"
-            ],
-            "answer_lines": 4
-          },
-          {
-            "id": 14,
-            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
-            "part_intro": "",
-            "type": "mcq",
-            "question_latex": "If x \\in \\mathbb{Z}, x < \\sqrt{29} < x + 1, what is the value of x?",
-            "options": [
-              "4",
-              "5",
-              "6",
-              "7"
-            ],
-            "answer_lines": 4
-          },
-          {
-            "id": 15,
-            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
-            "part_intro": "",
-            "type": "mcq",
-            "question_latex": "Estimating \\sqrt{41} to the closest integer is ........",
-            "options": [
-              "6",
-              "7",
-              "36",
-              "49"
-            ],
-            "answer_lines": 4
-          },
-          {
-            "id": 16,
-            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
-            "part_intro": "",
-            "type": "mcq",
-            "question_latex": "Estimating \\sqrt[3]{25} to the closest integer is ........",
-            "options": [
-              "2",
-              "3",
-              "5",
-              "12.5"
-            ],
-            "answer_lines": 4
-          },
-          {
-            "id": 17,
-            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
-            "part_intro": "",
-            "type": "mcq",
-            "question_latex": "Which of the following numbers is an irrational number that lies between 2 and 3?",
-            "options": [
-              "2.\\bar{5}",
-              "\\sqrt{10}",
-              "\\sqrt{6.25}",
-              "\\sqrt[3]{9}"
-            ],
-            "answer_lines": 4
-          },
-          {
-            "id": 18,
-            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
-            "part_intro": "",
-            "type": "mcq",
-            "question_latex": "If 1 < \\sqrt{n} < 2, which of the following is a possible value for the number n?",
-            "options": [
-              "1",
-              "2",
-              "4",
-              "8"
-            ],
-            "answer_lines": 4
-          },
-          {
-            "id": 19,
-            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
-            "part_intro": "",
-            "type": "mcq",
-            "question_latex": "Which of the following numbers is represented by k on the number line below?\n(A point k lies between 9 and 10 on the number line)",
-            "options": [
-              "\\sqrt{86}",
-              "\\sqrt{96}",
-              "\\sqrt{81}",
-              "\\sqrt{78}"
-            ],
-            "answer_lines": 4
-          },
-          {
-            "id": 20,
-            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
-            "part_intro": "",
-            "type": "mcq",
-            "question_latex": "If x and y are two consecutive integers, what is the value of x + y?\n(Given x < \\sqrt{57} < y on the number line)",
-            "options": [
-              "11",
-              "13",
-              "15",
-              "17"
-            ],
-            "answer_lines": 4
-          },
-          {
-            "id": 21,
-            "part": "Part 2: Lesson Assessment - Measuring Conceptual Understanding",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Hamza and Aser answered the following question:\nFind two consecutive integers between which the irrational number -\\sqrt{5} lies.\nHamza's answer:\n4 < 5 < 9 \\implies \\sqrt{4} < \\sqrt{5} < \\sqrt{9} \\implies 2 < \\sqrt{5} < 3 \\implies -3 < -\\sqrt{5} < -2\nAser's answer:\n-9 < -5 < -4 \\implies -\\sqrt{9} < -\\sqrt{5} < -\\sqrt{4} \\implies -3 < -\\sqrt{5} < -2\nWhich of them followed the correct method to solve the problem?",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 22,
-            "part": "Part 3: Lesson Assessment - Applying Concepts",
-            "part_intro": "Answer the following questions:",
-            "type": "open",
-            "question_latex": "Classify each number in the opposite table as rational or irrational and explain why:\nNumbers: 0.323232..., -\\sqrt[3]{64}, 1.\\bar{6}, \\sqrt{\\frac{4}{9}}, \\frac{12}{31}, \\sqrt{6}, \\sqrt[3]{16}, 17\\%, 2\\frac{2}{3}, \\sqrt[3]{-27}, -\\sqrt{121}, 0",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 23,
-            "part": "Part 3: Lesson Assessment - Applying Concepts",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Find two consecutive integers between which each of the following numbers lies, and determine its approximate location on the number line:\n11) \\sqrt{5}\n12) \\sqrt{13}\n13) -\\sqrt{11}\n14) \\sqrt[3]{14}",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 24,
-            "part": "Part 3: Lesson Assessment - Applying Concepts",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Put one of the symbols <, >, or = in each box to get a true statement:\n15) \\sqrt{96} \\quad \\square \\quad 14\n16) -\\sqrt{7} \\quad \\square \\quad -2.6\n17) \\sqrt[3]{25} \\quad \\square \\quad \\sqrt{9}",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 25,
-            "part": "Part 3: Lesson Assessment - Applying Concepts",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Arrange the numbers: 6.36, 6\\frac{4}{5}, 7, \\sqrt{40} from the smallest to the largest.",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 26,
-            "part": "Part 3: Lesson Assessment - Applying Concepts",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Find the solution set for each of the following equations in \\mathbb{R}:\n19) x^3 - 11 = 5\n20) 2x^3 + 13 = 67\n21) 3x^2 - 1 = -13",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 27,
-            "part": "Part 3: Lesson Assessment - Applying Concepts",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Find the solution set for each of the following equations in \\mathbb{Q}':\n22) 2x^2 - 3 = 9\n23) 6x^2 - 3 = 4x^2 + 7\n24) 2(x^3 + 1) = 18",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 28,
-            "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
-            "part_intro": "Answer the following real-life application questions:",
-            "type": "open",
-            "question_latex": "Geometry: A square with an area of 29\\text{ cm}^2, to which of the following sets of numbers does its side length belong? Select all possible sets.\n\\mathbb{R}, \\mathbb{Q}, \\mathbb{Q}', \\mathbb{Z}, \\mathbb{N}",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 29,
-            "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Arts: Samar formed a cube using clay with a total area of 300\\text{ cm}^2. Find the length of its edge. Is the length of the edge a rational number?",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 30,
-            "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Geometry: Which is greater: the length of the side of a square with an area of 16\\text{ cm}^2 or the length of the diagonal of a square with an area of 9\\text{ cm}^2?",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 31,
-            "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "Agriculture: A rectangular garden with an area of 80\\text{ m}^2, its length is twice its width. Find the length and width to the nearest meter.",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 32,
-            "part": "Part 4: Lesson Assessment - Analysis and Subjects Integration",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "What is the smallest valid integer of variable n that makes both numbers \\sqrt{41 + n} and \\sqrt{2n + 20} be rational numbers?",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 33,
-            "part": "Part 5: Creative Thinking",
-            "part_intro": "Solve the following creative thinking problems:",
-            "type": "open",
-            "question_latex": "Find an irrational number lying between 0.\\bar{3} and 0.\\bar{6}",
-            "options": [],
-            "answer_lines": 4
-          },
-          {
-            "id": 34,
-            "part": "Part 5: Creative Thinking",
-            "part_intro": "",
-            "type": "open",
-            "question_latex": "If 10 < \\sqrt{x} < 11, 12 < \\sqrt{y} < 13 where x and y are positive integers, find the largest value of y - x.",
-            "options": [],
-            "answer_lines": 4
-          }
-        ]
-      };
-
-      // ابدأ بورقة فارغة؛ سيتم تحميل الأسئلة من ملفات JSON عند الحاجة.
-      pageData.title = "";
-      pageData.questions = [];
-      const defaultPageData = JSON.parse(JSON.stringify(pageData));
-    </script>
-    <script src="exam-paper.js"></script>
-
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
-      onload="renderMathInElement(document.getElementById('paper'), { delimiters: [{ left: '\\(', right: '\\)', display: false }, { left: '$$', right: '$$', display: true }] })"
-    ></script>
-  </body>
 </html>
